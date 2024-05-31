@@ -164,38 +164,11 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
         node_sum += vec.node_size();
     }
 
-    std::vector<std::unordered_set<NodeTensor>> subgraphs_1_inputs;
-    std::vector<std::unordered_set<NodeTensor>> subgraphs_1_outputs;
-    std::vector<std::unordered_set<std::string>> subgraphs_1_input_nodes;
-    std::vector<std::unordered_set<std::string>> subgraphs_1_nodes;
-    for (const auto& sg : Subgraphs) {
-        std::unordered_set<NodeTensor> graphInputs;
-        std::unordered_set<NodeTensor> graphOutputs;
-        determineGraphInputOutput(sg, IOvalueNames, graphInputs, graphOutputs);
-        subgraphs_1_inputs.push_back(graphInputs);
-        subgraphs_1_outputs.push_back(graphOutputs);
-
-        std::unordered_set<std::string> graphInputsNodes;
-        for (const auto& input : graphInputs) {
-            auto nodename = findInputNode(g, input.name);
-            if (nodename != "") {
-                graphInputsNodes.insert(nodename);
-            }
-        }
-        subgraphs_1_input_nodes.push_back(graphInputsNodes);
-        subgraphs_1_nodes.push_back(collectNodeNames(sg));
-    }
-
-    std::vector<std::unordered_set<NodeTensor>> subgraphs_2_inputs;
-    std::vector<std::unordered_set<NodeTensor>> subgraphs_2_outputs;
-    std::vector<std::unordered_set<std::string>> subgraphs_2_input_nodes;
-    std::vector<std::unordered_set<std::string>> subgraphs_2_nodes;
+    std::vector<std::unordered_set<std::string>> subgraphs_2_input_nodes_;
+    std::vector<std::unordered_set<std::string>> subgraphs_2_nodes_;
     for (const auto& sg : otherSubgraphs) {
         std::unordered_set<NodeTensor> graphInputs;
-        std::unordered_set<NodeTensor> graphOutputs;
-        determineGraphInputOutput(sg, IOvalueNames, graphInputs, graphOutputs);
-        subgraphs_2_inputs.push_back(graphInputs);
-        subgraphs_2_outputs.push_back(graphOutputs);
+        determineGraphInput(sg, IOvalueNames, graphInputs);
 
         std::unordered_set<std::string> graphInputsNodes;
         for (const auto& input : graphInputs) {
@@ -204,13 +177,13 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
                 graphInputsNodes.insert(nodename);
             }
         }
-        subgraphs_2_input_nodes.push_back(graphInputsNodes);
-        subgraphs_2_nodes.push_back(collectNodeNames(sg));
+        subgraphs_2_input_nodes_.push_back(graphInputsNodes);
+        subgraphs_2_nodes_.push_back(collectNodeNames(sg));
     }
 
     for (size_t i = 0; i < otherSubgraphs.size(); ++i) {
-        if (subgraphs_2_input_nodes[i].empty()) {
-            int mergeIndex = canMerge(i, subgraphs_2_input_nodes, subgraphs_2_nodes[i]);
+        if (subgraphs_2_input_nodes_[i].empty()) {
+            int mergeIndex = canMerge(i, subgraphs_2_input_nodes_, subgraphs_2_nodes_[i]);
             if (mergeIndex != -1) {
                 std::cout << "Merge possible for graphs " << i << " and " << mergeIndex << std::endl;
                 if (i < mergeIndex) {
@@ -245,6 +218,57 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
 
     std::cout << "graph node size:" << g.node_size() << std::endl;
     std::cout << "sub node size:" << node_sum << std::endl;
+
+    std::vector<std::unordered_set<NodeTensor>> subgraphs_1_inputs;
+    std::vector<std::unordered_set<std::string>> subgraphs_1_input_nodes;
+    std::vector<std::unordered_set<std::string>> subgraphs_1_nodes;
+    for (const auto& sg : Subgraphs) {
+        std::unordered_set<NodeTensor> graphInputs;
+        determineGraphInput(sg, IOvalueNames, graphInputs);
+        subgraphs_1_inputs.push_back(graphInputs);
+
+        std::unordered_set<std::string> graphInputsNodes;
+        for (const auto& input : graphInputs) {
+            auto nodename = findInputNode(g, input.name);
+            if (nodename != "") {
+                graphInputsNodes.insert(nodename);
+            }
+        }
+        subgraphs_1_input_nodes.push_back(graphInputsNodes);
+        subgraphs_1_nodes.push_back(collectNodeNames(sg));
+    }
+
+    std::vector<std::unordered_set<NodeTensor>> subgraphs_2_inputs;
+    std::vector<std::unordered_set<std::string>> subgraphs_2_input_nodes;
+    std::vector<std::unordered_set<std::string>> subgraphs_2_nodes;
+    for (const auto& sg : otherSubgraphs) {
+        std::unordered_set<NodeTensor> graphInputs;
+        determineGraphInput(sg, IOvalueNames, graphInputs);
+        subgraphs_2_inputs.push_back(graphInputs);
+
+        std::unordered_set<std::string> graphInputsNodes;
+        for (const auto& input : graphInputs) {
+            auto nodename = findInputNode(g, input.name);
+            if (nodename != "") {
+                graphInputsNodes.insert(nodename);
+            }
+        }
+        subgraphs_2_input_nodes.push_back(graphInputsNodes);
+        subgraphs_2_nodes.push_back(collectNodeNames(sg));
+    }
+
+    std::vector<std::unordered_set<NodeTensor>> subgraphs_1_outputs;
+    for (const auto& sg : Subgraphs) {
+        std::unordered_set<NodeTensor> graphOutputs;
+        determineGraphOutput(sg, subgraphs_1_inputs, subgraphs_2_inputs, graphOutputs);
+        subgraphs_1_outputs.push_back(graphOutputs);
+    }
+    std::vector<std::unordered_set<NodeTensor>> subgraphs_2_outputs;
+    for (const auto& sg : otherSubgraphs) {
+        std::unordered_set<NodeTensor> graphOutputs;
+        determineGraphOutput(sg, subgraphs_1_inputs, subgraphs_2_inputs, graphOutputs);
+        subgraphs_2_outputs.push_back(graphOutputs);
+    }
 
     for (const auto& tensor : IOvalueNames) {
         std::cout << "Name: " << tensor.name << ", Shape: [";

@@ -16,7 +16,7 @@ void Licheepi::GenerateCutInstruction(std::vector<onnx::GraphProto> &Subgraphs, 
         if (device == "npu") {
             board = "th1520";
         } else {
-            board = "C920";
+            board = "c920";
         }
         std::string postprocess = "save_and_top5";
 

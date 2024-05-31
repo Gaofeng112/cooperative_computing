@@ -102,6 +102,55 @@ void determineGraphInputOutput(const onnx::GraphProto& g, const std::unordered_s
     }
 }
 
+void determineGraphInput(const onnx::GraphProto& g, const std::unordered_set<NodeTensor>& initializerNames,
+    						   std::unordered_set<NodeTensor> &graphInputs) {
+    std::unordered_set<std::string> allnodeOutputs;
+    for (const auto& node : g.node()) {
+        const auto& outputs = node.output();
+        for (const auto& output : outputs) {
+            allnodeOutputs.insert(output);
+        }
+    }
+    for (const auto& node : g.node()) {
+        const auto& inputs = node.input();
+
+        for (const auto& input : inputs) {
+            if (std::find(allnodeOutputs.begin(), allnodeOutputs.end(), input) == allnodeOutputs.end()) {
+				auto iter = isInputFromInitializer(input, initializerNames);
+				if (iter != initializerNames.end()) {
+					graphInputs.insert(*iter);
+					std::cout << "Found input tensor with name " << input << " in the set." << std::endl;
+				}
+            }
+        }
+    }
+}
+
+void determineGraphOutput(const onnx::GraphProto& g, std::vector<std::unordered_set<NodeTensor>> &allgraphInputs_1,
+						  std::vector<std::unordered_set<NodeTensor>> &allgraphInputs_2, std::unordered_set<NodeTensor> &graphOutputs) {
+	auto allgraphInputs = allgraphInputs_1;
+	allgraphInputs.insert(allgraphInputs.end(), allgraphInputs_2.begin(), allgraphInputs_2.end());
+    for (const auto& node : g.node()) {
+        const auto& outputs = node.output();
+        for (const auto& output : outputs) {
+			int flag = 0;
+			for (size_t i = 0; i < allgraphInputs.size(); i++) {
+				for (auto& input : allgraphInputs[i]) {
+					if (input.name == output) {
+						graphOutputs.insert(input);
+						std::cout << "Found output tensor with name " << output << " in the set." << std::endl;
+						flag = 1;
+						break;
+					}
+				}
+				if (flag) {
+					break;
+				}
+			}
+        }
+    }
+}
+
 std::string findInputNode(const onnx::GraphProto &g, const std::string& outputTensorName) {
 	std::string node_name = "";
 	for (const auto& node : g.node()) {

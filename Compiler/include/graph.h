@@ -43,6 +43,10 @@ std::unordered_set<NodeTensor> getIOvalue(const onnx::GraphProto& graph);
 
 void determineGraphInputOutput(const onnx::GraphProto& g, const std::unordered_set<NodeTensor>& initializerNames,
     						   std::unordered_set<NodeTensor> &graphInputs, std::unordered_set<NodeTensor> &graphOutputs);
+void determineGraphInput(const onnx::GraphProto& g, const std::unordered_set<NodeTensor>& initializerNames,
+    						   std::unordered_set<NodeTensor> &graphInputs);
+void determineGraphOutput(const onnx::GraphProto& g, std::vector<std::unordered_set<NodeTensor>> &allgraphInputs_1,
+						  std::vector<std::unordered_set<NodeTensor>> &allgraphInputs_2, std::unordered_set<NodeTensor> &graphOutputs);
 std::string findInputNode(const onnx::GraphProto &g, const std::string& outputTensorName);
 std::unordered_set<std::string> collectNodeNames(const onnx::GraphProto& graph);
 int canMerge(int subgraph_id, const std::unordered_set<std::string>& subgraphinputNodeNames,

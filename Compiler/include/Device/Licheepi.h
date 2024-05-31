@@ -28,9 +28,13 @@ public:
 
     std::vector<std::vector<std::string>> getNPUStructure() const override {
         return {
+            {"Reshape", "Mul", "Add", "Sigmoid", "Mul", "Conv", "Conv", "Add", "Reshape"},
             {"Reshape", "Mul", "Add", "Sigmoid", "Mul", "Conv", "Conv", "Add"},
+            {"Reshape", "Mul", "Add", "Sigmoid", "Mul", "Conv", "Reshape"},
             {"Reshape", "Mul", "Add", "Sigmoid", "Mul", "Conv"},
+            {"Mul", "Add", "Conv", "Reshape"},
             {"Mul", "Add", "Conv"},
+            {"Conv", "Reshape"},
             {"Conv"}
         };
     }
