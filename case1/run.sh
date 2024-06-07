@@ -1,0 +1,25 @@
+./main_example ./npu_Subgraphs_0_out/hhb.bm ./npu_Subgraphs_1_out/hhb.bm ./cpu_Subgraphs_0_out/hhb.bm ./npu_Subgraphs_2_out/hhb.bm ./npu_Subgraphs_3_out/hhb.bm ./cpu_Subgraphs_1_out/hhb.bm ./npu_Subgraphs_4_out/hhb.bm ./npu_Subgraphs_5_out/hhb.bm ./npu_Subgraphs_6_out/hhb.bm ./npu_Subgraphs_7_out/hhb.bm ./cpu_Subgraphs_2_out/hhb.bm ./npu_Subgraphs_8_out/hhb.bm ./npu_Subgraphs_9_out/hhb.bm ./npu_Subgraphs_10_out/hhb.bm ./npu_Subgraphs_11_out/hhb.bm ./cpu_Subgraphs_3_out/hhb.bm ./npu_Subgraphs_12_out/hhb.bm ./npu_Subgraphs_13_out/hhb.bm ./npu_Subgraphs_14_out/hhb.bm ./npu_Subgraphs_15_out/hhb.bm ./cpu_Subgraphs_4_out/hhb.bm ./npu_Subgraphs_16_out/hhb.bm ./npu_Subgraphs_17_out/hhb.bm ./npu_Subgraphs_18_out/hhb.bm ./npu_Subgraphs_19_out/hhb.bm ./cpu_Subgraphs_5_out/hhb.bm ./npu_Subgraphs_20_out/hhb.bm ./npu_Subgraphs_21_out/hhb.bm ./npu_Subgraphs_22_out/hhb.bm ./npu_Subgraphs_23_out/hhb.bm ./npu_Subgraphs_24_out/hhb.bm ./cpu_Subgraphs_6_out/hhb.bm ./npu_Subgraphs_25_out/hhb.bm ./npu_Subgraphs_26_out/hhb.bm ./npu_Subgraphs_27_out/hhb.bm ./npu_Subgraphs_28_out/hhb.bm ./npu_Subgraphs_29_out/hhb.bm ./cpu_Subgraphs_7_out/hhb.bm ./npu_Subgraphs_30_out/hhb.bm ./npu_Subgraphs_31_out/hhb.bm ./npu_Subgraphs_32_out/hhb.bm ./npu_Subgraphs_33_out/hhb.bm ./npu_Subgraphs_34_out/hhb.bm ./cpu_Subgraphs_8_out/hhb.bm ./npu_Subgraphs_35_out/hhb.bm ./npu_Subgraphs_36_out/hhb.bm ./npu_Subgraphs_37_out/hhb.bm ./npu_Subgraphs_38_out/hhb.bm ./npu_Subgraphs_39_out/hhb.bm ./cpu_Subgraphs_9_out/hhb.bm ./npu_Subgraphs_40_out/hhb.bm ./npu_Subgraphs_41_out/hhb.bm sample.bin timestep.bin encoder_hidden_states.bin
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
