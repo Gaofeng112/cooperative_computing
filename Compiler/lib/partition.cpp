@@ -1,4 +1,5 @@
 #include "partition.h"
+#include <algorithm>
 
 std::vector<std::vector<std::string>> getEnabledStructures(const std::vector<std::string>& support_op, const std::vector<std::vector<std::string>>& structure) {
     std::vector<std::vector<std::string>> enable_structure;
@@ -268,6 +269,143 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
         std::unordered_set<NodeTensor> graphOutputs;
         determineGraphOutput(sg, subgraphs_1_inputs, subgraphs_2_inputs, graphOutputs);
         subgraphs_2_outputs.push_back(graphOutputs);
+    }
+
+
+
+    std::vector<std::unordered_set<NodeTensor>> graphs_inputs;
+    graphs_inputs.insert(graphs_inputs.end(),subgraphs_1_inputs.begin(),subgraphs_1_inputs.end());
+    graphs_inputs.insert(graphs_inputs.end(),subgraphs_2_inputs.begin(),subgraphs_2_inputs.end());
+    std::vector<std::unordered_set<NodeTensor>> graphs_outputs;
+    graphs_outputs.insert(graphs_outputs.end(),subgraphs_1_outputs.begin(),subgraphs_1_outputs.end());
+    graphs_outputs.insert(graphs_outputs.end(),subgraphs_2_outputs.begin(),subgraphs_2_outputs.end());
+    std::vector<int> order_Subgraphs(graphs_inputs.size());
+    std::vector<int> issort_Subgraphs(graphs_inputs.size());
+    std::vector<std::vector<int>> predecessors_Subgraphs(graphs_inputs.size());
+    std::vector<std::vector<int>> successors_Subgraphs(graphs_inputs.size());
+    int sub1_size=subgraphs_1_inputs.size();
+    int sub2_size=subgraphs_2_inputs.size();
+    int finished_flag=0;int sort_count=0;
+    while(!finished_flag) 
+    {
+        finished_flag=1;
+        if(sort_count==0)
+        {
+            for(int i=0; i<graphs_inputs.size();i++)
+            {
+                int find_flag=0;
+                for(const auto& g_input : graphs_inputs[i])
+                {
+                    for(int j=0; j< graphs_outputs.size();j++)
+                    {
+                        if(graphs_outputs[j].find(g_input)!=graphs_outputs[j].end())
+                        {
+                        find_flag=1;
+                        break;
+                        }
+                    }
+                    if(find_flag){break;}
+                }
+                if(!find_flag)
+                {
+                    order_Subgraphs[i]=0;
+                    issort_Subgraphs[i]=1;
+                }
+                else {order_Subgraphs[i]=1;issort_Subgraphs[i]=0;finished_flag=0;}
+            }
+        }
+        else
+        {
+            for(int i=0; i<graphs_inputs.size();i++)
+            {
+                int find_flag=0;
+                std::vector<int> predecessors;
+                if(issort_Subgraphs[i]==1){continue;}
+                for(const auto& g_input : graphs_inputs[i])
+                {
+                    
+                    for(int j=0; j< graphs_outputs.size();j++)
+                    {
+                        if((graphs_outputs[j].find(g_input)!=graphs_outputs[j].end()))
+                        {
+                            if((issort_Subgraphs[j]==0))
+                            {
+                                find_flag=1;
+                                break;
+                            }
+                            predecessors.push_back(j);
+                        }
+                         
+                    }
+                    if(find_flag){break;}
+                }
+                if(!find_flag)
+                {
+                    order_Subgraphs[i]=sort_count;
+                    issort_Subgraphs[i]=1;
+                    predecessors_Subgraphs[i].insert(predecessors_Subgraphs[i].end(),predecessors.begin(),predecessors.end());
+                }
+                else {order_Subgraphs[i]=sort_count+1;issort_Subgraphs[i]=0;finished_flag=0;}
+            }
+        }
+        
+        sort_count++;
+    }
+
+    for(int i=0;i<graphs_inputs.size();i++)
+    {
+        for(int j=0;j<graphs_inputs.size();j++)
+        {
+            if(find(predecessors_Subgraphs[j].begin(),predecessors_Subgraphs[j].end(),i)!=predecessors_Subgraphs[j].end())
+            {
+                successors_Subgraphs[i].push_back(j);
+            }
+        }
+    }
+    char* sub1_type,*sub2_type;
+    if(strategy==SPILTE_CPU_STRUCTURE_FIRST)
+    {
+        sub1_type="CPU";
+        sub2_type="NPU";
+    }
+    else{
+        sub1_type="NPU";
+        sub2_type="CPU";
+    }
+    std::cout <<  " order"<<std::endl;
+    for(auto element : order_Subgraphs)
+    {
+        std::cout << element << " ";
+    }
+    std::cout<<std::endl;
+    for(int i=0;i<graphs_inputs.size();i++)
+    {
+
+        std::cout << (i>sub1_size?sub2_type:sub1_type)<<"subgraph"<<(i>sub1_size?(i-sub1_size):i)<<": order"<<order_Subgraphs[i]<<std::endl;
+        std::cout << "Inputs:";
+        for(auto element :  graphs_inputs[i])
+        {
+            std::cout<<element.name<<";";
+        }
+        std::cout << std::endl;
+        std::cout << "Outputs:";
+        for(auto element :  graphs_outputs[i])
+        {
+            std::cout<<element.name<<";";
+        }
+        std::cout << std::endl;
+        std::cout <<  " The predecessors of "<<  (i>sub1_size?sub2_type:sub1_type)<<"subgraph"<<(i>sub1_size?(i-sub1_size):i)<<": ";
+        for(auto element : predecessors_Subgraphs[i])
+        {
+            std::cout <<  (element>sub1_size?sub2_type:sub1_type)<<"subgraph"<<(element>sub1_size?(element-sub1_size):element) <<"; ";
+        }
+            std::cout <<std::endl;
+        std::cout <<  " The successors of "<<  (i>sub1_size?sub2_type:sub1_type)<<"subgraph"<<(i>sub1_size?(i-sub1_size):i)<<": ";
+        for(auto element : successors_Subgraphs[i])
+        {
+             std::cout <<  (element>sub1_size?sub2_type:sub1_type)<<"subgraph"<<(element>sub1_size?(element-sub1_size):element) <<"; ";
+        }
+            std::cout <<std::endl;
     }
 
     for (const auto& tensor : IOvalueNames) {
