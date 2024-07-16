@@ -1,1 +1,6 @@
 NPU不支持batch_matmul所以非两个变量的matmul维度需要转成没有batch的
+
+onnx api切图
+使用onnx的api做切图的部分已经集成到代码里，具体体现在extract_onnx_lib.py,extract_onnx.py,extract_runcut_onnx.py
+调用extract_onnx.py之间使用c++的分析结果切图
+调用extract_runcut_onnx.py可读取runcut文件然后根据里面的结果切图
