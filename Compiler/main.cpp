@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string>
+#include <cstdlib>
 #include "graph.h"
 #include "partition.h"
 #include "Licheepi.h"
-#include "Python.h"
 
 int main(int argc, char* argv[]) {
     std::string onnxFile;
@@ -32,27 +32,26 @@ int main(int argc, char* argv[]) {
     lpi4a.updateOnnxFile(onnxFile);
     p.PartitionGraph(g, lpi4a, PartitionStrategy::SPILTE_NPU_STRUCTURE_FIRST, node_io_size);
 
-    Py_Initialize();
-    if (!Py_IsInitialized()) {
-		std::cout << "python init fail" << std::endl;
-		return 0;
-	}
-    PyObject *pModule,*pModule1;
-    PyRun_SimpleString("import sys");
-    PyRun_SimpleString("sys.path.append('.')");
-    // 直接根据c++的分析结果切
-    pModule = PyImport_ImportModule("extract_onnx");
-    if (pModule == NULL) {
-		std::cout << "module not found" << std::endl;
-		return 1;
-	}
-    //读取runcut.sh调用onnx api切
-    pModule1 = PyImport_ImportModule("extract_runcut_onnx");
-    if (pModule1 == NULL) {
-		std::cout << "module not found" << std::endl;
-		return 1;
-	}
-    Py_Finalize();
+    int result;
+    //根据当前代码的结果切
+    result = std::system("python3 extract_onnx.py");
+
+    if (result == 0) {
+        std::cout << "Python extract_onnx ran successfully." << std::endl;
+    } else {
+        std::cout << "Python extract_onnx failed to run." << std::endl;
+        return 1;
+    }
+
+    //根据当前runcut文件切
+    result = std::system("python3 extract_runcut_onnx.py");
+
+    if (result == 0) {
+        std::cout << "Python extract_runcut_onnx ran successfully." << std::endl;
+    } else {
+        std::cout << "Python extract_runcut_onnx failed to run." << std::endl;
+        return 1;
+    }
 
     return 0;
 }

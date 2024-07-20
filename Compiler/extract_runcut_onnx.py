@@ -1,8 +1,11 @@
 import extract_onnx_lib
-import torch
+# import torch
 import onnx
-import re
+# import re
+import os
+
 def split_runcut_onnx(instrfile):
+    os.makedirs('./sg', exist_ok=True)
     f1=open(instrfile,"r")
     lines=f1.readlines()
     count=0
@@ -17,9 +20,10 @@ def split_runcut_onnx(instrfile):
             count=cpu_count
         else:
             continue
+        os.makedirs('./sg/runcut_subgraphs_'+type, exist_ok=True)
         input_names, output_names = extract_onnx_lib.splitinstruction(line)
-        input_path ='net/unet_32_sim.onnx'
-        output_path ='runcut_subgraphs_'+type+'/'+type+'subgraph'+str(count)+'.onnx'
+        input_path ='../case/sd/unet_32_sim.onnx'
+        output_path ='./sg/runcut_subgraphs_'+type+'/'+type+'subgraph'+str(count)+'.onnx'
         if type=='cpu':
             cpu_count=cpu_count+1
         else:
@@ -27,4 +31,4 @@ def split_runcut_onnx(instrfile):
         if((input_names!=['']) and (output_names!=[''])):
             onnx.utils.extract_model(input_path, output_path, input_names, output_names)
     f1.close()
-split_runcut_onnx('tools/encoder_unet/runcut.sh')
+split_runcut_onnx('../case/sd/runcut.sh')
