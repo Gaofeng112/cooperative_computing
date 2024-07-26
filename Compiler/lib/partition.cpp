@@ -261,13 +261,13 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
     std::vector<std::unordered_set<NodeTensor>> subgraphs_1_outputs;
     for (const auto& sg : Subgraphs) {
         std::unordered_set<NodeTensor> graphOutputs;
-        determineGraphOutput(sg, subgraphs_1_inputs, subgraphs_2_inputs, graphOutputs);
+        determineGraphOutput(g, sg, subgraphs_1_inputs, subgraphs_2_inputs, graphOutputs);
         subgraphs_1_outputs.push_back(graphOutputs);
     }
     std::vector<std::unordered_set<NodeTensor>> subgraphs_2_outputs;
     for (const auto& sg : otherSubgraphs) {
         std::unordered_set<NodeTensor> graphOutputs;
-        determineGraphOutput(sg, subgraphs_1_inputs, subgraphs_2_inputs, graphOutputs);
+        determineGraphOutput(g, sg, subgraphs_1_inputs, subgraphs_2_inputs, graphOutputs);
         subgraphs_2_outputs.push_back(graphOutputs);
     }
 
@@ -342,10 +342,19 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
                 if(!find_flag)
                 {
                     order_Subgraphs[i]=sort_count;
-                    issort_Subgraphs[i]=1;
                     predecessors_Subgraphs[i].insert(predecessors_Subgraphs[i].end(),predecessors.begin(),predecessors.end());
                 }
                 else {order_Subgraphs[i]=sort_count+1;issort_Subgraphs[i]=0;finished_flag=0;}
+                if(i==graphs_inputs.size()-1)
+                {
+                    for(int j=0; j<graphs_inputs.size();j++)
+                    {
+                        if(order_Subgraphs[j]==sort_count)
+                        {
+                            issort_Subgraphs[j]=1;
+                        }
+                    }
+                }
             }
         }
         
@@ -378,35 +387,53 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
         std::cout << element << " ";
     }
     std::cout<<std::endl;
+
+    std::string file_name = "subgraphs_ios.txt";
+    std::ofstream outfile1(file_name);
+    if (!outfile1.is_open()) {
+        std::cerr << "Error opening file." << std::endl;
+        exit(0);
+    }
+
     for(int i=0;i<graphs_inputs.size();i++)
     {
-
-        std::cout << (i>sub1_size?sub2_type:sub1_type)<<"subgraph"<<(i>sub1_size?(i-sub1_size):i)<<": order"<<order_Subgraphs[i]<<std::endl;
+        outfile1 << (i>=sub1_size?sub2_type:sub1_type)<<"subgraph"<<(i>=sub1_size?(i-sub1_size):i)<<": order"<<order_Subgraphs[i]<<std::endl;
+        outfile1 <<"--input-name ";
+        std::cout << (i>=sub1_size?sub2_type:sub1_type)<<"subgraph"<<(i>=sub1_size?(i-sub1_size):i)<<": order"<<order_Subgraphs[i]<<std::endl;
         std::cout << "Inputs:";
         for(auto element :  graphs_inputs[i])
         {
-            std::cout<<element.name<<";";
+            std::cout<<element.name<<"; size:";
+            for(auto Size : element.shape)
+            {std::cout<<Size<<" ";}
+            outfile1<<element.name<<";";
         }
         std::cout << std::endl;
         std::cout << "Outputs:";
+        outfile1<<"--output-name ";
         for(auto element :  graphs_outputs[i])
         {
-            std::cout<<element.name<<";";
+            std::cout<<element.name<<"; size:";
+            for(auto Size : element.shape)
+            {std::cout<<Size<<" ";}
+            outfile1<<element.name<<";";
         }
+        outfile1<<std::endl;
         std::cout << std::endl;
-        std::cout <<  " The predecessors of "<<  (i>sub1_size?sub2_type:sub1_type)<<"subgraph"<<(i>sub1_size?(i-sub1_size):i)<<": ";
+        std::cout <<  " The predecessors of "<<  (i>=sub1_size?sub2_type:sub1_type)<<"subgraph"<<(i>=sub1_size?(i-sub1_size):i)<<": ";
         for(auto element : predecessors_Subgraphs[i])
         {
-            std::cout <<  (element>sub1_size?sub2_type:sub1_type)<<"subgraph"<<(element>sub1_size?(element-sub1_size):element) <<"; ";
+            std::cout <<  (element>=sub1_size?sub2_type:sub1_type)<<"subgraph"<<(element>=sub1_size?(element-sub1_size):element) <<"; ";
         }
             std::cout <<std::endl;
-        std::cout <<  " The successors of "<<  (i>sub1_size?sub2_type:sub1_type)<<"subgraph"<<(i>sub1_size?(i-sub1_size):i)<<": ";
+        std::cout <<  " The successors of "<<  (i>=sub1_size?sub2_type:sub1_type)<<"subgraph"<<(i>=sub1_size?(i-sub1_size):i)<<": ";
         for(auto element : successors_Subgraphs[i])
         {
-             std::cout <<  (element>sub1_size?sub2_type:sub1_type)<<"subgraph"<<(element>sub1_size?(element-sub1_size):element) <<"; ";
+             std::cout <<  (element>=sub1_size?sub2_type:sub1_type)<<"subgraph"<<(element>=sub1_size?(element-sub1_size):element) <<"; ";
         }
             std::cout <<std::endl;
     }
+    outfile1.close();
 
     for (const auto& tensor : IOvalueNames) {
         std::cout << "Name: " << tensor.name << ", Shape: [";

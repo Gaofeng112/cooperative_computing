@@ -43,15 +43,5 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    //根据当前runcut文件切
-    result = std::system("python3 extract_runcut_onnx.py");
-
-    if (result == 0) {
-        std::cout << "Python extract_runcut_onnx ran successfully." << std::endl;
-    } else {
-        std::cout << "Python extract_runcut_onnx failed to run." << std::endl;
-        return 1;
-    }
-
     return 0;
 }

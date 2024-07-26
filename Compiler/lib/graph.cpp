@@ -126,7 +126,7 @@ void determineGraphInput(const onnx::GraphProto& g, const std::unordered_set<Nod
     }
 }
 
-void determineGraphOutput(const onnx::GraphProto& g, std::vector<std::unordered_set<NodeTensor>> &allgraphInputs_1,
+void determineGraphOutput(const onnx::GraphProto& originalGraph, const onnx::GraphProto& g, std::vector<std::unordered_set<NodeTensor>> &allgraphInputs_1,
 						  std::vector<std::unordered_set<NodeTensor>> &allgraphInputs_2, std::unordered_set<NodeTensor> &graphOutputs) {
 	auto allgraphInputs = allgraphInputs_1;
 	allgraphInputs.insert(allgraphInputs.end(), allgraphInputs_2.begin(), allgraphInputs_2.end());
@@ -134,6 +134,25 @@ void determineGraphOutput(const onnx::GraphProto& g, std::vector<std::unordered_
         const auto& outputs = node.output();
         for (const auto& output : outputs) {
 			int flag = 0;
+			for (auto value_info : originalGraph.output()) {
+				if (value_info.name() == output) {
+					NodeTensor nt;
+					nt.name = value_info.name();
+					std::cout << nt.name << std::endl;
+					std::vector<int64_t> shape;
+					for (const auto& dim : value_info.type().tensor_type().shape().dim()) {
+						shape.push_back(dim.dim_value());
+					}
+					nt.shape = shape;
+					graphOutputs.insert(nt);
+					std::cout << "Found output tensor with name " << output << " in the set." << std::endl;
+					flag = 1;
+					break;
+				}
+			}
+			if (flag) {
+				continue;
+			}
 			for (size_t i = 0; i < allgraphInputs.size(); i++) {
 				for (auto& input : allgraphInputs[i]) {
 					if (input.name == output) {
