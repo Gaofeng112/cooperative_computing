@@ -32,16 +32,5 @@ int main(int argc, char* argv[]) {
     lpi4a.updateOnnxFile(onnxFile);
     p.PartitionGraph(g, lpi4a, PartitionStrategy::SPILTE_NPU_STRUCTURE_FIRST, node_io_size);
 
-    int result;
-    //根据当前代码的结果切
-    result = std::system("python3 extract_onnx.py");
-
-    if (result == 0) {
-        std::cout << "Python extract_onnx ran successfully." << std::endl;
-    } else {
-        std::cout << "Python extract_onnx failed to run." << std::endl;
-        return 1;
-    }
-
     return 0;
 }

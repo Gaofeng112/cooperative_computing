@@ -18,3 +18,9 @@ main函数里的python根据当前系统环境补全路径
 修复最后一个图无法切出来的问题
 在case文件夹里新增使用onnxruntime的fp32 case和fp32+int8的case
 详见case文件夹 readme
+
+7.30 update
+同时新增case/inference/requirements.txt里面包含了相关库的版本。
+新增rename_onnx.py用来将input和output中的./消除
+休要修改的地方如下：rename_onnx.py的第33行，directory_path = 'path/to/your/models'，这里的路径需要替换
+同时修改main函数，现在不在c++里使用python，而是在run.sh里
