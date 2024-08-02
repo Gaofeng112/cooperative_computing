@@ -1,0 +1,9 @@
+1.按照requirements.txt里需求按照依赖库
+2.修改convert_onnx_to_tflite里的24行的路径：input_directory = '/your/path/to/onnx'
+3.由于新生成的tflite文件的输入输出名字不再带有依赖关系，所以需要从原来的onnx中将输入输出的依赖关系copy过来。
+具体做法如下：将原始的onnx全部复制到tflite文件夹里，然后运行comp.py，获取的io_mapping.txt。
+由于新的tflite中的input和output的顺序具有随机性，还需要手动对比onnx和tflite的输入输出是否对应上，自行写一个modif.txt。
+已经给出一个io_mapping.txt和modif.txt的示例，主要会出错的是有多个输入或者多个输出，且shape大小一致的情况
+4.将将modif.txt复制到/case/inference下，打开inferece_tf_int8.py
+修改地址file_path = f"../../Tools/onnx2tflite/tflite/{lower_subgraph_type}subgraph{subgraph_number}.tflite"
+运行inferece_tf_int8.py
