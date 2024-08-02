@@ -36,7 +36,6 @@ def keras_builder(onnx_model, native_groupconv:bool=False):
     '''
     for node in model_graph.node:
         op_name, node_inputs, node_outputs = node.op_type, node.input, node.output
-        print(op_name,node.name)
         op_attr = decode_node_attribute(node)
         
         tf_operator = OPERATOR.get(op_name)
@@ -66,7 +65,7 @@ def keras_builder(onnx_model, native_groupconv:bool=False):
     keras_model = keras.Model(inputs=input_nodes, outputs=outputs_nodes)
     keras_model.trainable = False
     # keras_model.summary()
-    # print(layout_dict)
+
     input_layout, output_layout = {}, {}
     for inp in model_graph.input:
         input_layout[inp.name] = layout_dict[inp.name]

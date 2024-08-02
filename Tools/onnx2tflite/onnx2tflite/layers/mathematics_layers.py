@@ -82,59 +82,39 @@ class TFAdd(BaseArithmetic):
         left_val = self.left_val
         right_val = self.right_val
 
-        # 确保 right_val 可以被扩展到 left_val 的形状
         left_shape = left_val.shape
         right_shape = right_val.shape
 
-        print(left_shape)
-        print(right_shape,len(right_shape))
-
-        # 通过 tf.tile 扩展 right_val 的形状
         if len(left_shape) == len(right_shape):
             right_val_expanded = right_val
         elif len(right_shape) == 0:
             if len(left_shape) == 3:
                 right_val_expanded = tf.tile(right_val[tf.newaxis,tf.newaxis, tf.newaxis], [left_shape[0],left_shape[1],left_shape[2]])
-                # print(right_val_expanded)
         elif len(right_shape) == 1:
             if len(left_shape) == 3:
-                right_val_expanded = tf.expand_dims(right_val, axis=0)  # 变成 [1, 1280]
-                right_val_expanded = tf.expand_dims(right_val_expanded, axis=0)  # 变成 [1, 1, 1280]
+                right_val_expanded = tf.expand_dims(right_val, axis=0)
+                right_val_expanded = tf.expand_dims(right_val_expanded, axis=0)
 
                 multiples = [left_shape[i] // right_val_expanded.shape[i] for i in range(len(left_shape))]
-                print(multiples)
-                for i in range(len(left_shape)):
-                    print(left_shape[i], right_val_expanded.shape[i])
-                    print(left_shape[i] // right_val_expanded.shape[i])
 
                 right_val_expanded = tf.tile(right_val_expanded, multiples)
-                print(right_val_expanded)
-                # right_val_expanded = tf.tile(right_val[tf.newaxis, tf.newaxis, ...], [left_shape[0],left_shape[1],1])
-                # print(right_val_expanded)
         elif len(left_shape) == 1:
             if len(right_shape) == 3:
-                right_val_expanded = tf.expand_dims(left_val, axis=0)  # 变成 [1, 1280]
-                right_val_expanded = tf.expand_dims(right_val_expanded, axis=0)  # 变成 [1, 1, 1280]
+                right_val_expanded = tf.expand_dims(left_val, axis=0)
+                right_val_expanded = tf.expand_dims(right_val_expanded, axis=0)
                 
                 multiples = [right_shape[i] // right_val_expanded.shape[i] for i in range(len(right_shape))]
-                print(multiples)
                 right_val_expanded = tf.tile(right_val_expanded, multiples)
                 left_val = self.right_val
-                print(right_val_expanded)
         else:
             if right_shape[0] != 1:
-                print(right_shape)
                 rightval_expanded = tf.expand_dims(right_val, 0)
-                # print(rightval_expanded)
                 right_val_expanded = tf.tile(rightval_expanded, [1,1,left_shape[2],left_shape[3]])
             else:
                 right_val_expanded = tf.tile(right_val[:, :, tf.newaxis], [1,1,left_shape[2],left_shape[3]])
 
-        # 执行加法操作
         result = tf.add(left_val, right_val_expanded)
-        print(result)
         return result
-        # return self.left_val + self.right_val
 
 
 

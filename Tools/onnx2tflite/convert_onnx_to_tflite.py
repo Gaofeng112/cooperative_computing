@@ -6,9 +6,7 @@ def convert_all_onnx_models(input_dir, output_dir):
         if file_name.endswith('.onnx'):
             onnx_model_path = os.path.join(input_dir, file_name)
             print(onnx_model_path)
-            # 生成输出路径
             output_path = os.path.join(output_dir, file_name.replace('.onnx', '.tflite'))
-            # 执行转换
             res = onnx_converter(
                 onnx_model_path=onnx_model_path,
                 need_simplify=True,

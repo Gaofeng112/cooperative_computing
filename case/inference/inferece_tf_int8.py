@@ -44,8 +44,7 @@ def print_model_info(model_info):
             print(f"  TFLite: {tflite} -> ONNX: {onnx}")
         print()
 
-# 使用示例
-file_path = 'modif.txt'  # 替换为你的文本文件路径
+file_path = 'modif.txt'
 model_info = parse_model_info(file_path)
 print_model_info(model_info)
 
@@ -77,7 +76,7 @@ def convert_input_to_onnx_names(model_info, model_name, tflite_indices, onnx_inp
             onnx_name = get_onnx_input_name(model_info, model_name, tflite_name)
             onnx_input_name.append(onnx_name)
         except ValueError as e:
-            print(e)  # 或者记录日志/处理异常
+            print(e)
 
 def convert_output_to_onnx_names(model_info, model_name, tflite_indices, onnx_input_name):
     for tflite_name, index in tflite_indices.items():
@@ -85,7 +84,7 @@ def convert_output_to_onnx_names(model_info, model_name, tflite_indices, onnx_in
             onnx_name = get_onnx_output_name(model_info, model_name, tflite_name)
             onnx_input_name.append(onnx_name)
         except ValueError as e:
-            print(e)  # 或者记录日志/处理异常
+            print(e)
 
 flie = open('subgraphs_ios.txt','r')
 content = flie.read()
@@ -111,9 +110,7 @@ interpreters = [tf.lite.Interpreter(model_path=model) for model in model_files]
 device_name = 'cpu'
 providers = ['CPUExecutionProvider']
 
-prompt="DSLR photograph of an astronaut riding a horse"
-# prompt="An island on the sea"
-# prompt="Basketball court"
+prompt="An island on the sea"
 negative_prompt=None
 batch_size=1
 num_steps=4
@@ -139,12 +136,8 @@ scheduler = LCMScheduler(beta_start=0.00085, beta_end=0.0120, beta_schedule="sca
 scheduler.set_timesteps(num_steps, 50)
 text_encoder = tf.lite.Interpreter(model_path= os.path.join(path_to_saved_models,"converted_text_encoder.tflite"),num_threads=multiprocessing.cpu_count())
 text_encoder.allocate_tensors()
-# Get input and output tensors.
 input_details_text_encoder = text_encoder.get_input_details()
 output_details_text_encoder = text_encoder.get_output_details()
-
-
-# diffusion_model = onnxruntime.InferenceSession(input_onnx_path, providers=providers)
 
 decoder = tf.lite.Interpreter(model_path=os.path.join(path_to_saved_models,"converted_decoder.tflite"),num_threads=multiprocessing.cpu_count())
 decoder.allocate_tensors()
@@ -153,19 +146,14 @@ output_details_decoder = decoder.get_output_details()
 
 import time
 
-# record start time
 start = time.time()
 
 inputs = tokenizer.encode(prompt)
-# assert len(inputs) < 77, "Prompt is too long (should be < 77 tokens)"
 phrase = inputs + [49407] * (77 - len(inputs))
 phrase = np.array(phrase)[None].astype("int32")
 phrase = np.repeat(phrase, batch_size, axis=0)
-# Encode prompt tokens (and their positions) into a "context vector"
 pos_ids = np.array(list(range(77)))[None].astype("int32")
 pos_ids = np.repeat(pos_ids, batch_size, axis=0)
-# context = model.text_encoder.predict_on_batch([phrase, pos_ids])
-# print(f"context shape {context.shape}")
 text_encoder.set_tensor(input_details_text_encoder[0]['index'], phrase)
 text_encoder.set_tensor(input_details_text_encoder[1]['index'], pos_ids)
 text_encoder.invoke()
@@ -210,67 +198,46 @@ for index_, timestep in progbar:
     }
     input_data = initial_input_data
 
-    # for i, interpreter in enumerate(interpreters):
     for i, (interpreter, model_file) in enumerate(zip(interpreters, model_files)):
         name_without_ext =''
         match = re.search(r'/([^/]+)\.tflite$', model_file)
         if match:
             name_without_ext = match.group(1)
-            print(name_without_ext)
 
         interpreter.allocate_tensors()
-        
-        # 获取输入和输出张量的详细信息
+
         input_details = interpreter.get_input_details()
         output_details = interpreter.get_output_details()
-        
-        # 构建输入和输出索引字典
+
         input_indices = {tensor['name']: i for i, tensor in enumerate(input_details)}
         output_indices = {tensor['name']: i for i, tensor in enumerate(output_details)}
-        
-        for name in input_indices.keys():
-            print("input:",name)
 
         onnx_input_name = []
         onnx_output_name = []
 
-        # 使用 get_onnx_name 函数转换 TFLite 名称为 ONNX 名称
         convert_input_to_onnx_names(model_info, name_without_ext, input_indices, onnx_input_name)
         convert_output_to_onnx_names(model_info, name_without_ext, output_indices, onnx_output_name)
-        print(onnx_input_name)
-        print(onnx_output_name)
 
-        # 构造输入数据  input带有conv,resize的要先调整shape,npu10子图的input
         model_input_data = {name: input_data[name] for name in onnx_input_name}
 
-        # for name, index in input_indices.items():
         for name, (_, index) in zip(onnx_input_name, input_indices.items()):
-            # print(model_input_data[name])
-            print("------------------------------")
-            print(input_details[index])
             shape1 = input_details[index]['shape']
             shape2 = model_input_data[name].shape
-            print(shape1)
-            print(shape2)
 
             def convert_to_nhwc(data):
-                """将 NCHW 格式转换为 NHWC 格式"""
                 return np.transpose(data, (0, 2, 3, 1))
 
             def convert_to_nchw(data):
-                """将 NHWC 格式转换为 NCHW 格式"""
                 return np.transpose(data, (0, 3, 1, 2))
 
             def is_nchw(shape):
-                """判断给定的形状是否为 NCHW 格式"""
                 return len(shape) == 4 and (shape[2] == shape[3])
 
             def is_nhwc(shape):
-                """判断给定的形状是否为 NHWC 格式"""
                 return len(shape) == 4 and (shape[1] == shape[2])
 
             def determine_format(shape):
-                """根据给定的形状确定格式"""
+
                 if len(shape) == 4:
                     if (shape[2] == shape[3]):
                         return 'NCHW'
@@ -278,47 +245,28 @@ for index_, timestep in progbar:
                         return 'NHWC'
                 return None
 
-            # 根据 input_details 的形状确定目标格式
             target_format = determine_format(shape1)
-            print(f"Target format for {name}: {target_format}")
-            print("shape2 :is_nchw", is_nchw(shape2))
-            print("shape2 :is_nhwc", is_nhwc(shape2))
 
-            # 比较形状是否相等
             if tuple(shape1) == tuple(shape2):
                 model_input_data_convert = model_input_data[name]
-                print("The shapes are equal.")
             else:
-                # 判断当前数据的格式并转换
                 if target_format == 'NHWC' and is_nchw(shape2):
                     model_input_data_convert = convert_to_nhwc(model_input_data[name])
                 elif target_format == 'NCHW' and is_nhwc(shape2):
                     model_input_data_convert = convert_to_nchw(model_input_data[name])
-                print("The shapes are not equal.")
-                print(model_input_data_convert.shape)
 
             interpreter.set_tensor(input_details[index]['index'], model_input_data_convert)
 
-        # 运行推理
         interpreter.invoke()
 
-        # 获取输出数据
         outputs = {name: interpreter.get_tensor(output_details[index]['index']) for name, index in output_indices.items()}
-        print(output_details)
-        # print(outputs)
-        # print(onnx_output_name)
 
-        # 保存输出数据作为下一个模型的输入
         if i < len(interpreters) - 1:
-            # for name, output in outputs.items():
             for k, (name, output) in enumerate(outputs.items()):
-                print(name)
-                print(onnx_output_name[k])
                 input_data[onnx_output_name[k]] = output
 
     for name, output in outputs.items():
         e_t = output
-    print(e_t)
     e_t_hf = np.transpose(e_t, (0, 3, 1, 2))
     latent_hf = np.transpose(latent, (0, 3, 1, 2))
     output_latent = scheduler.step(e_t_hf, index_, timestep, latent_hf)
@@ -329,7 +277,6 @@ denoised = np.transpose(denoised, (0, 2, 3, 1))
 decoder.set_tensor(input_details_decoder[0]['index'], denoised)
 decoder.invoke()
 decoded = decoder.get_tensor(output_details_decoder[0]['index'])
-# decoded = model.decoder.predict_on_batch(latent)
 decoded = ((decoded + 1) / 2) * 255
 img=np.clip(decoded, 0, 255).astype("uint8")
 image = Image.fromarray(img[0])
