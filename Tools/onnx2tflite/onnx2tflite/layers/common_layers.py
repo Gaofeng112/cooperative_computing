@@ -241,10 +241,12 @@ class TFResize():
         super().__init__()
         if node_inputs[-1] in node_weights:
             _, _, nh, nw = node_weights[node_inputs[-1]]
-            print( _, _, nh, nw)
             if len(node_inputs) != 4:
                 # _, h, w, _ = tensor_grap[node_inputs[0]].shape
-                _, _, h, w = tensor_grap[node_inputs[0]].shape
+                if not layout_dict[node_inputs[0]] == Layout.Channel_Last:
+                    _, _, h, w = tensor_grap[node_inputs[0]].shape
+                else:
+                    _, h, w, _ = tensor_grap[node_inputs[0]].shape
                 nh, nw = int(h*nh), int(w*nw)
             self.scale = (nh, nw)
         else:
@@ -262,10 +264,6 @@ class TFResize():
     def __call__(self, inputs):
         if not self.channel_last:
             inputs = dimension_utils.tensor_NCD_to_NDC_format(inputs)
-            print(inputs)
-            print(self.scale)
-            print(self.method)
-            # exit(0)
         return tf.image.resize(inputs,  self.scale, method=self.method)
 
 @OPERATOR.register_operator("Gemm")
