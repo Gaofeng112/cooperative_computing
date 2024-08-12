@@ -420,18 +420,18 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
         }
         outfile1<<std::endl;
         std::cout << std::endl;
-        std::cout <<  " The predecessors of "<<  (i>=sub1_size?sub2_type:sub1_type)<<"subgraph"<<(i>=sub1_size?(i-sub1_size):i)<<": ";
+        outfile1 <<  " The predecessors of "<<  (i>=sub1_size?sub2_type:sub1_type)<<"subgraph"<<(i>=sub1_size?(i-sub1_size):i)<<": ";
         for(auto element : predecessors_Subgraphs[i])
         {
-            std::cout <<  (element>=sub1_size?sub2_type:sub1_type)<<"subgraph"<<(element>=sub1_size?(element-sub1_size):element) <<"; ";
+            outfile1 <<  (element>=sub1_size?sub2_type:sub1_type)<<"subgraph"<<(element>=sub1_size?(element-sub1_size):element) <<"; ";
         }
-            std::cout <<std::endl;
-        std::cout <<  " The successors of "<<  (i>=sub1_size?sub2_type:sub1_type)<<"subgraph"<<(i>=sub1_size?(i-sub1_size):i)<<": ";
+            outfile1 <<std::endl;
+        outfile1 <<  " The successors of "<<  (i>=sub1_size?sub2_type:sub1_type)<<"subgraph"<<(i>=sub1_size?(i-sub1_size):i)<<": ";
         for(auto element : successors_Subgraphs[i])
         {
-             std::cout <<  (element>=sub1_size?sub2_type:sub1_type)<<"subgraph"<<(element>=sub1_size?(element-sub1_size):element) <<"; ";
+             outfile1 <<  (element>=sub1_size?sub2_type:sub1_type)<<"subgraph"<<(element>=sub1_size?(element-sub1_size):element) <<"; ";
         }
-            std::cout <<std::endl;
+            outfile1 <<std::endl;
     }
     outfile1.close();
 
