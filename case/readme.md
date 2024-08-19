@@ -17,3 +17,12 @@ https://box.nju.edu.cn/d/26c330148aeb4f5bae30/
 修改inferece_fp32_int8.py和inferece_fp32.py中的
 path_to_saved_models="./fp32"修改为path_to_saved_models="./int8"
 则可以使用int8的encoder，decoder
+
+
+8.19 update
+在case/inference/里新增inference_mulit_tflite.py和inference_single_tflite.py
+inference_single_tflite.py是运行新的单个unet tflite文件的
+新增inference_mulit_tflite.py是运行新的多个unet tflite文件的
+两个文件的运行时间只在数据中间数据传输过程有差别
+inference_mulit_tflite.py和inference_single_tflite.py中的tflite的文件地址均需要修改
+完整的新的tflite的下载地址https://box.nju.edu.cn/f/9a148fc831564a2f8273/

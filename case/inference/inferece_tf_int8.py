@@ -134,12 +134,12 @@ path_to_saved_models="./int8"
 
 scheduler = LCMScheduler(beta_start=0.00085, beta_end=0.0120, beta_schedule="scaled_linear", prediction_type="epsilon")
 scheduler.set_timesteps(num_steps, 50)
-text_encoder = tf.lite.Interpreter(model_path= os.path.join(path_to_saved_models,"converted_text_encoder.tflite"),num_threads=multiprocessing.cpu_count())
+text_encoder = tf.lite.Interpreter(model_path= os.path.join(path_to_saved_models,"converted_text_encoder.tflite"))
 text_encoder.allocate_tensors()
 input_details_text_encoder = text_encoder.get_input_details()
 output_details_text_encoder = text_encoder.get_output_details()
 
-decoder = tf.lite.Interpreter(model_path=os.path.join(path_to_saved_models,"converted_decoder.tflite"),num_threads=multiprocessing.cpu_count())
+decoder = tf.lite.Interpreter(model_path=os.path.join(path_to_saved_models,"converted_decoder.tflite"))
 decoder.allocate_tensors()
 input_details_decoder = decoder.get_input_details()
 output_details_decoder = decoder.get_output_details()
