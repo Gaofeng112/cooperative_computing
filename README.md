@@ -15,3 +15,5 @@ inference_mulit_tflite.py和inference_single_tflite.py中的tflite的文件地�
 完整的新的tflite的下载地址https://box.nju.edu.cn/f/9a148fc831564a2f8273/
 
 新增Compiler_python，里面是对tflite进行分析拆分的代码，里面有详细的readme
+
+新增New_Compiler，里面是新的切图算法
