@@ -1,0 +1,3 @@
+/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/CMakeFiles/CoComputingCompiler.dir
+/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/CMakeFiles/edit_cache.dir
+/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/CMakeFiles/rebuild_cache.dir

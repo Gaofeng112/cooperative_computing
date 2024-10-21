@@ -1,0 +1,1 @@
+hhb -C --model-file ./net/unet_32_sim.onnx --data-scale-div 255 --board c920 --postprocess save_and_top5 --input-name "/up_blocks.2/resnets.1/Add_1_output_0;/up_blocks.2/attentions.1/proj_out/Conv_output_0" --output-name "3089" --input-shape "1 320 32 32;1 320 32 32" --calibrate-dataset cpu_Subgraphs_86.npz --quantization-scheme int8_asym

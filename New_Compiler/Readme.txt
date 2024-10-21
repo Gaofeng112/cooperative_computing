@@ -1,0 +1,1 @@
+NPU不支持batch_matmul所以非两个变量的matmul维度需要转成没有batch的

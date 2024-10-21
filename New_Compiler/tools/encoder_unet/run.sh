@@ -1,0 +1,25 @@
+./main_example ./npu_0.bm ./npu_1.bm ./cpu_Subgraphs_0_out/hhb.bm ./npu_2.bm ./npu_3.bm ./cpu_Subgraphs_1_out/hhb.bm ./npu_4.bm ./npu_5.bm ./npu_6.bm ./npu_7.bm ./cpu_Subgraphs_2_out/hhb.bm ./npu_8.bm ./npu_9.bm ./npu_10.bm ./npu_11.bm ./cpu_Subgraphs_3_out/hhb.bm ./npu_12.bm ./npu_13.bm ./npu_14.bm ./npu_15.bm ./cpu_Subgraphs_4_out/hhb.bm ./npu_16.bm ./npu_17.bm ./npu_18.bm ./npu_19.bm ./cpu_Subgraphs_5_out/hhb.bm ./npu_20.bm ./npu_21.bm ./npu_22.bm ./npu_23.bm ./npu_24.bm ./cpu_Subgraphs_6_out/hhb.bm ./npu_25.bm ./npu_26.bm ./npu_27.bm ./npu_28.bm ./npu_29.bm ./cpu_Subgraphs_7_out/hhb.bm ./npu_30.bm ./npu_31.bm ./npu_32.bm ./npu_33.bm ./npu_34.bm ./cpu_Subgraphs_8_out/hhb.bm ./npu_35.bm ./npu_36.bm ./npu_37.bm ./npu_38.bm ./npu_39.bm ./cpu_Subgraphs_9_out/hhb.bm ./npu_40.bm ./npu_41.bm sample.bin timestep.bin encoder_hidden_states.bin
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
