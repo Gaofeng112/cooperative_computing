@@ -131,6 +131,7 @@ void findAndPrintStructures(const onnx::GraphProto &g, Device& d, PartitionStrat
     }
 }
 ///////
+//////////////7.22
 std::vector<graph_adjacency_node> get_adjancency_list(const onnx::GraphProto &g, int* visited)
 {
 	std::vector<graph_adjacency_node> adjacency_list;
@@ -209,10 +210,12 @@ void DFS_other(const onnx::GraphProto &g,onnx::GraphProto &subgraph, std::vector
         if(!visited[next_node_index]&&(depth_out < MAX_DEPTH))        //尚未访问的邻接顶点
             DFS_other(g,subgraph,sugraph_node_index,visited,next_node,next_node_index,adjacency_list,depth_out);
 	}
-}
+}//问题所在：有太多无效npu子图（可加可不加的算子组成的小子图），应当剔除；同时cpu子图也要用同样的方法生成
 void determine_subgraphs(const onnx::GraphProto& g,std::vector<onnx::GraphProto>& otherSubgraphs, Device& d, int* visited, 
 												std::vector<graph_adjacency_node>& adjacency_list,PartitionStrategy strategy)
 {
+	//std::vector<onnx::GraphProto> subgraphs;
+    int max_subgraph_size = d.max_subgraph_size;
 	std::vector<std::string> support_op;
     std::vector<std::string> prefer_op;
 	    switch(strategy) {
@@ -233,6 +236,7 @@ void determine_subgraphs(const onnx::GraphProto& g,std::vector<onnx::GraphProto>
 	{
 		if(!visited[i]&&(std::find(support_op.begin(), support_op.end(), g.node(i).op_type()) != support_op.end()))
 		{
+            //std::cout<<"op found!"<<std::endl;
 			onnx::GraphProto subgraph;
             std::vector<int> sugraph_node_index;
 			const auto& node=g.node(i);
@@ -248,7 +252,32 @@ void determine_subgraphs(const onnx::GraphProto& g,std::vector<onnx::GraphProto>
             }
             if(find_prefer_op)
             {
-                Subgraphs.push_back(subgraph);              
+                if(subgraph.node_size()<=max_subgraph_size)
+                {
+                    Subgraphs.push_back(subgraph);
+                }
+                else
+                {
+                    onnx::GraphProto subgraph_new;
+                    for(int j=0;j<subgraph.node_size();j++)
+                    {
+                        if(j <= max_subgraph_size - 1)
+                        {
+                            *subgraph_new.add_node()=subgraph.node(j);
+                        }
+                        if(j > max_subgraph_size-1)
+                        {
+                            visited[sugraph_node_index[j]] = 0;
+                        }
+                    }
+                    Subgraphs.push_back(subgraph_new);
+                }
+                //std::cout<<"subgraph "<<Subgraphs.size()<<"generated! ";
+                // for(const auto& node :subgraph.node())
+                // {
+                //     std::cout<<node.name()<<"--";
+                // }
+                //std::cout<<std::endl;                
             }
             else{
                 for(const auto& index :sugraph_node_index)
@@ -268,7 +297,33 @@ void determine_subgraphs(const onnx::GraphProto& g,std::vector<onnx::GraphProto>
             std::vector<int> sugraph_node_index;
             const auto& node=g.node(i);
             DFS_other(g,subgraph,sugraph_node_index,visited,node,i,adjacency_list, depth);
-            otherSubgraphs.push_back(subgraph);  
+            // if(subgraph.node_size()<=max_subgraph_size)
+            // {
+            //     otherSubgraphs.push_back(subgraph);
+            // }
+            // else
+            // {
+            //     onnx::GraphProto subgraph_new;
+            //     for(int j=0;j<subgraph.node_size();j++)
+            //     {
+            //         if(j <= max_subgraph_size - 1)
+            //         {
+            //             *subgraph_new.add_node()=subgraph.node(j);
+            //         }
+            //         if(j > max_subgraph_size-1)
+            //         {
+            //             visited[sugraph_node_index[j]] = 0;
+            //         }
+            //     }
+            //     otherSubgraphs.push_back(subgraph_new);
+            // }            
+            otherSubgraphs.push_back(subgraph);
+            //std::cout<<"cpusubgraph "<<otherSubgraphs.size()<<"generated! ";
+            // for(const auto& node :subgraph.node())
+            // {
+            //     //std::cout<<node.name()<<"--";
+            // }
+            //std::cout<<std::endl;   
         }
     }
 }
@@ -279,34 +334,48 @@ void Tarjan(int index, int depth, std::vector<std::vector<int>>& strongly_connec
     int rank = depth + 1;
     DFN[index] = LOW[index] = rank;//DFN和LOW初始化为0
     stack_subgraphs.push_back(index);
+    // std::cout<<"index:"<<index<<"set DFN/LOW:"<<DFN[index]<<std::endl;
     for(const auto& successor : successors_Subgraphs[index])
     {
         if(DFN[successor] == 0)//未被访问过
         {
             Tarjan(successor, rank,strongly_connected_subgraphs, DFN, LOW, stack_subgraphs, successors_Subgraphs);//访问successor
             LOW[index] = std::min(LOW[index], LOW[successor]);
+            // std::cout<<"index:"<<index<<"visit successor:"<<successor<<"update LOW"<<LOW[index]<<std::endl;
         }
         else if(std::find(stack_subgraphs.begin(),stack_subgraphs.end(),successor) != stack_subgraphs.end())
         {
             LOW[index] = std::min(LOW[index], DFN[successor]);
+            // std::cout<<"index:"<<index<<"find scc! visit successor:"<<successor<<"update LOW"<<LOW[index]<<std::endl;
         }
     }
     if(LOW[index] == DFN[index])//是该强连通分量子树的最小根，将其后的所有node出栈,保存得到的强连通分量
     {
+        // std::cout<<"index:"<<index<<"scc root"<<std::endl;
         auto it = stack_subgraphs.end() - 1; 
         std:: vector<int> strongly_connected; 
         while(*it != index)
         {
+            //std::cout<<*it<<"--";
             strongly_connected.insert(strongly_connected.begin(), *it);
             stack_subgraphs.pop_back();
             it = stack_subgraphs.end() - 1;
         }
+        //std::cout<<*it;
         strongly_connected.insert(strongly_connected.begin(), *it);
+
+        // std::cout<<"scc:";
+        for(const auto& graph :strongly_connected)
+        {
+            // std::cout<<graph<<"~";
+        }
+        //std::cout<<std::endl;
         if(strongly_connected.size() > 1)
         {
             strongly_connected_subgraphs.push_back(strongly_connected);
         }
         stack_subgraphs.pop_back();//自身出栈
+        //std::cout<<std::endl;
     }
 }
 std::vector<graph_adjacency_node> calculate_node_rank(
@@ -711,6 +780,7 @@ void eliminate_scc(
             {
                 scc_graph = otherSubgraphs[scc_index - subgraph_size];
             }
+            //onnx::GraphProto scc_graph = determinegraphtype(scc_index, Subgraphs, otherSubgraphs);
             std::vector<graph_adjacency_node> scc_node_rank;
             for(int i=0; i< scc_graph.node_size(); i++)
             {
@@ -731,12 +801,16 @@ void eliminate_scc(
                     *temp_graph_lower.add_node() = scc_graph.node(i);
                 }
             }
+            std::cout<<"scc size: "<<scc_graph.node_size()<<std::endl;
+            std::cout<<"upper graph size:"<<temp_graph_upper.node_size()<<std::endl;
+            std::cout<<"lower graph size:"<<temp_graph_lower.node_size()<<std::endl;
             if(scc_index < subgraph_size)
             {
                 Subgraphs[scc_index] = temp_graph_upper;
                 if(temp_graph_lower.node_size()>0)
                 {
                     Subgraphs.push_back(temp_graph_lower);
+                    std::cout<<"pushed"<<std::endl;
                 }
                 
             }
@@ -746,6 +820,7 @@ void eliminate_scc(
                 if(temp_graph_lower.node_size()>0)
                 {
                     otherSubgraphs.push_back(temp_graph_lower);
+                    std::cout<<"pushed"<<std::endl;
                 }
             }
         }
@@ -760,12 +835,13 @@ void eliminate_scc_v2(
 {
     int subgraph_size = Subgraphs.size();
     int other_subgraph_size = otherSubgraphs.size();
-    for(auto& strongly_connected : strongly_connected_subgraphs)
-    {
+    // for(auto& strongly_connected : strongly_connected_subgraphs)
+    // {
         std::vector<graph_adjacency_node> node_rank_list;
         calculate_node_rank_v3(g, node_rank_list);
         int index_all = 0;
-        for(const auto scc_index : strongly_connected)
+        //for(const auto scc_index : strongly_connected)
+        for(int scc_index = 0; scc_index < subgraph_size + other_subgraph_size; scc_index++)
         {
             onnx::GraphProto scc_graph;
             if(scc_index < subgraph_size)
@@ -776,9 +852,12 @@ void eliminate_scc_v2(
             {
                 scc_graph = otherSubgraphs[scc_index - subgraph_size];
             }
+            //onnx::GraphProto scc_graph = determinegraphtype(scc_index, Subgraphs, otherSubgraphs);
             std::vector<graph_adjacency_node> scc_node_rank;
             for(int i=0; i< scc_graph.node_size(); i++)
             {
+                // scc_node_rank.push_back(node_rank_list[index_all]);
+                // index_all++;
                 for(int j = 0; j < node_rank_list.size(); j++)
                 {
                     if(scc_graph.node(i).name() == node_rank_list[j].name)
@@ -797,6 +876,15 @@ void eliminate_scc_v2(
                     *temp_graph_upper.add_node() = scc_graph.node(i);
                 }
             }
+            std::cout<<"scc index"<<scc_index<<" scc size: "<<scc_graph.node_size()<<std::endl;
+            std::cout<<"scc node rank: ";
+            for(int i=0; i< scc_graph.node_size(); i++)
+            {
+                std::cout<<scc_node_rank[i].name<<" "<<scc_node_rank[i].rank<<" ";
+            }
+            std::cout<<std::endl;
+            std::cout<<"upper graph size:"<<temp_graph_upper.node_size()<<std::endl;
+            // std::cout<<"lower graph size:"<<temp_graph_lower.node_size()<<std::endl;
             if(scc_index < subgraph_size)
             {
                 Subgraphs[scc_index] = temp_graph_upper;
@@ -815,6 +903,12 @@ void eliminate_scc_v2(
                         *temp_graph_lower.add_node() = scc_graph.node(j);
                     }
                 }
+                // std::cout<<"cut rank"<<cut_rank[i]<< "graph size:"<<temp_graph_lower.node_size();
+                // for(int i=0; i< temp_graph_lower.node_size(); i++)
+                // {
+                //     std::cout<<temp_graph_lower.node(i).name()<<" ";
+                // }
+                // std::cout<<std::endl;
                 if(scc_index < subgraph_size)
                 {
                     if(temp_graph_lower.node_size()>0)
@@ -839,12 +933,19 @@ void eliminate_scc_v2(
                     *temp_graph_lower.add_node() = scc_graph.node(j);
                 }
             }
+            // std::cout<<"cut rank"<<cut_rank[cut_rank.size() -1]<< "graph size:"<<temp_graph_lower.node_size();
+            // for(int i=0; i< temp_graph_lower.node_size(); i++)
+            // {
+            //     std::cout<<temp_graph_lower.node(i).name()<<" ";
+            // }
+            // std::cout<<std::endl;
             if(scc_index < subgraph_size)
             {
                 if(temp_graph_lower.node_size()>0)
                 {
                     Subgraphs.push_back(temp_graph_lower);
                 }
+                
             }
             else
             {
@@ -854,7 +955,7 @@ void eliminate_scc_v2(
                 }
             }
         }
-    }
+    //}
 }
 onnx::GraphProto determinegraphtype(
     int index,
@@ -890,6 +991,9 @@ void find_subgraph_pair(
         {
             std::unordered_set<NodeTensor> graph_inputs = graphs_inputs[index];
             std::unordered_set<NodeTensor> graph_outputs = graphs_outputs[index];
+            //onnx::GraphProto subgraph = determinegraphtype(index, Subgraphs, otherSubgraphs);
+            //scc_graphs.push_back(subgraph);
+            //
             scc_graphs_inputs.push_back(graph_inputs);
             scc_graphs_outputs.push_back(graph_outputs);
         }
@@ -932,6 +1036,22 @@ void find_subgraph_pair(
         }
     count ++;
     }
+    
+    //////////////
+    for(const auto& scc_pairs : sccs_pairs)
+    {
+        std::cout << "scc pair:";
+        for(const auto& scc_pair : scc_pairs)
+        {
+            
+            for(const auto& scc_id : scc_pair)
+            {
+                std::cout << scc_id << " ";
+            }
+            std::cout << ";";
+        }
+        std::cout << std::endl;
+    }
 }
 std::vector<int> cut_pair(
     std::vector<onnx::GraphProto>& Subgraphs,
@@ -961,6 +1081,7 @@ std::vector<int> cut_pair(
             if(find_flag == 1)
             {
                 master_graph = 0;
+                //std::cout<<"master_graph: "<<scc_pair[master_graph]<<std::endl;
                 break;
             }
             else{master_graph = 1;break;}
@@ -969,12 +1090,20 @@ std::vector<int> cut_pair(
     int slave_graph = 1 - master_graph;
     //找到master与slave图相接的位置
     int cut_rank = -1;
+    // for(const auto& node : pair_node_list)
+    // {
+    //     std::cout<<node.rank<<" ";
+    // }
+    // std::cout<<std::endl;
     for(const auto& output : graphs_outputs[scc_pair[slave_graph]])
     {
+        //std::cout<<output.name<<std::endl;
         for(const auto& input : graphs_inputs[scc_pair[master_graph]])
         {
+            
             if(input.name ==output.name)
             {
+                //std::cout<<"find!!!"<<std::endl;
                 int node_index = 0;
                 onnx::GraphProto graph_temp = determinegraphtype(scc_pair[slave_graph],Subgraphs, otherSubgraphs);
                 for(const auto& graph_node : graph_temp.node())
@@ -989,6 +1118,7 @@ std::vector<int> cut_pair(
                                 if(cut_rank==-1||cut_rank>pair_node_list[node_index].rank)
                                 {
                                     cut_rank = pair_node_list[node_index].rank; 
+                                    //std::cout<<"cut_rank update: "<<cut_rank<<std::endl;
                                 }
                             }
                             else
@@ -997,7 +1127,9 @@ std::vector<int> cut_pair(
                                 if(cut_rank==-1||cut_rank>pair_node_list[node_index+ graph_temp_1.node_size()].rank)
                                 {
                                     cut_rank = pair_node_list[node_index+ graph_temp_1.node_size()].rank; 
+                                    //std::cout<<"cut_rank update: "<<cut_rank<<std::endl;
                                 }
+                                //else{std::cout<<"cut_rank not update: "<<pair_node_list[node_index+ graph_temp_1.node_size()].rank<<std::endl;}
                             }
                             update_node_rank = 1;
                             break;
@@ -1019,6 +1151,7 @@ std::vector<int> cut_pair(
     int node_index = 0;
     onnx::GraphProto graph_temp = determinegraphtype(scc_pair[master_graph],Subgraphs, otherSubgraphs);
     int master_graph_size = graph_temp.node_size();
+    //std::cout << "master_graph size: " << graph_temp.node_size() << std::endl;
     int slave_graph_size;
     for(const auto& node : graph_temp.node())
     {
@@ -1115,6 +1248,7 @@ void find_crossed_pair(
     std::vector<std::vector<std::vector<int>>> & scc_crossed_pairs_multi
 )
 {
+    //std::cout<< "find cross begin"<<std::endl;
     std::vector<int> pushed;
     for(int i = 0; i < scc_pairs.size(); i++)
     {
@@ -1134,6 +1268,7 @@ void find_crossed_pair(
                     pushed[j] = 1;
                }
             }
+            ///////////////判断用，避免出现pair chain
             int crossed_index;
             if(scc_crossed_pairs.size() > 1)
             {
@@ -1167,6 +1302,19 @@ void find_crossed_pair(
             scc_pairs.erase(scc_pairs.begin() + i);
         }
     }
+    for(const auto& scc_crossed_pairs : scc_crossed_pairs_multi)
+    {
+        std::cout<<"crossed pair: ";
+        for(const auto& scc_pairs : scc_crossed_pairs)
+        {
+            for(const auto& scc_elem : scc_pairs)
+            {
+                std::cout<<scc_elem<<" ";
+            }
+            std::cout<<";";
+        }
+        std::cout<<std::endl;
+    }
 }
 void eliminate_pair(
     std::vector<onnx::GraphProto>& Subgraphs,
@@ -1181,6 +1329,7 @@ void eliminate_pair(
     find_subgraph_pair(strongly_connected_subgraphs, Subgraphs, otherSubgraphs, graphs_inputs, graphs_outputs, sccs_pairs);
     for(auto &scc_pairs : sccs_pairs)
     {
+        // std::cout<<"scc pairs size before cut: "<<scc_pairs.size()<<std::endl;
         std::vector<std::vector<onnx::GraphProto>> scc_pairs_cut;
         std::vector<std::vector<std::vector<int>>> scc_crossed_pairs_multi;
         find_crossed_pair(scc_pairs, scc_crossed_pairs_multi);
@@ -1198,6 +1347,8 @@ void eliminate_pair(
             scc_pairs.insert(scc_pairs.end(),scc_crossed_pairs.begin(), scc_crossed_pairs.end());
         }
         sccs_pairs_cut_multi.push_back(scc_pairs_cut);
+        // std::cout<<"scc pairs size after cut: "<<scc_pairs.size()<<std::endl;
+        // std::cout<<"scc pairs graph size after cut: "<<scc_pairs_cut.size()<<std::endl;
     }
     int subgraph_size = Subgraphs.size(); 
     int other_subgraph_size = otherSubgraphs.size();
@@ -1212,15 +1363,22 @@ void eliminate_pair(
                       
                 if(sccs_pairs[i][j][0] < subgraph_size)
                 {
+                    // std::cout<<sccs_pairs[i][j][0]<<" size of original subgraph:"<<Subgraphs[sccs_pairs[i][j][0]].node_size()<<std::endl;
+                    // std::cout<<sccs_pairs[i][j][1] - subgraph_size<<" size of original subgraph:"<<otherSubgraphs[sccs_pairs[i][j][1] - subgraph_size].node_size()<<std::endl;
+                    // std::cout<<"size of cut subgraph:"<<sccs_pairs_cut_multi[i][j][0].node_size()<<" "<<sccs_pairs_cut_multi[i][j][1].node_size()<<std::endl;
                     Subgraphs[sccs_pairs[i][j][0]] = sccs_pairs_cut_multi[i][j][0];
                     Subgraphs.push_back(sccs_pairs_cut_multi[i][j][1]);
                 }
                 else
                 {
+                    // std::cout<<"other"<<sccs_pairs[i][j][0] - subgraph_size<<" size of original subgraph:"<<otherSubgraphs[sccs_pairs[i][j][0] - subgraph_size].node_size()<<std::endl;
+                    // std::cout<<sccs_pairs[i][j][1]<<" size of original subgraph:"<<Subgraphs[sccs_pairs[i][j][1]].node_size()<<std::endl;
+                    // std::cout<<"size of cut subgraph:"<<sccs_pairs_cut_multi[i][j][0].node_size()<<" "<<sccs_pairs_cut_multi[i][j][1].node_size()<<std::endl;
                     otherSubgraphs[sccs_pairs[i][j][0] - subgraph_size] = sccs_pairs_cut_multi[i][j][0];
                     otherSubgraphs.push_back(sccs_pairs_cut_multi[i][j][1]);
                 }
             }
+            //std::cout<<"succeed"<<std::endl;
         }
     }
 }
@@ -1531,6 +1689,7 @@ std::vector<onnx::GraphProto> processCpuSubgraphs(std::vector<onnx::GraphProto>&
     // 遍历每个子图
     for (size_t i = 0; i < Subgraphs_.size(); ++i) {
         auto subgraph = Subgraphs_[i];
+
         // 遍历当前子图中的每个节点
         int npustartIndex = 0;
         int npuendIndex = -1;
@@ -1563,6 +1722,7 @@ std::vector<onnx::GraphProto> processCpuSubgraphs(std::vector<onnx::GraphProto>&
                 npustartIndex = j + 1;
             }
         }
+
         if (npustartIndex < subgraph.node_size() && npuendIndex >= npustartIndex) {
             onnx::GraphProto lastSubgraph;
             for (int j = npustartIndex; j < subgraph.node_size(); ++j) {
@@ -1600,6 +1760,7 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
     determine_subgraphs(g,otherSubgraphs, d, visited, adjacency_list,strategy);
     free(visited);
     std::vector<graph_adjacency_node>().swap(adjacency_list);
+    ///////10.12注释
     int node_sum = 0;
     // 遍历结构并打印每个元素
     std::ofstream outFile("./subgraphs_1.txt");
@@ -1721,8 +1882,11 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
         id_record++;
         outFile_3 << std::endl;
     }
+
     std::cout << "graph node size:" << g.node_size() << std::endl;
     std::cout << "sub node size:" << node_sum << std::endl;
+
+
     std::vector<std::unordered_set<NodeTensor>> subgraphs_1_inputs;
     std::vector<std::unordered_set<std::string>> subgraphs_1_input_nodes;
     std::vector<std::unordered_set<std::string>> subgraphs_1_nodes;
@@ -1786,10 +1950,11 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
     std::cout<<"total number of nodes in origional graph:"<<g.node_size()<<std::endl;
 
 /////////////////////////6.29
-    //std::unordered_set<NodeTensor> graphs_outputs=getOutvalue(g);
     std::vector<std::unordered_set<NodeTensor>> graphs_inputs;
     graphs_inputs.insert(graphs_inputs.end(),subgraphs_1_inputs.begin(),subgraphs_1_inputs.end());
+    //std::cout <<  " size1:"<<graphs_inputs.size()<<std::endl;
     graphs_inputs.insert(graphs_inputs.end(),subgraphs_2_inputs.begin(),subgraphs_2_inputs.end());
+    //std::cout <<  " size2:"<<graphs_inputs.size()<<std::endl;
     std::vector<std::unordered_set<NodeTensor>> graphs_outputs;
     graphs_outputs.insert(graphs_outputs.end(),subgraphs_1_outputs.begin(),subgraphs_1_outputs.end());
     graphs_outputs.insert(graphs_outputs.end(),subgraphs_2_outputs.begin(),subgraphs_2_outputs.end());
@@ -1870,20 +2035,51 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
     outfile_scc.close();
     free(DFN);
     free(LOW);
-    eliminate_pair(Subgraphs, otherSubgraphs, graphs_inputs, graphs_outputs, strongly_connected_subgraphs);
+    int node_num_all = 0;
+    for(const auto& sg : Subgraphs)
+    {
+        node_num_all += sg.node_size();
+    }
+    for(const auto& sg : otherSubgraphs)
+    {
+        node_num_all += sg.node_size();
+    }
+    std::cout << "node num in original graph: " << g.node_size() << std::endl;
+    std::cout << "node_num after cut " << node_num_all << std::endl;
+    ///////////////////////+++
+    int* DFN_ = (int *)malloc(graphs_inputs.size() * sizeof(int));
+    int* LOW_ = (int *)malloc(graphs_inputs.size() * sizeof(int));
+    for(int i = 0; i < graphs_inputs.size(); i++)
+    {
+        DFN_[i] = 0;
+        LOW_[i] = 0;
+    }
+    temp_count = 0;
+    for(const auto& predecessors : predecessors_Subgraphs)
+    {
+        if(DFN_[temp_count] == 0)
+        {
+            std::vector<int> stack_subgraphs;
+            int depth = 0;
+            Tarjan(temp_count, depth, strongly_connected_subgraphs, DFN_, 
+            LOW_, stack_subgraphs, successors_Subgraphs);
+        }
+        temp_count ++ ;
+    } 
+    free(DFN_);
+    free(LOW_);
+    eliminate_scc(strongly_connected_subgraphs,  Subgraphs, otherSubgraphs);
+    /////////////////////    
     strongly_connected_subgraphs.clear();
     predecessors_Subgraphs.clear();
     successors_Subgraphs.clear();
-    subgraphs_1_inputs.clear();
-    std::vector<std::unordered_set<std::string>>().swap(subgraphs_1_input_nodes);
-    std::vector<std::unordered_set<std::string>>().swap(subgraphs_1_nodes);
-    subgraphs_2_inputs.clear();
-    std::vector<std::unordered_set<std::string>>().swap(subgraphs_2_input_nodes);
-    std::vector<std::unordered_set<std::string>>().swap(subgraphs_2_nodes);
-    subgraphs_1_outputs.clear();
-    subgraphs_2_outputs.clear();
-    graphs_inputs.clear();
-    graphs_outputs.clear();
+    std::vector<std::unordered_set<NodeTensor>>().swap(subgraphs_2_inputs);
+    std::vector<std::unordered_set<NodeTensor>>().swap(subgraphs_1_inputs);
+    std::vector<std::unordered_set<NodeTensor>>().swap(subgraphs_2_outputs);
+    std::vector<std::unordered_set<NodeTensor>>().swap(subgraphs_1_outputs);
+    std::vector<std::unordered_set<NodeTensor>>().swap(graphs_inputs);
+    std::vector<std::unordered_set<NodeTensor>>().swap(graphs_outputs);
+    std::cout << "Tarjan ended!!!!!!!!!!!" << std::endl;
     for (const auto& sg : Subgraphs) {
         std::unordered_set<NodeTensor> graphInputs;
         determineGraphInput(sg, IOvalueNames, graphInputs);
@@ -1939,105 +2135,34 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
         }
         successors_Subgraphs.push_back(temp);
     }
-    ////////////////////////////////////////////////////
-    int node_num_all = 0;
-    for(const auto& sg : Subgraphs)
-    {
-        node_num_all += sg.node_size();
-    }
-    for(const auto& sg : otherSubgraphs)
-    {
-        node_num_all += sg.node_size();
-    }
-    std::cout << "node num in original graph: " << g.node_size() << std::endl;
-    std::cout << "node_num after cut " << node_num_all << std::endl;
-    ///////////////////////+++
-    int* DFN_ = (int *)malloc(graphs_inputs.size() * sizeof(int));
-    int* LOW_ = (int *)malloc(graphs_inputs.size() * sizeof(int));
-    for(int i = 0; i < graphs_inputs.size(); i++)
-    {
-        DFN_[i] = 0;
-        LOW_[i] = 0;
-    }
-    temp_count = 0;
-    for(const auto& predecessors : predecessors_Subgraphs)
-    {
-        if(DFN_[temp_count] == 0)
-        {
-            std::vector<int> stack_subgraphs;
-            int depth = 0;
-            Tarjan(temp_count, depth, strongly_connected_subgraphs, DFN_, 
-            LOW_, stack_subgraphs, successors_Subgraphs);
-        }
-        temp_count ++ ;
-    } 
-    free(DFN_);
-    free(LOW_);
-    eliminate_scc(strongly_connected_subgraphs,  Subgraphs, otherSubgraphs);
-    /////////////////////    
-    strongly_connected_subgraphs.clear();
-    predecessors_Subgraphs.clear();
-    successors_Subgraphs.clear();
-    std::vector<std::unordered_set<NodeTensor>>().swap(subgraphs_2_inputs);
-    std::vector<std::unordered_set<NodeTensor>>().swap(subgraphs_1_inputs);
-    std::vector<std::unordered_set<NodeTensor>>().swap(subgraphs_2_outputs);
-    std::vector<std::unordered_set<NodeTensor>>().swap(subgraphs_1_outputs);
-    std::vector<std::unordered_set<NodeTensor>>().swap(graphs_inputs);
-    std::vector<std::unordered_set<NodeTensor>>().swap(graphs_outputs);
-    for (const auto& sg : Subgraphs) {
-        std::unordered_set<NodeTensor> graphInputs;
-        determineGraphInput(sg, IOvalueNames, graphInputs);
-        subgraphs_1_inputs.push_back(graphInputs);
-    }
-    for (const auto& sg : otherSubgraphs) {
-        std::unordered_set<NodeTensor> graphInputs;
-        determineGraphInput(sg, IOvalueNames, graphInputs);
-        subgraphs_2_inputs.push_back(graphInputs);
-    }
-    node_number = 0;
-    for (const auto& sg : Subgraphs) {
-        std::unordered_set<NodeTensor> graphOutputs;
-        node_number+=sg.node_size();
-        determineGraphOutput(g,sg, subgraphs_1_inputs, subgraphs_2_inputs, graphOutputs);
-        subgraphs_1_outputs.push_back(graphOutputs);
-    }
-    for (const auto& sg : otherSubgraphs) {
-        std::unordered_set<NodeTensor> graphOutputs;
-        node_number+=sg.node_size();
-        determineGraphOutput(g,sg, subgraphs_1_inputs, subgraphs_2_inputs, graphOutputs);
-        subgraphs_2_outputs.push_back(graphOutputs);
-    }
-    graphs_inputs.insert(graphs_inputs.end(),subgraphs_1_inputs.begin(),subgraphs_1_inputs.end());
-    graphs_inputs.insert(graphs_inputs.end(),subgraphs_2_inputs.begin(),subgraphs_2_inputs.end());
-    graphs_outputs.insert(graphs_outputs.end(),subgraphs_1_outputs.begin(),subgraphs_1_outputs.end());
-    graphs_outputs.insert(graphs_outputs.end(),subgraphs_2_outputs.begin(),subgraphs_2_outputs.end());
-    for(int i=0; i<graphs_inputs.size();i++) ////遍历所有子图
-    {
-        std::vector<int> predecessors;
-        for(const auto& g_input : graphs_inputs[i])////遍历某个子图的所有input
-        {
-            for(int j=0; j< graphs_outputs.size();j++)////检查该子图的某个input是否是第j个子图的output
-            {
-                if((graphs_outputs[j].find(g_input)!=graphs_outputs[j].end()))////该子图的某个input是第j个子图的output
-                {
-                    predecessors.push_back(j);//加入前驱
-                }
-            }
-        }
-        predecessors_Subgraphs.push_back(predecessors);
+    ////////////////////////////////////////////////
+    std::string file_name_predecessor_2 = "predecessor_final_2.txt";
+    std::string file_name_successor_2 = "successor_final_2.txt";
+    std::ofstream outfile_predecessor_2(file_name_predecessor_2);
+    std::ofstream outfile_successor_2(file_name_successor_2);
+    if (!(outfile_predecessor_2.is_open()&&outfile_successor_2.is_open())) {
+        std::cerr << "Error opening file." << std::endl;
+        exit(0);
     }
     for(int i=0;i<graphs_inputs.size();i++)
     {
-        std::vector<int> temp;
-        for(int j=0;j<graphs_inputs.size();j++)
+        outfile_predecessor_2 << "predecessor of subgraph " << i << ":";
+        for(const auto& predecessor : predecessors_Subgraphs[i])
         {
-            if(find(predecessors_Subgraphs[j].begin(),predecessors_Subgraphs[j].end(),i)!=predecessors_Subgraphs[j].end())
-            {
-                temp.push_back(j);
-            }
+            outfile_predecessor_2 << predecessor << ";";
         }
-        successors_Subgraphs.push_back(temp);
+        outfile_predecessor_2 << std::endl;
+        outfile_successor_2 << "successor of subgraph " << i << ":";
+        for(const auto& successor : successors_Subgraphs[i])
+        {
+            outfile_successor_2 << successor << ";";
+        }
+        outfile_successor_2 << std::endl;
     }
+    outfile_predecessor_2.close();
+    outfile_successor_2.close();
+    print_subgraphs(Subgraphs, "./subgraphs_final_2.txt", otherSubgraphs, "./other_subgraphs_final_2.txt");
+    //////////////////////////////////////////-------
     ///////////////////////+++
     int* DFN_2 = (int *)malloc(graphs_inputs.size() * sizeof(int));
     int* LOW_2 = (int *)malloc(graphs_inputs.size() * sizeof(int));
@@ -2058,6 +2183,29 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
         }
         temp_count ++ ;
     } 
+    std::ofstream outfile_scc2(file_name_scc);    
+    for(const auto& scc : strongly_connected_subgraphs)
+    {
+        std::cout << "scc:";
+        for(const auto& scc_id : scc)
+        {
+            std::cout << scc_id << " ";
+            outfile_scc2 << "subgraph" << scc_id << " input:";
+            for(const auto& scc_input : graphs_inputs[scc_id])
+            {
+                outfile_scc2 << scc_input.name << ";";
+            }
+            outfile_scc2 << " output:";
+            for(const auto& scc_output : graphs_outputs[scc_id])
+            {
+                outfile_scc2 << scc_output.name << ";";
+            }
+            outfile_scc2 << std::endl;
+        }
+        
+        std::cout << std::endl;
+    }
+    outfile_scc.close();
     free(DFN_2);
     free(LOW_2);
     eliminate_scc_v2(strongly_connected_subgraphs,  Subgraphs, otherSubgraphs, g);
@@ -2077,11 +2225,13 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
         determineGraphInput(sg, IOvalueNames, graphInputs);
         subgraphs_1_inputs.push_back(graphInputs);
     }
+    std::cout <<"line:"<< __LINE__ << std::endl;
     for (const auto& sg : otherSubgraphs) {
         std::unordered_set<NodeTensor> graphInputs;
         determineGraphInput(sg, IOvalueNames, graphInputs);
         subgraphs_2_inputs.push_back(graphInputs);
     }
+    std::cout <<"line:"<< __LINE__ << std::endl;
     node_number = 0;
     for (const auto& sg : Subgraphs) {
         std::unordered_set<NodeTensor> graphOutputs;
@@ -2089,12 +2239,14 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
         determineGraphOutput(g,sg, subgraphs_1_inputs, subgraphs_2_inputs, graphOutputs);
         subgraphs_1_outputs.push_back(graphOutputs);
     }
+    std::cout <<"line:"<< __LINE__ << std::endl;
     for (const auto& sg : otherSubgraphs) {
         std::unordered_set<NodeTensor> graphOutputs;
         node_number+=sg.node_size();
         determineGraphOutput(g,sg, subgraphs_1_inputs, subgraphs_2_inputs, graphOutputs);
         subgraphs_2_outputs.push_back(graphOutputs);
     }
+    std::cout <<"line:"<< __LINE__ << std::endl;
     graphs_inputs.insert(graphs_inputs.end(),subgraphs_1_inputs.begin(),subgraphs_1_inputs.end());
     graphs_inputs.insert(graphs_inputs.end(),subgraphs_2_inputs.begin(),subgraphs_2_inputs.end());
     graphs_outputs.insert(graphs_outputs.end(),subgraphs_1_outputs.begin(),subgraphs_1_outputs.end());
@@ -2207,9 +2359,41 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
     outfile_scc.close();
     free(DFN_3);
     free(LOW_3);
+    int temp_count_subgraph = 0;
+    std::ofstream outfile_conv_flag("end_with_conv.txt");
+    for(const auto & graph_outputs : subgraphs_1_outputs)
+    {
+        int find_flag = 0;
+        for(const auto& graph_output : graph_outputs)
+        {
+            for(const auto& node : Subgraphs[temp_count_subgraph].node())
+            {
+                for(const auto& output : node.output())
+                {
+                    if(graph_output.name == output)
+                    {
+                        outfile_conv_flag<<temp_count_subgraph<<" ";
+                        find_flag = 1;
+                        break;
+                    }
+                }
+                if(find_flag)
+                {
+                    break;
+                }
+            }
+            if(find_flag)
+            {
+                break;
+            }
+        }
+        temp_count_subgraph ++;
+    }
+    outfile_conv_flag.close();
     std::cout << "node num in original graph: " << g.node_size() << std::endl;
     std::cout << "node_num after cut " << node_num_all << std::endl;
     ////////////////////////////////////////////////
+    std::cout << "succeeded in reaching sorting" << std::endl;
     int finished_flag=0;int sort_count=0;
     std::vector<int> order_Subgraphs(graphs_inputs.size());
     std::vector<int> issort_Subgraphs(graphs_inputs.size());
@@ -2222,7 +2406,6 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
             changed_sort_flag=1;
             for(int i=0; i<graphs_inputs.size();i++) ////遍历所有子图
             {
-
                 int find_flag=0;
                 for(const auto& g_input : graphs_inputs[i])////遍历某个子图的所有input
                 {
@@ -2399,4 +2582,10 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
             std::cout << "Unknown device type" << std::endl;
             exit(0);
     }
+    std::cout << "node num in original graph: " << g.node_size() << std::endl;
+    std::cout << "node_num after cut " << node_num_all << std::endl;
+    // 接下来应该是细致调节
+    ////////////////
+    
+    ///////////////////
 }

@@ -26,12 +26,11 @@ int main(int argc, char* argv[]) {
 
     Graph graph;
     auto g = graph.GetGraphFromOnnx(onnxFile);
-    // getAllnodeName(g);
-    // std::unordered_map<std::string, NodeIOSize> node_io_size = graph.getNodeIOSizes(g);
     std::unordered_map<std::string, NodeIOSize> node_io_size;
     Partition p;
     Licheepi lpi4a;
     lpi4a.updateOnnxFile(onnxFile);
+    lpi4a.GetDeviceJson("config.json");
     //DetermineStructure(g, lpi4a,PartitionStrategy::SPILTE_NPU_STRUCTURE_FIRST);
     p.PartitionGraph(g, lpi4a, PartitionStrategy::SPILTE_NPU_STRUCTURE_FIRST, node_io_size);
 
@@ -43,16 +42,6 @@ int main(int argc, char* argv[]) {
     PyObject *pModule,*pModule1;
     PyRun_SimpleString("import sys");
     PyRun_SimpleString("sys.path.append('.')");
-    // pModule = PyImport_ImportModule("extract_onnx");
-    // if (pModule == NULL) {
-	// 	std::cout << "module not found" << std::endl;
-	// 	return 1;
-	// }
-    // pModule1 = PyImport_ImportModule("extract_runcut_onnx");
-    // if (pModule1 == NULL) {
-	// 	std::cout << "module not found" << std::endl;
-	// 	return 1;
-	// }
     Py_Finalize();
 
     return 0;
