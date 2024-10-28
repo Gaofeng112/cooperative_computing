@@ -7,6 +7,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.o.d"
   "CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.o"
   "CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.o.d"
+  "CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.o"
+  "CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.o.d"
   "CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.o"
   "CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.o.d"
   "CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.o"

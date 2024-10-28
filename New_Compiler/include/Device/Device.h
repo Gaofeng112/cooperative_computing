@@ -70,10 +70,6 @@ public:
                 {
                     NPUPreferOp.push_back(root["performance_data"][i]["name"].asString());
                 }
-                // else
-                // {
-                //     CPUPreferOp.push_back(root["performance_data"][i]["name"].asString());
-                // }
             }
             for(int i = 0; i < root["NPU_supported_ops"].size(); i++)
             {

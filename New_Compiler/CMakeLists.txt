@@ -23,12 +23,13 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 # 添加头文件目录
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/Device)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/json)
 
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 include_directories(${PROJECT_NAME} ${Python3_INCLUDE_DIRS})
 
 # 将所有源文件添加到一个变量中
-file(GLOB SOURCES "lib/*.cpp" "lib/Device/*.cpp")
+file(GLOB SOURCES "lib/*.cpp" "lib/Device/*.cpp" )#10.22添加json库
 
 # 编译main.cpp
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})

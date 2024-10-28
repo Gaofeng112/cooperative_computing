@@ -1,7 +1,7 @@
 CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.o: \
- /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/onnx.pb.cc \
+ /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/onnx.pb.cc \
  /usr/include/stdc-predef.h \
- /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/onnx.pb.h \
+ /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/onnx.pb.h \
  /usr/include/c++/11/limits \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler
+CMAKE_SOURCE_DIR = /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build
+CMAKE_BINARY_DIR = /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/CMakeFiles /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -200,6 +200,30 @@ lib/graph.s: lib/graph.cpp.s
 lib/graph.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CoComputingCompiler.dir/build.make CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.s
 .PHONY : lib/graph.cpp.s
+
+lib/jsoncpp.o: lib/jsoncpp.cpp.o
+.PHONY : lib/jsoncpp.o
+
+# target to build an object file
+lib/jsoncpp.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CoComputingCompiler.dir/build.make CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.o
+.PHONY : lib/jsoncpp.cpp.o
+
+lib/jsoncpp.i: lib/jsoncpp.cpp.i
+.PHONY : lib/jsoncpp.i
+
+# target to preprocess a source file
+lib/jsoncpp.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CoComputingCompiler.dir/build.make CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.i
+.PHONY : lib/jsoncpp.cpp.i
+
+lib/jsoncpp.s: lib/jsoncpp.cpp.s
+.PHONY : lib/jsoncpp.s
+
+# target to generate assembly for a file
+lib/jsoncpp.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CoComputingCompiler.dir/build.make CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.s
+.PHONY : lib/jsoncpp.cpp.s
 
 lib/partition.o: lib/partition.cpp.o
 .PHONY : lib/partition.o
@@ -315,6 +339,9 @@ help:
 	@echo "... lib/graph.o"
 	@echo "... lib/graph.i"
 	@echo "... lib/graph.s"
+	@echo "... lib/jsoncpp.o"
+	@echo "... lib/jsoncpp.i"
+	@echo "... lib/jsoncpp.s"
 	@echo "... lib/partition.o"
 	@echo "... lib/partition.i"
 	@echo "... lib/partition.s"

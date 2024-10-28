@@ -17,8 +17,6 @@ public:
     DeviceType getType() const override {
         return DeviceType::Licheepi;
     }
-
-    // 重写虚函数，返回特定的 cpu_structure , pow + reducemean + add + sqrt + div
     std::vector<std::vector<std::string>> getCPUStructure() const override {
         return {
             {"Concat"},
@@ -26,27 +24,14 @@ public:
             {"Transpose", "Gather", "Gather", "Gather", "Transpose", "MatMul", "Mul", "Softmax", "MatMul"}
         };
     }
-
-    // 重写虚函数，返回特定的 npu_structure
     std::vector<std::vector<std::string>> getNPUStructure() const override {
         return {
-            // //////7.19加
-            // {"Reshape"}
-            //diffussion
             {"Reshape","Transpose","Reshape"},
-            // {"Add","Sigmoid","Mul"},
-            // {"Reshape","ReduceMean","Sub","Mul","ReduceMean","Add"},
-            //{"Mul","Mul","Sub","Mul","Add","Reshape"},
-            // {"Mul","Mul","Sub","Mul","Add"},
             {"Reshape","Sigmoid","Mul","Transpose","Conv","Add","Transpose"},
             {"Reshape","Transpose","Conv","Transpose","Reshape"},
             {"Reshape","Conv","Transpose"},
-            // {"Mul","Add","Mul","Mul","Mul"},
-            // //{"Reshape","Add","Add","Reshape","Transpose","Conv","Add","Conv","Transpose","Transpose","Conv"},
             {"Reshape","Add","Add","Reshape","Transpose","Conv","Add"},
-            // {"Reshape","Add","Add"},
             {"Conv"}
-            ////{"Reshape","Add","Add","Reshape","Transpose","Conv","Add","Transpose"}
         };
     }
     void GenerateCutInstruction(std::vector<onnx::GraphProto> &Subgraphs, std::string device,

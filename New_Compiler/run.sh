@@ -7,4 +7,4 @@ cd ..
 # ./CoComputingCompiler --onnx=./net/vit_1.onnx
 # ./CoComputingCompiler --onnx=./net/model.onnx
 ./CoComputingCompiler --onnx=./net/unet_32_sim_v2.onnx
-# ./CoComputingCompiler --onnx=./net/diffusion_model_fp32_with_shape.onnx
+# ./CoComputingCompiler --onnx=./net/unet_32_sim_v2.onnx

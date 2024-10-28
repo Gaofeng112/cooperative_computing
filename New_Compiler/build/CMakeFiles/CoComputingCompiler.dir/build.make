@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler
+CMAKE_SOURCE_DIR = /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build
+CMAKE_BINARY_DIR = /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/CoComputingCompiler.dir/depend.make
@@ -71,8 +71,8 @@ include CMakeFiles/CoComputingCompiler.dir/flags.make
 
 onnx.pb.h: ../onnx.proto
 onnx.pb.h: /usr/local/bin/protoc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Running cpp protocol buffer compiler on onnx.proto"
-	/usr/local/bin/protoc --cpp_out /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build -I /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/onnx.proto
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Running cpp protocol buffer compiler on onnx.proto"
+	/usr/local/bin/protoc --cpp_out /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build -I /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/onnx.proto
 
 onnx.pb.cc: onnx.pb.h
 	@$(CMAKE_COMMAND) -E touch_nocreate onnx.pb.cc
@@ -80,100 +80,114 @@ onnx.pb.cc: onnx.pb.h
 CMakeFiles/CoComputingCompiler.dir/main.cpp.o: CMakeFiles/CoComputingCompiler.dir/flags.make
 CMakeFiles/CoComputingCompiler.dir/main.cpp.o: ../main.cpp
 CMakeFiles/CoComputingCompiler.dir/main.cpp.o: CMakeFiles/CoComputingCompiler.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CoComputingCompiler.dir/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CoComputingCompiler.dir/main.cpp.o -MF CMakeFiles/CoComputingCompiler.dir/main.cpp.o.d -o CMakeFiles/CoComputingCompiler.dir/main.cpp.o -c /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CoComputingCompiler.dir/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CoComputingCompiler.dir/main.cpp.o -MF CMakeFiles/CoComputingCompiler.dir/main.cpp.o.d -o CMakeFiles/CoComputingCompiler.dir/main.cpp.o -c /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/main.cpp
 
 CMakeFiles/CoComputingCompiler.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CoComputingCompiler.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/main.cpp > CMakeFiles/CoComputingCompiler.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/main.cpp > CMakeFiles/CoComputingCompiler.dir/main.cpp.i
 
 CMakeFiles/CoComputingCompiler.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CoComputingCompiler.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/main.cpp -o CMakeFiles/CoComputingCompiler.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/main.cpp -o CMakeFiles/CoComputingCompiler.dir/main.cpp.s
 
 CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.o: CMakeFiles/CoComputingCompiler.dir/flags.make
 CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.o: ../lib/Device/Device.cpp
 CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.o: CMakeFiles/CoComputingCompiler.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.o -MF CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.o.d -o CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.o -c /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/lib/Device/Device.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.o -MF CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.o.d -o CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.o -c /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/Device/Device.cpp
 
 CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/lib/Device/Device.cpp > CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/Device/Device.cpp > CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.i
 
 CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/lib/Device/Device.cpp -o CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/Device/Device.cpp -o CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.s
 
 CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.o: CMakeFiles/CoComputingCompiler.dir/flags.make
 CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.o: ../lib/Device/Licheepi.cpp
 CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.o: CMakeFiles/CoComputingCompiler.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.o -MF CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.o.d -o CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.o -c /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/lib/Device/Licheepi.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.o -MF CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.o.d -o CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.o -c /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/Device/Licheepi.cpp
 
 CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/lib/Device/Licheepi.cpp > CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/Device/Licheepi.cpp > CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.i
 
 CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/lib/Device/Licheepi.cpp -o CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/Device/Licheepi.cpp -o CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.s
 
 CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.o: CMakeFiles/CoComputingCompiler.dir/flags.make
 CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.o: ../lib/graph.cpp
 CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.o: CMakeFiles/CoComputingCompiler.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.o -MF CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.o.d -o CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.o -c /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/lib/graph.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.o -MF CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.o.d -o CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.o -c /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/graph.cpp
 
 CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/lib/graph.cpp > CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/graph.cpp > CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.i
 
 CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/lib/graph.cpp -o CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/graph.cpp -o CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.s
+
+CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.o: CMakeFiles/CoComputingCompiler.dir/flags.make
+CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.o: ../lib/jsoncpp.cpp
+CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.o: CMakeFiles/CoComputingCompiler.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.o -MF CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.o.d -o CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.o -c /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/jsoncpp.cpp
+
+CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/jsoncpp.cpp > CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.i
+
+CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/jsoncpp.cpp -o CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.s
 
 CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.o: CMakeFiles/CoComputingCompiler.dir/flags.make
 CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.o: ../lib/partition.cpp
 CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.o: CMakeFiles/CoComputingCompiler.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.o -MF CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.o.d -o CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.o -c /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/lib/partition.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.o -MF CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.o.d -o CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.o -c /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/partition.cpp
 
 CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/lib/partition.cpp > CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/partition.cpp > CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.i
 
 CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/lib/partition.cpp -o CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/partition.cpp -o CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.s
 
 CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.o: CMakeFiles/CoComputingCompiler.dir/flags.make
 CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.o: ../lib/structures.cpp
 CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.o: CMakeFiles/CoComputingCompiler.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.o -MF CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.o.d -o CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.o -c /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/lib/structures.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.o -MF CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.o.d -o CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.o -c /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/structures.cpp
 
 CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/lib/structures.cpp > CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/structures.cpp > CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.i
 
 CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/lib/structures.cpp -o CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/lib/structures.cpp -o CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.s
 
 CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.o: CMakeFiles/CoComputingCompiler.dir/flags.make
 CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.o: onnx.pb.cc
 CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.o: CMakeFiles/CoComputingCompiler.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.o -MF CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.o.d -o CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.o -c /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/onnx.pb.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.o -MF CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.o.d -o CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.o -c /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/onnx.pb.cc
 
 CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/onnx.pb.cc > CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/onnx.pb.cc > CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.i
 
 CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/onnx.pb.cc -o CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/onnx.pb.cc -o CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.s
 
 # Object files for target CoComputingCompiler
 CoComputingCompiler_OBJECTS = \
@@ -181,6 +195,7 @@ CoComputingCompiler_OBJECTS = \
 "CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.o" \
 "CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.o" \
 "CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.o" \
+"CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.o" \
 "CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.o" \
 "CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.o" \
 "CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.o"
@@ -192,13 +207,14 @@ CoComputingCompiler_EXTERNAL_OBJECTS =
 ../CoComputingCompiler: CMakeFiles/CoComputingCompiler.dir/lib/Device/Device.cpp.o
 ../CoComputingCompiler: CMakeFiles/CoComputingCompiler.dir/lib/Device/Licheepi.cpp.o
 ../CoComputingCompiler: CMakeFiles/CoComputingCompiler.dir/lib/graph.cpp.o
+../CoComputingCompiler: CMakeFiles/CoComputingCompiler.dir/lib/jsoncpp.cpp.o
 ../CoComputingCompiler: CMakeFiles/CoComputingCompiler.dir/lib/partition.cpp.o
 ../CoComputingCompiler: CMakeFiles/CoComputingCompiler.dir/lib/structures.cpp.o
 ../CoComputingCompiler: CMakeFiles/CoComputingCompiler.dir/onnx.pb.cc.o
 ../CoComputingCompiler: CMakeFiles/CoComputingCompiler.dir/build.make
 ../CoComputingCompiler: /usr/lib/x86_64-linux-gnu/libpython3.10.so
 ../CoComputingCompiler: CMakeFiles/CoComputingCompiler.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable ../CoComputingCompiler"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable ../CoComputingCompiler"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CoComputingCompiler.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -211,6 +227,6 @@ CMakeFiles/CoComputingCompiler.dir/clean:
 
 CMakeFiles/CoComputingCompiler.dir/depend: onnx.pb.cc
 CMakeFiles/CoComputingCompiler.dir/depend: onnx.pb.h
-	cd /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build /mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build/CMakeFiles/CoComputingCompiler.dir/DependInfo.cmake --color=$(COLOR)
+	cd /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build /mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles/CoComputingCompiler.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/CoComputingCompiler.dir/depend
 

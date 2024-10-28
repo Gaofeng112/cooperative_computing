@@ -1,0 +1,389 @@
+NPUsubgraph0: order0--input-name --output-name 
+NPUsubgraph1: order0--input-name --output-name 
+NPUsubgraph2: order0--input-name --output-name 
+NPUsubgraph3: order0--input-name --output-name 
+NPUsubgraph4: order0--input-name --output-name 
+NPUsubgraph5: order0--input-name --output-name 
+NPUsubgraph6: order0--input-name --output-name 
+NPUsubgraph7: order0--input-name --output-name 
+NPUsubgraph8: order0--input-name --output-name 
+NPUsubgraph9: order0--input-name --output-name 
+NPUsubgraph10: order0--input-name --output-name 
+NPUsubgraph11: order0--input-name --output-name 
+NPUsubgraph12: order0--input-name --output-name 
+NPUsubgraph13: order0--input-name --output-name 
+NPUsubgraph14: order0--input-name --output-name 
+NPUsubgraph15: order0--input-name --output-name 
+NPUsubgraph16: order0--input-name --output-name 
+NPUsubgraph17: order0--input-name --output-name 
+NPUsubgraph18: order0--input-name --output-name 
+NPUsubgraph19: order0--input-name --output-name 
+NPUsubgraph20: order0--input-name --output-name 
+NPUsubgraph21: order0--input-name --output-name 
+NPUsubgraph22: order0--input-name --output-name 
+NPUsubgraph23: order0--input-name --output-name 
+NPUsubgraph24: order0--input-name --output-name 
+NPUsubgraph25: order0--input-name --output-name 
+NPUsubgraph26: order0--input-name --output-name 
+NPUsubgraph27: order0--input-name --output-name 
+NPUsubgraph28: order0--input-name --output-name 
+NPUsubgraph29: order0--input-name --output-name 
+NPUsubgraph30: order0--input-name --output-name 
+NPUsubgraph31: order0--input-name --output-name 
+NPUsubgraph32: order0--input-name --output-name 
+NPUsubgraph33: order0--input-name --output-name 
+NPUsubgraph34: order0--input-name --output-name 
+NPUsubgraph35: order0--input-name --output-name 
+NPUsubgraph36: order0--input-name --output-name 
+NPUsubgraph37: order0--input-name --output-name 
+NPUsubgraph38: order0--input-name --output-name 
+NPUsubgraph39: order0--input-name --output-name 
+NPUsubgraph40: order0--input-name --output-name 
+NPUsubgraph41: order0--input-name --output-name 
+NPUsubgraph42: order0--input-name --output-name 
+NPUsubgraph43: order0--input-name --output-name 
+NPUsubgraph44: order0--input-name --output-name 
+NPUsubgraph45: order0--input-name --output-name 
+NPUsubgraph46: order0--input-name --output-name 
+NPUsubgraph47: order0--input-name --output-name 
+NPUsubgraph48: order0--input-name --output-name 
+NPUsubgraph49: order0--input-name --output-name 
+NPUsubgraph50: order0--input-name --output-name 
+NPUsubgraph51: order0--input-name --output-name 
+NPUsubgraph52: order0--input-name --output-name 
+NPUsubgraph53: order0--input-name --output-name 
+NPUsubgraph54: order0--input-name --output-name 
+NPUsubgraph55: order0--input-name --output-name 
+NPUsubgraph56: order0--input-name --output-name 
+NPUsubgraph57: order0--input-name --output-name 
+NPUsubgraph58: order0--input-name --output-name 
+NPUsubgraph59: order0--input-name --output-name 
+NPUsubgraph60: order0--input-name --output-name 
+NPUsubgraph61: order0--input-name --output-name 
+NPUsubgraph62: order0--input-name --output-name 
+NPUsubgraph63: order0--input-name --output-name 
+NPUsubgraph64: order0--input-name --output-name 
+NPUsubgraph65: order0--input-name --output-name 
+NPUsubgraph66: order0--input-name --output-name 
+NPUsubgraph67: order0--input-name --output-name 
+NPUsubgraph68: order0--input-name --output-name 
+NPUsubgraph69: order0--input-name --output-name 
+NPUsubgraph70: order0--input-name --output-name 
+NPUsubgraph71: order0--input-name --output-name 
+NPUsubgraph72: order0--input-name --output-name 
+NPUsubgraph73: order0--input-name --output-name 
+NPUsubgraph74: order0--input-name --output-name 
+NPUsubgraph75: order0--input-name --output-name 
+NPUsubgraph76: order0--input-name --output-name 
+NPUsubgraph77: order0--input-name --output-name 
+NPUsubgraph78: order0--input-name --output-name 
+NPUsubgraph79: order0--input-name --output-name 
+NPUsubgraph80: order0--input-name --output-name 
+NPUsubgraph81: order0--input-name --output-name 
+NPUsubgraph82: order0--input-name --output-name 
+NPUsubgraph83: order0--input-name --output-name 
+NPUsubgraph84: order0--input-name --output-name 
+NPUsubgraph85: order0--input-name --output-name 
+NPUsubgraph86: order0--input-name --output-name 
+NPUsubgraph87: order0--input-name --output-name 
+NPUsubgraph88: order0--input-name --output-name 
+NPUsubgraph89: order0--input-name --output-name 
+NPUsubgraph90: order0--input-name --output-name 
+NPUsubgraph91: order0--input-name --output-name 
+NPUsubgraph92: order0--input-name --output-name 
+NPUsubgraph93: order0--input-name --output-name 
+NPUsubgraph94: order0--input-name --output-name 
+NPUsubgraph95: order0--input-name --output-name 
+NPUsubgraph96: order0--input-name --output-name 
+NPUsubgraph97: order0--input-name --output-name 
+NPUsubgraph98: order0--input-name --output-name 
+NPUsubgraph99: order0--input-name --output-name 
+NPUsubgraph100: order0--input-name --output-name 
+NPUsubgraph101: order0--input-name --output-name 
+NPUsubgraph102: order0--input-name --output-name 
+NPUsubgraph103: order0--input-name --output-name 
+NPUsubgraph104: order0--input-name --output-name 
+NPUsubgraph105: order0--input-name --output-name 
+NPUsubgraph106: order0--input-name --output-name 
+NPUsubgraph107: order0--input-name --output-name 
+NPUsubgraph108: order0--input-name --output-name 
+NPUsubgraph109: order0--input-name --output-name 
+NPUsubgraph110: order0--input-name --output-name 
+NPUsubgraph111: order0--input-name --output-name 
+NPUsubgraph112: order0--input-name --output-name 
+NPUsubgraph113: order0--input-name --output-name 
+NPUsubgraph114: order0--input-name --output-name 
+NPUsubgraph115: order0--input-name --output-name 
+NPUsubgraph116: order0--input-name --output-name 
+NPUsubgraph117: order0--input-name --output-name 
+NPUsubgraph118: order0--input-name --output-name 
+NPUsubgraph119: order0--input-name --output-name 
+NPUsubgraph120: order0--input-name --output-name 
+NPUsubgraph121: order0--input-name --output-name 
+NPUsubgraph122: order0--input-name --output-name 
+NPUsubgraph123: order0--input-name --output-name 
+NPUsubgraph124: order0--input-name --output-name 
+NPUsubgraph125: order0--input-name --output-name 
+NPUsubgraph126: order0--input-name --output-name 
+NPUsubgraph127: order0--input-name --output-name 
+NPUsubgraph128: order0--input-name --output-name 
+NPUsubgraph129: order0--input-name --output-name 
+NPUsubgraph130: order0--input-name --output-name 
+NPUsubgraph131: order0--input-name --output-name 
+NPUsubgraph132: order0--input-name --output-name 
+NPUsubgraph133: order0--input-name --output-name 
+NPUsubgraph134: order0--input-name --output-name 
+NPUsubgraph135: order0--input-name --output-name 
+NPUsubgraph136: order0--input-name --output-name 
+NPUsubgraph137: order0--input-name --output-name 
+NPUsubgraph138: order0--input-name --output-name 
+NPUsubgraph139: order0--input-name --output-name 
+NPUsubgraph140: order0--input-name --output-name 
+NPUsubgraph141: order0--input-name --output-name 
+NPUsubgraph142: order0--input-name --output-name 
+NPUsubgraph143: order0--input-name --output-name 
+NPUsubgraph144: order0--input-name --output-name 
+NPUsubgraph145: order0--input-name --output-name 
+NPUsubgraph146: order0--input-name --output-name 
+NPUsubgraph147: order0--input-name --output-name 
+NPUsubgraph148: order0--input-name --output-name 
+NPUsubgraph149: order0--input-name --output-name 
+NPUsubgraph150: order0--input-name --output-name 
+NPUsubgraph151: order0--input-name --output-name 
+NPUsubgraph152: order0--input-name --output-name 
+NPUsubgraph153: order0--input-name --output-name 
+NPUsubgraph154: order0--input-name --output-name 
+NPUsubgraph155: order0--input-name --output-name 
+NPUsubgraph156: order0--input-name --output-name 
+NPUsubgraph157: order0--input-name --output-name 
+NPUsubgraph158: order0--input-name --output-name 
+NPUsubgraph159: order0--input-name --output-name 
+NPUsubgraph160: order0--input-name --output-name 
+NPUsubgraph161: order0--input-name --output-name 
+NPUsubgraph162: order0--input-name --output-name 
+NPUsubgraph163: order0--input-name --output-name 
+NPUsubgraph164: order0--input-name --output-name 
+NPUsubgraph165: order0--input-name --output-name 
+NPUsubgraph166: order0--input-name --output-name 
+NPUsubgraph167: order0--input-name --output-name 
+NPUsubgraph168: order0--input-name --output-name 
+NPUsubgraph169: order0--input-name --output-name 
+NPUsubgraph170: order0--input-name --output-name 
+NPUsubgraph171: order0--input-name --output-name 
+NPUsubgraph172: order0--input-name --output-name 
+NPUsubgraph173: order0--input-name --output-name 
+NPUsubgraph174: order0--input-name --output-name 
+NPUsubgraph175: order0--input-name --output-name 
+NPUsubgraph176: order0--input-name --output-name 
+NPUsubgraph177: order0--input-name --output-name 
+NPUsubgraph178: order0--input-name --output-name 
+NPUsubgraph179: order0--input-name --output-name 
+NPUsubgraph180: order0--input-name --output-name 
+NPUsubgraph181: order0--input-name --output-name 
+NPUsubgraph182: order0--input-name --output-name 
+NPUsubgraph183: order0--input-name --output-name 
+NPUsubgraph184: order0--input-name --output-name 
+NPUsubgraph185: order0--input-name --output-name 
+NPUsubgraph186: order0--input-name --output-name 
+NPUsubgraph187: order0--input-name --output-name 
+NPUsubgraph188: order0--input-name --output-name 
+NPUsubgraph189: order0--input-name --output-name 
+NPUsubgraph190: order0--input-name --output-name 
+NPUsubgraph191: order0--input-name --output-name 
+NPUsubgraph192: order0--input-name --output-name 
+NPUsubgraph193: order0--input-name --output-name 
+NPUsubgraph194: order0--input-name --output-name 
+NPUsubgraph195: order0--input-name --output-name 
+NPUsubgraph196: order0--input-name --output-name 
+NPUsubgraph197: order0--input-name --output-name 
+NPUsubgraph198: order0--input-name --output-name 
+NPUsubgraph199: order0--input-name --output-name 
+NPUsubgraph200: order0--input-name --output-name 
+NPUsubgraph201: order0--input-name --output-name 
+NPUsubgraph202: order0--input-name --output-name 
+NPUsubgraph203: order0--input-name --output-name 
+NPUsubgraph204: order0--input-name --output-name 
+NPUsubgraph205: order0--input-name --output-name 
+NPUsubgraph206: order0--input-name --output-name 
+NPUsubgraph207: order0--input-name --output-name 
+NPUsubgraph208: order0--input-name --output-name 
+NPUsubgraph209: order0--input-name --output-name 
+NPUsubgraph210: order0--input-name --output-name 
+NPUsubgraph211: order0--input-name --output-name 
+NPUsubgraph212: order0--input-name --output-name 
+NPUsubgraph213: order0--input-name --output-name 
+NPUsubgraph214: order0--input-name --output-name 
+NPUsubgraph215: order0--input-name --output-name 
+NPUsubgraph216: order0--input-name --output-name 
+CPUsubgraph0: order0--input-name timestep;--output-name /time_embedding/linear_2/Gemm_output_0;
+CPUsubgraph1: order0--input-name sample;--output-name /down_blocks.0/resnets.0/conv1/Conv_output_0;/conv_in/Conv_output_0;
+CPUsubgraph2: order1--input-name /time_embedding/linear_2/Gemm_output_0;--output-name /up_blocks.2/resnets.1/Unsqueeze_1_output_0;/up_blocks.2/resnets.0/Unsqueeze_1_output_0;/up_blocks.1/resnets.1/Unsqueeze_1_output_0;/up_blocks.1/resnets.0/Unsqueeze_1_output_0;/up_blocks.0/resnets.0/Unsqueeze_1_output_0;/down_blocks.1/resnets.0/Unsqueeze_1_output_0;/up_blocks.0/resnets.1/Unsqueeze_1_output_0;/down_blocks.2/resnets.0/Unsqueeze_1_output_0;/down_blocks.0/resnets.0/Unsqueeze_1_output_0;
+CPUsubgraph3: order3--input-name /down_blocks.0/resnets.0/Add_output_0;--output-name /down_blocks.0/resnets.0/norm2/Add_output_0;
+CPUsubgraph4: order5--input-name /down_blocks.0/attentions.0/Reshape_output_0;--output-name _v_3010;_v_3009;_v_3008;
+CPUsubgraph5: order7--input-name /down_blocks.0/attentions.0/transformer_blocks.0/attn1/Mul_1_output_0;/down_blocks.0/attentions.0/transformer_blocks.0/attn1/Mul_output_0;--output-name /down_blocks.0/attentions.0/transformer_blocks.0/attn1/Softmax_output_0;
+CPUsubgraph6: order9--input-name /down_blocks.0/attentions.0/Reshape_output_0;/down_blocks.0/attentions.0/transformer_blocks.0/attn1/MatMul_1_output_0;--output-name /down_blocks.0/attentions.0/transformer_blocks.0/norm2/Add_output_0;/down_blocks.0/attentions.0/transformer_blocks.0/norm2/Sub_output_0;/down_blocks.0/attentions.0/transformer_blocks.0/Add_output_0;
+CPUsubgraph7: order10--input-name /down_blocks.0/attentions.0/transformer_blocks.0/norm2/Add_output_0;--output-name /down_blocks.0/attentions.0/transformer_blocks.0/norm2/Sqrt_output_0;
+CPUsubgraph8: order0--input-name encoder_hidden_states;--output-name /down_blocks.0/attentions.0/transformer_blocks.0/attn2/Mul_1_output_0;
+CPUsubgraph9: order0--input-name encoder_hidden_states;--output-name /down_blocks.0/attentions.0/transformer_blocks.0/attn2/Transpose_1_output_0;
+CPUsubgraph10: order15--input-name /down_blocks.0/attentions.0/transformer_blocks.0/norm3/Sub_output_0;--output-name /down_blocks.0/attentions.0/transformer_blocks.0/ff/net.0/Slice_1_output_0;/down_blocks.0/attentions.0/transformer_blocks.0/ff/net.0/Slice_output_0;
+CPUsubgraph11: order16--input-name /down_blocks.0/attentions.0/transformer_blocks.0/ff/net.0/Slice_output_0;/down_blocks.0/attentions.0/transformer_blocks.0/ff/net.0/Slice_1_output_0;--output-name /down_blocks.0/attentions.0/transformer_blocks.0/ff/net.2/Add_output_0;
+CPUsubgraph12: order21--input-name /down_blocks.1/attentions.0/norm/Reshape_output_0;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/norm1/Pow_output_0;/down_blocks.1/attentions.0/transformer_blocks.0/norm1/Sub_output_0;/down_blocks.1/attentions.0/Reshape_output_0;
+CPUsubgraph13: order22--input-name /down_blocks.1/attentions.0/transformer_blocks.0/norm1/Pow_output_0;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/norm1/Sqrt_output_0;
+CPUsubgraph14: order25--input-name /down_blocks.1/attentions.0/transformer_blocks.0/norm1/Add_1_output_0;--output-name _v_3017;_v_3016;_v_3015;
+CPUsubgraph15: order27--input-name /down_blocks.1/attentions.0/transformer_blocks.0/attn1/MatMul_1_output_0;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/attn1/to_out.0/Add_output_0;
+CPUsubgraph16: order29--input-name /down_blocks.1/attentions.0/transformer_blocks.0/norm2/Sub_output_0;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/attn2/Transpose_output_0;
+CPUsubgraph17: order0--input-name encoder_hidden_states;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/attn2/Mul_1_output_0;
+CPUsubgraph18: order0--input-name encoder_hidden_states;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/attn2/Transpose_1_output_0;
+CPUsubgraph19: order33--input-name /down_blocks.1/attentions.0/transformer_blocks.0/norm3/Sub_output_0;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/ff/net.0/Slice_1_output_0;/down_blocks.1/attentions.0/transformer_blocks.0/ff/net.0/Slice_output_0;
+CPUsubgraph20: order34--input-name /down_blocks.1/attentions.0/transformer_blocks.0/ff/net.0/Slice_output_0;/down_blocks.1/attentions.0/transformer_blocks.0/ff/net.0/Slice_1_output_0;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/ff/net.2/Add_output_0;
+CPUsubgraph21: order36--input-name /down_blocks.1/attentions.0/transformer_blocks.0/Add_2_output_0;--output-name /down_blocks.1/attentions.0/proj_out/Conv_output_0;
+CPUsubgraph22: order38--input-name /down_blocks.1/attentions.0/Add_output_0;--output-name /down_blocks.2/resnets.0/conv_shortcut/Conv_output_0;/down_blocks.2/resnets.0/norm1/Mul_output_0;/down_blocks.1/downsamplers.0/conv/Conv_output_0;
+CPUsubgraph23: order42--input-name /down_blocks.2/attentions.0/transformer_blocks.0/norm1/Add_1_output_0;--output-name _v_3024;_v_3023;_v_3022;
+CPUsubgraph24: order44--input-name /down_blocks.2/attentions.0/transformer_blocks.0/attn1/Transpose_2_output_0;/down_blocks.2/attentions.0/transformer_blocks.0/attn1/Transpose_1_output_0;/down_blocks.2/attentions.0/transformer_blocks.0/attn1/Transpose_output_0;--output-name /down_blocks.2/attentions.0/transformer_blocks.0/attn1/Transpose_3_output_0;
+CPUsubgraph25: order0--input-name encoder_hidden_states;--output-name /down_blocks.2/attentions.0/transformer_blocks.0/attn2/Mul_1_output_0;
+CPUsubgraph26: order0--input-name encoder_hidden_states;--output-name /down_blocks.2/attentions.0/transformer_blocks.0/attn2/Transpose_1_output_0;
+CPUsubgraph27: order49--input-name /down_blocks.2/attentions.0/transformer_blocks.0/norm3/Div_output_0;--output-name /down_blocks.2/attentions.0/transformer_blocks.0/ff/net.0/Mul_3_output_0;/down_blocks.2/attentions.0/transformer_blocks.0/ff/net.0/Slice_output_0;
+CPUsubgraph28: order54--input-name /up_blocks.0/attentions.0/norm/Reshape_output_0;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/norm1/Pow_output_0;/up_blocks.0/attentions.0/transformer_blocks.0/norm1/Sub_output_0;/up_blocks.0/attentions.0/Reshape_output_0;
+CPUsubgraph29: order55--input-name /up_blocks.0/attentions.0/transformer_blocks.0/norm1/Pow_output_0;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/norm1/Sqrt_output_0;
+CPUsubgraph30: order58--input-name /up_blocks.0/attentions.0/transformer_blocks.0/norm1/Add_1_output_0;--output-name _v_3031;_v_3030;_v_3029;
+CPUsubgraph31: order60--input-name /up_blocks.0/attentions.0/transformer_blocks.0/attn1/MatMul_1_output_0;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/attn1/to_out.0/Add_output_0;
+CPUsubgraph32: order62--input-name /up_blocks.0/attentions.0/transformer_blocks.0/norm2/Sub_output_0;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/attn2/Transpose_output_0;
+CPUsubgraph33: order0--input-name encoder_hidden_states;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/attn2/Mul_1_output_0;
+CPUsubgraph34: order0--input-name encoder_hidden_states;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/attn2/Transpose_1_output_0;
+CPUsubgraph35: order66--input-name /up_blocks.0/attentions.0/transformer_blocks.0/norm3/Sub_output_0;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/ff/net.0/Slice_1_output_0;/up_blocks.0/attentions.0/transformer_blocks.0/ff/net.0/Slice_output_0;
+CPUsubgraph36: order67--input-name /up_blocks.0/attentions.0/transformer_blocks.0/ff/net.0/Slice_output_0;/up_blocks.0/attentions.0/transformer_blocks.0/ff/net.0/Slice_1_output_0;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/ff/net.2/Add_output_0;
+CPUsubgraph37: order69--input-name /up_blocks.0/attentions.0/transformer_blocks.0/Add_2_output_0;--output-name /up_blocks.0/attentions.0/proj_out/Conv_output_0;
+CPUsubgraph38: order74--input-name /up_blocks.0/attentions.1/transformer_blocks.0/norm1/Add_1_output_0;--output-name _v_3038;_v_3037;_v_3036;
+CPUsubgraph39: order76--input-name /up_blocks.0/attentions.1/transformer_blocks.0/attn1/Reshape_1_output_0;/up_blocks.0/attentions.1/transformer_blocks.0/attn1/Reshape_2_output_0;/up_blocks.0/attentions.1/transformer_blocks.0/attn1/Reshape_output_0;--output-name /up_blocks.0/attentions.1/transformer_blocks.0/attn1/MatMul_1_output_0;
+CPUsubgraph40: order78--input-name /up_blocks.0/attentions.1/transformer_blocks.0/norm2/Div_output_0;--output-name /up_blocks.0/attentions.1/transformer_blocks.0/attn2/Mul_output_0;
+CPUsubgraph41: order0--input-name encoder_hidden_states;--output-name /up_blocks.0/attentions.1/transformer_blocks.0/attn2/Mul_1_output_0;
+CPUsubgraph42: order0--input-name encoder_hidden_states;--output-name /up_blocks.0/attentions.1/transformer_blocks.0/attn2/Transpose_1_output_0;
+CPUsubgraph43: order82--input-name /up_blocks.0/attentions.1/transformer_blocks.0/norm3/Div_output_0;--output-name /up_blocks.0/attentions.1/transformer_blocks.0/ff/net.0/Mul_3_output_0;/up_blocks.0/attentions.1/transformer_blocks.0/ff/net.0/Slice_output_0;
+CPUsubgraph44: order85--input-name /up_blocks.1/resnets.0/norm1/InstanceNormalization_output_0;--output-name /up_blocks.1/resnets.0/act/Mul_output_0;
+CPUsubgraph45: order87--input-name /up_blocks.1/resnets.0/norm2/Add_output_0;--output-name /up_blocks.1/resnets.0/conv2/Conv_output_0;
+CPUsubgraph46: order89--input-name /up_blocks.1/resnets.0/Add_1_output_0;--output-name /up_blocks.1/attentions.0/transformer_blocks.0/norm1/Sub_output_0;/up_blocks.1/attentions.0/Reshape_output_0;
+CPUsubgraph47: order91--input-name /up_blocks.1/attentions.0/transformer_blocks.0/norm1/Add_1_output_0;--output-name _v_3044;_v_3045;_v_3043;
+CPUsubgraph48: order93--input-name /up_blocks.1/attentions.0/transformer_blocks.0/attn1/Reshape_1_output_0;/up_blocks.1/attentions.0/transformer_blocks.0/attn1/Reshape_2_output_0;/up_blocks.1/attentions.0/transformer_blocks.0/attn1/Reshape_output_0;--output-name /up_blocks.1/attentions.0/transformer_blocks.0/attn1/to_out.0/Add_output_0;
+CPUsubgraph49: order95--input-name /up_blocks.1/attentions.0/transformer_blocks.0/norm2/Sub_output_0;--output-name /up_blocks.1/attentions.0/transformer_blocks.0/attn2/Transpose_output_0;
+CPUsubgraph50: order0--input-name encoder_hidden_states;--output-name /up_blocks.1/attentions.0/transformer_blocks.0/attn2/Mul_1_output_0;
+CPUsubgraph51: order0--input-name encoder_hidden_states;--output-name /up_blocks.1/attentions.0/transformer_blocks.0/attn2/Transpose_1_output_0;
+CPUsubgraph52: order99--input-name /up_blocks.1/attentions.0/transformer_blocks.0/Add_1_output_0;--output-name /up_blocks.1/attentions.0/transformer_blocks.0/ff/net.0/Erf_output_0;/up_blocks.1/attentions.0/transformer_blocks.0/ff/net.0/Slice_1_output_0;/up_blocks.1/attentions.0/transformer_blocks.0/ff/net.0/Slice_output_0;
+CPUsubgraph53: order100--input-name /up_blocks.1/attentions.0/transformer_blocks.0/ff/net.0/Erf_output_0;--output-name /up_blocks.1/attentions.0/transformer_blocks.0/ff/net.0/Add_1_output_0;
+CPUsubgraph54: order102--input-name /up_blocks.1/attentions.0/transformer_blocks.0/Add_1_output_0;/up_blocks.1/attentions.0/transformer_blocks.0/ff/net.2/MatMul_output_0;--output-name /up_blocks.1/attentions.0/proj_out/Conv_output_0;
+CPUsubgraph55: order105--input-name /up_blocks.1/resnets.1/conv_shortcut/Conv_output_0;/up_blocks.1/resnets.1/norm2/Add_output_0;--output-name /up_blocks.1/attentions.1/proj_in/Conv_output_0;/up_blocks.1/resnets.1/Add_1_output_0;
+CPUsubgraph56: order107--input-name /up_blocks.1/attentions.1/transformer_blocks.0/norm1/Add_1_output_0;--output-name _v_3052;_v_3051;_v_3050;
+CPUsubgraph57: order109--input-name /up_blocks.1/attentions.1/transformer_blocks.0/attn1/Reshape_1_output_0;/up_blocks.1/attentions.1/transformer_blocks.0/attn1/Reshape_2_output_0;/up_blocks.1/attentions.1/transformer_blocks.0/attn1/Reshape_output_0;--output-name /up_blocks.1/attentions.1/transformer_blocks.0/attn1/MatMul_1_output_0;
+CPUsubgraph58: order111--input-name /up_blocks.1/attentions.1/transformer_blocks.0/norm2/Div_output_0;--output-name /up_blocks.1/attentions.1/transformer_blocks.0/attn2/Mul_output_0;
+CPUsubgraph59: order0--input-name encoder_hidden_states;--output-name /up_blocks.1/attentions.1/transformer_blocks.0/attn2/Mul_1_output_0;
+CPUsubgraph60: order0--input-name encoder_hidden_states;--output-name /up_blocks.1/attentions.1/transformer_blocks.0/attn2/Transpose_1_output_0;
+CPUsubgraph61: order115--input-name /up_blocks.1/attentions.1/transformer_blocks.0/norm3/Div_output_0;--output-name /up_blocks.1/attentions.1/transformer_blocks.0/ff/net.0/Mul_3_output_0;/up_blocks.1/attentions.1/transformer_blocks.0/ff/net.0/Slice_output_0;
+CPUsubgraph62: order121--input-name /up_blocks.2/attentions.0/norm/Reshape_output_0;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/norm1/Pow_output_0;/up_blocks.2/attentions.0/transformer_blocks.0/norm1/Sub_output_0;/up_blocks.2/attentions.0/Reshape_output_0;
+CPUsubgraph63: order122--input-name /up_blocks.2/attentions.0/transformer_blocks.0/norm1/Pow_output_0;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/norm1/Sqrt_output_0;
+CPUsubgraph64: order125--input-name /up_blocks.2/attentions.0/transformer_blocks.0/norm1/Add_1_output_0;--output-name _v_3059;_v_3058;_v_3057;
+CPUsubgraph65: order127--input-name /up_blocks.2/attentions.0/transformer_blocks.0/attn1/MatMul_1_output_0;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/attn1/to_out.0/Add_output_0;
+CPUsubgraph66: order129--input-name /up_blocks.2/attentions.0/transformer_blocks.0/norm2/Sub_output_0;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/attn2/Transpose_output_0;
+CPUsubgraph67: order0--input-name encoder_hidden_states;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/attn2/Mul_1_output_0;
+CPUsubgraph68: order0--input-name encoder_hidden_states;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/attn2/Transpose_1_output_0;
+CPUsubgraph69: order133--input-name /up_blocks.2/attentions.0/transformer_blocks.0/norm3/Sub_output_0;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/ff/net.0/Slice_1_output_0;/up_blocks.2/attentions.0/transformer_blocks.0/ff/net.0/Slice_output_0;
+CPUsubgraph70: order134--input-name /up_blocks.2/attentions.0/transformer_blocks.0/ff/net.0/Slice_output_0;/up_blocks.2/attentions.0/transformer_blocks.0/ff/net.0/Slice_1_output_0;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/ff/net.2/Add_output_0;
+CPUsubgraph71: order136--input-name /up_blocks.2/attentions.0/transformer_blocks.0/Add_2_output_0;--output-name /up_blocks.2/attentions.0/proj_out/Conv_output_0;
+CPUsubgraph72: order141--input-name /up_blocks.2/attentions.1/transformer_blocks.0/norm1/Add_1_output_0;--output-name _v_3066;_v_3065;_v_3064;
+CPUsubgraph73: order143--input-name /up_blocks.2/attentions.1/transformer_blocks.0/attn1/Reshape_1_output_0;/up_blocks.2/attentions.1/transformer_blocks.0/attn1/Reshape_2_output_0;/up_blocks.2/attentions.1/transformer_blocks.0/attn1/Reshape_output_0;--output-name /up_blocks.2/attentions.1/transformer_blocks.0/attn1/MatMul_1_output_0;
+CPUsubgraph74: order145--input-name /up_blocks.2/attentions.1/transformer_blocks.0/norm2/Div_output_0;--output-name /up_blocks.2/attentions.1/transformer_blocks.0/attn2/Mul_output_0;
+CPUsubgraph75: order0--input-name encoder_hidden_states;--output-name /up_blocks.2/attentions.1/transformer_blocks.0/attn2/Mul_1_output_0;
+CPUsubgraph76: order0--input-name encoder_hidden_states;--output-name /up_blocks.2/attentions.1/transformer_blocks.0/attn2/Transpose_1_output_0;
+CPUsubgraph77: order149--input-name /up_blocks.2/attentions.1/transformer_blocks.0/norm3/Div_output_0;--output-name /up_blocks.2/attentions.1/transformer_blocks.0/ff/net.0/Mul_3_output_0;/up_blocks.2/attentions.1/transformer_blocks.0/ff/net.0/Slice_output_0;
+CPUsubgraph78: order152--input-name /conv_norm_out/Add_output_0;--output-name 3089;
+CPUsubgraph79: order19--input-name /down_blocks.1/resnets.0/act/Mul_output_0;/down_blocks.1/resnets.0/Unsqueeze_1_output_0;--output-name /down_blocks.1/resnets.0/norm2/Add_output_0;
+CPUsubgraph80: order4--input-name /down_blocks.0/resnets.0/norm2/Add_output_0;/conv_in/Conv_output_0;--output-name /down_blocks.0/attentions.0/Reshape_output_0;/down_blocks.0/resnets.0/Add_1_output_0;
+CPUsubgraph81: order8--input-name /down_blocks.0/attentions.0/transformer_blocks.0/attn1/Transpose_1_output_0;/down_blocks.0/attentions.0/transformer_blocks.0/attn1/Softmax_output_0;--output-name /down_blocks.0/attentions.0/transformer_blocks.0/attn1/MatMul_1_output_0;
+CPUsubgraph82: order11--input-name /down_blocks.0/attentions.0/transformer_blocks.0/norm2/Sqrt_output_0;/down_blocks.0/attentions.0/transformer_blocks.0/norm2/Sub_output_0;--output-name /down_blocks.0/attentions.0/transformer_blocks.0/norm2/Add_1_output_0;
+CPUsubgraph83: order12--input-name /down_blocks.0/attentions.0/transformer_blocks.0/attn2/Mul_1_output_0;/down_blocks.0/attentions.0/transformer_blocks.0/norm2/Add_1_output_0;--output-name /down_blocks.0/attentions.0/transformer_blocks.0/attn2/Softmax_output_0;
+CPUsubgraph84: order13--input-name /down_blocks.0/attentions.0/transformer_blocks.0/attn2/Transpose_1_output_0;/down_blocks.0/attentions.0/transformer_blocks.0/attn2/Softmax_output_0;--output-name /down_blocks.0/attentions.0/transformer_blocks.0/attn2/Transpose_3_output_0;
+CPUsubgraph85: order23--input-name /down_blocks.1/attentions.0/transformer_blocks.0/norm1/Sqrt_output_0;/down_blocks.1/attentions.0/transformer_blocks.0/norm1/Sub_output_0;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/norm1/Div_output_0;
+CPUsubgraph86: order30--input-name /down_blocks.1/attentions.0/transformer_blocks.0/attn2/Transpose_output_0;/down_blocks.1/attentions.0/transformer_blocks.0/attn2/Mul_1_output_0;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/attn2/Softmax_output_0;
+CPUsubgraph87: order31--input-name /down_blocks.1/attentions.0/transformer_blocks.0/attn2/Transpose_1_output_0;/down_blocks.1/attentions.0/transformer_blocks.0/attn2/Softmax_output_0;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/attn2/to_out.0/Add_output_0;
+CPUsubgraph88: order40--input-name /down_blocks.2/resnets.0/norm2/Add_output_0;/down_blocks.2/resnets.0/conv_shortcut/Conv_output_0;--output-name /down_blocks.2/attentions.0/Transpose_output_0;/down_blocks.2/resnets.0/Add_1_output_0;
+CPUsubgraph89: order45--input-name /down_blocks.2/attentions.0/transformer_blocks.0/attn1/Transpose_3_output_0;/down_blocks.2/attentions.0/Reshape_output_0;--output-name /down_blocks.2/attentions.0/transformer_blocks.0/attn2/Transpose_output_0;/down_blocks.2/attentions.0/transformer_blocks.0/Add_output_0;
+CPUsubgraph90: order46--input-name /down_blocks.2/attentions.0/transformer_blocks.0/attn2/Transpose_output_0;/down_blocks.2/attentions.0/transformer_blocks.0/attn2/Mul_1_output_0;--output-name /down_blocks.2/attentions.0/transformer_blocks.0/attn2/Softmax_output_0;
+CPUsubgraph91: order47--input-name /down_blocks.2/attentions.0/transformer_blocks.0/attn2/Transpose_1_output_0;/down_blocks.2/attentions.0/transformer_blocks.0/attn2/Softmax_output_0;--output-name /down_blocks.2/attentions.0/transformer_blocks.0/attn2/Transpose_3_output_0;
+CPUsubgraph92: order56--input-name /up_blocks.0/attentions.0/transformer_blocks.0/norm1/Sqrt_output_0;/up_blocks.0/attentions.0/transformer_blocks.0/norm1/Sub_output_0;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/norm1/Div_output_0;
+CPUsubgraph93: order63--input-name /up_blocks.0/attentions.0/transformer_blocks.0/attn2/Transpose_output_0;/up_blocks.0/attentions.0/transformer_blocks.0/attn2/Mul_1_output_0;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/attn2/Softmax_output_0;
+CPUsubgraph94: order64--input-name /up_blocks.0/attentions.0/transformer_blocks.0/attn2/Transpose_1_output_0;/up_blocks.0/attentions.0/transformer_blocks.0/attn2/Softmax_output_0;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/attn2/to_out.0/Add_output_0;
+CPUsubgraph95: order77--input-name /up_blocks.0/attentions.1/transformer_blocks.0/attn1/MatMul_1_output_0;/up_blocks.0/attentions.1/Reshape_output_0;--output-name /up_blocks.0/attentions.1/transformer_blocks.0/norm2/Div_output_0;/up_blocks.0/attentions.1/transformer_blocks.0/Add_output_0;
+CPUsubgraph96: order79--input-name /up_blocks.0/attentions.1/transformer_blocks.0/attn2/Mul_1_output_0;/up_blocks.0/attentions.1/transformer_blocks.0/attn2/Mul_output_0;--output-name /up_blocks.0/attentions.1/transformer_blocks.0/attn2/Softmax_output_0;
+CPUsubgraph97: order80--input-name /up_blocks.0/attentions.1/transformer_blocks.0/attn2/Transpose_1_output_0;/up_blocks.0/attentions.1/transformer_blocks.0/attn2/Softmax_output_0;--output-name /up_blocks.0/attentions.1/transformer_blocks.0/attn2/Transpose_3_output_0;
+CPUsubgraph98: order94--input-name /up_blocks.1/attentions.0/Reshape_output_0;/up_blocks.1/attentions.0/transformer_blocks.0/attn1/to_out.0/Add_output_0;--output-name /up_blocks.1/attentions.0/transformer_blocks.0/norm2/Sub_output_0;/up_blocks.1/attentions.0/transformer_blocks.0/Add_output_0;
+CPUsubgraph99: order96--input-name /up_blocks.1/attentions.0/transformer_blocks.0/attn2/Transpose_output_0;/up_blocks.1/attentions.0/transformer_blocks.0/attn2/Mul_1_output_0;--output-name /up_blocks.1/attentions.0/transformer_blocks.0/attn2/Softmax_output_0;
+CPUsubgraph100: order97--input-name /up_blocks.1/attentions.0/transformer_blocks.0/attn2/Transpose_1_output_0;/up_blocks.1/attentions.0/transformer_blocks.0/attn2/Softmax_output_0;--output-name /up_blocks.1/attentions.0/transformer_blocks.0/attn2/to_out.0/Add_output_0;
+CPUsubgraph101: order101--input-name /up_blocks.1/attentions.0/transformer_blocks.0/ff/net.0/Add_1_output_0;/up_blocks.1/attentions.0/transformer_blocks.0/ff/net.0/Slice_1_output_0;/up_blocks.1/attentions.0/transformer_blocks.0/ff/net.0/Slice_output_0;--output-name /up_blocks.1/attentions.0/transformer_blocks.0/ff/net.2/MatMul_output_0;
+CPUsubgraph102: order117--input-name /up_blocks.1/attentions.1/transformer_blocks.0/Add_2_output_0;/up_blocks.1/resnets.1/Add_1_output_0;--output-name /up_blocks.1/attentions.1/Add_output_0;
+CPUsubgraph103: order110--input-name /up_blocks.1/attentions.1/transformer_blocks.0/attn1/MatMul_1_output_0;/up_blocks.1/attentions.1/Reshape_output_0;--output-name /up_blocks.1/attentions.1/transformer_blocks.0/norm2/Div_output_0;/up_blocks.1/attentions.1/transformer_blocks.0/Add_output_0;
+CPUsubgraph104: order112--input-name /up_blocks.1/attentions.1/transformer_blocks.0/attn2/Mul_1_output_0;/up_blocks.1/attentions.1/transformer_blocks.0/attn2/Mul_output_0;--output-name /up_blocks.1/attentions.1/transformer_blocks.0/attn2/Softmax_output_0;
+CPUsubgraph105: order113--input-name /up_blocks.1/attentions.1/transformer_blocks.0/attn2/Transpose_1_output_0;/up_blocks.1/attentions.1/transformer_blocks.0/attn2/Softmax_output_0;--output-name /up_blocks.1/attentions.1/transformer_blocks.0/attn2/Transpose_3_output_0;
+CPUsubgraph106: order123--input-name /up_blocks.2/attentions.0/transformer_blocks.0/norm1/Sqrt_output_0;/up_blocks.2/attentions.0/transformer_blocks.0/norm1/Sub_output_0;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/norm1/Div_output_0;
+CPUsubgraph107: order130--input-name /up_blocks.2/attentions.0/transformer_blocks.0/attn2/Transpose_output_0;/up_blocks.2/attentions.0/transformer_blocks.0/attn2/Mul_1_output_0;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/attn2/Softmax_output_0;
+CPUsubgraph108: order131--input-name /up_blocks.2/attentions.0/transformer_blocks.0/attn2/Transpose_1_output_0;/up_blocks.2/attentions.0/transformer_blocks.0/attn2/Softmax_output_0;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/attn2/to_out.0/Add_output_0;
+CPUsubgraph109: order144--input-name /up_blocks.2/attentions.1/transformer_blocks.0/attn1/MatMul_1_output_0;/up_blocks.2/attentions.1/Reshape_output_0;--output-name /up_blocks.2/attentions.1/transformer_blocks.0/norm2/Div_output_0;/up_blocks.2/attentions.1/transformer_blocks.0/Add_output_0;
+CPUsubgraph110: order146--input-name /up_blocks.2/attentions.1/transformer_blocks.0/attn2/Mul_1_output_0;/up_blocks.2/attentions.1/transformer_blocks.0/attn2/Mul_output_0;--output-name /up_blocks.2/attentions.1/transformer_blocks.0/attn2/Softmax_output_0;
+CPUsubgraph111: order147--input-name /up_blocks.2/attentions.1/transformer_blocks.0/attn2/Transpose_1_output_0;/up_blocks.2/attentions.1/transformer_blocks.0/attn2/Softmax_output_0;--output-name /up_blocks.2/attentions.1/transformer_blocks.0/attn2/Transpose_3_output_0;
+CPUsubgraph112: order2--input-name /down_blocks.0/resnets.0/Unsqueeze_1_output_0;/down_blocks.0/resnets.0/conv1/Conv_output_0;--output-name /down_blocks.0/resnets.0/Add_output_0;
+CPUsubgraph113: order6--input-name _v_3010;_v_3009;_v_3008;--output-name /down_blocks.0/attentions.0/transformer_blocks.0/attn1/Transpose_1_output_0;/down_blocks.0/attentions.0/transformer_blocks.0/attn1/Mul_1_output_0;/down_blocks.0/attentions.0/transformer_blocks.0/attn1/Mul_output_0;
+CPUsubgraph114: order24--input-name /down_blocks.1/attentions.0/transformer_blocks.0/norm1/Div_output_0;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/norm1/Add_1_output_0;
+CPUsubgraph115: order26--input-name _v_3017;_v_3016;_v_3015;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/attn1/MatMul_1_output_0;
+CPUsubgraph116: order41--input-name /down_blocks.2/attentions.0/Transpose_output_0;--output-name /down_blocks.2/attentions.0/transformer_blocks.0/norm1/Add_1_output_0;/down_blocks.2/attentions.0/Reshape_output_0;
+CPUsubgraph117: order43--input-name _v_3024;_v_3023;_v_3022;--output-name /down_blocks.2/attentions.0/transformer_blocks.0/attn1/Transpose_1_output_0;/down_blocks.2/attentions.0/transformer_blocks.0/attn1/Transpose_2_output_0;/down_blocks.2/attentions.0/transformer_blocks.0/attn1/Transpose_output_0;
+CPUsubgraph118: order57--input-name /up_blocks.0/attentions.0/transformer_blocks.0/norm1/Div_output_0;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/norm1/Add_1_output_0;
+CPUsubgraph119: order59--input-name _v_3031;_v_3030;_v_3029;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/attn1/MatMul_1_output_0;
+CPUsubgraph120: order73--input-name /up_blocks.0/attentions.1/proj_in/Conv_output_0;--output-name /up_blocks.0/attentions.1/transformer_blocks.0/norm1/Add_1_output_0;/up_blocks.0/attentions.1/Reshape_output_0;
+CPUsubgraph121: order75--input-name _v_3038;_v_3037;_v_3036;--output-name /up_blocks.0/attentions.1/transformer_blocks.0/attn1/Reshape_2_output_0;/up_blocks.0/attentions.1/transformer_blocks.0/attn1/Reshape_1_output_0;/up_blocks.0/attentions.1/transformer_blocks.0/attn1/Reshape_output_0;
+CPUsubgraph122: order90--input-name /up_blocks.1/attentions.0/transformer_blocks.0/norm1/Sub_output_0;--output-name /up_blocks.1/attentions.0/transformer_blocks.0/norm1/Add_1_output_0;
+CPUsubgraph123: order92--input-name _v_3044;_v_3045;_v_3043;--output-name /up_blocks.1/attentions.0/transformer_blocks.0/attn1/Reshape_2_output_0;/up_blocks.1/attentions.0/transformer_blocks.0/attn1/Reshape_1_output_0;/up_blocks.1/attentions.0/transformer_blocks.0/attn1/Reshape_output_0;
+CPUsubgraph124: order106--input-name /up_blocks.1/attentions.1/proj_in/Conv_output_0;--output-name /up_blocks.1/attentions.1/transformer_blocks.0/norm1/Add_1_output_0;/up_blocks.1/attentions.1/Reshape_output_0;
+CPUsubgraph125: order108--input-name _v_3052;_v_3051;_v_3050;--output-name /up_blocks.1/attentions.1/transformer_blocks.0/attn1/Reshape_2_output_0;/up_blocks.1/attentions.1/transformer_blocks.0/attn1/Reshape_1_output_0;/up_blocks.1/attentions.1/transformer_blocks.0/attn1/Reshape_output_0;
+CPUsubgraph126: order124--input-name /up_blocks.2/attentions.0/transformer_blocks.0/norm1/Div_output_0;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/norm1/Add_1_output_0;
+CPUsubgraph127: order126--input-name _v_3059;_v_3058;_v_3057;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/attn1/MatMul_1_output_0;
+CPUsubgraph128: order140--input-name /up_blocks.2/attentions.1/proj_in/Conv_output_0;--output-name /up_blocks.2/attentions.1/transformer_blocks.0/norm1/Add_1_output_0;/up_blocks.2/attentions.1/Reshape_output_0;
+CPUsubgraph129: order142--input-name _v_3066;_v_3065;_v_3064;--output-name /up_blocks.2/attentions.1/transformer_blocks.0/attn1/Reshape_2_output_0;/up_blocks.2/attentions.1/transformer_blocks.0/attn1/Reshape_1_output_0;/up_blocks.2/attentions.1/transformer_blocks.0/attn1/Reshape_output_0;
+CPUsubgraph130: order39--input-name /down_blocks.2/resnets.0/norm1/Mul_output_0;/down_blocks.2/resnets.0/Unsqueeze_1_output_0;--output-name /down_blocks.2/resnets.0/norm2/Add_output_0;
+CPUsubgraph131: order52--input-name /up_blocks.0/resnets.0/norm1/Add_output_0;/up_blocks.0/resnets.0/Unsqueeze_1_output_0;--output-name /up_blocks.0/resnets.0/norm2/Add_output_0;
+CPUsubgraph132: order71--input-name /up_blocks.0/resnets.1/norm1/Reshape_1_output_0;/up_blocks.0/resnets.1/Unsqueeze_1_output_0;--output-name /up_blocks.0/resnets.1/norm2/Add_output_0;
+CPUsubgraph133: order86--input-name /up_blocks.1/resnets.0/act/Mul_output_0;/up_blocks.1/resnets.0/Unsqueeze_1_output_0;--output-name /up_blocks.1/resnets.0/norm2/Add_output_0;
+CPUsubgraph134: order104--input-name /up_blocks.1/resnets.1/norm1/Add_output_0;/up_blocks.1/resnets.1/Unsqueeze_1_output_0;--output-name /up_blocks.1/resnets.1/norm2/Add_output_0;
+CPUsubgraph135: order119--input-name /up_blocks.2/resnets.0/act/Mul_output_0;/up_blocks.2/resnets.0/Unsqueeze_1_output_0;--output-name /up_blocks.2/resnets.0/norm2/Add_output_0;
+CPUsubgraph136: order138--input-name /up_blocks.2/resnets.1/Unsqueeze_1_output_0;/up_blocks.2/resnets.1/conv1/Conv_output_0;--output-name /up_blocks.2/resnets.1/norm2/Add_output_0;
+CPUsubgraph137: order18--input-name /down_blocks.0/attentions.0/transformer_blocks.0/Add_2_output_0;/down_blocks.0/resnets.0/Add_1_output_0;--output-name /down_blocks.1/resnets.0/conv_shortcut/Conv_output_0;/down_blocks.1/resnets.0/act/Mul_output_0;/down_blocks.0/downsamplers.0/conv/Conv_output_0;/down_blocks.0/attentions.0/Add_output_0;
+CPUsubgraph138: order20--input-name /down_blocks.1/resnets.0/conv_shortcut/Conv_output_0;/down_blocks.1/resnets.0/norm2/Add_output_0;--output-name /down_blocks.1/attentions.0/norm/Reshape_output_0;/down_blocks.1/resnets.0/Add_1_output_0;
+CPUsubgraph139: order37--input-name /down_blocks.1/resnets.0/Add_1_output_0;/down_blocks.1/attentions.0/proj_out/Conv_output_0;--output-name /down_blocks.1/attentions.0/Add_output_0;
+CPUsubgraph140: order103--input-name /up_blocks.1/resnets.0/Add_1_output_0;/up_blocks.1/attentions.0/proj_out/Conv_output_0;/down_blocks.0/downsamplers.0/conv/Conv_output_0;--output-name /up_blocks.1/resnets.1/conv_shortcut/Conv_output_0;/up_blocks.1/resnets.1/norm1/Add_output_0;
+CPUsubgraph141: order118--input-name /up_blocks.1/attentions.1/Add_output_0;/down_blocks.0/attentions.0/Add_output_0;--output-name /up_blocks.2/resnets.0/act/Mul_output_0;/up_blocks.2/resnets.0/conv_shortcut/Conv_output_0;
+CPUsubgraph142: order120--input-name /up_blocks.2/resnets.0/conv_shortcut/Conv_output_0;/up_blocks.2/resnets.0/norm2/Add_output_0;--output-name /up_blocks.2/attentions.0/norm/Reshape_output_0;/up_blocks.2/resnets.0/Add_1_output_0;
+CPUsubgraph143: order137--input-name /up_blocks.2/resnets.0/Add_1_output_0;/up_blocks.2/attentions.0/proj_out/Conv_output_0;/conv_in/Conv_output_0;--output-name /up_blocks.2/resnets.1/conv1/Conv_output_0;/up_blocks.2/resnets.1/conv_shortcut/Conv_output_0;
+CPUsubgraph144: order139--input-name /up_blocks.2/resnets.1/norm2/Add_output_0;/up_blocks.2/resnets.1/conv_shortcut/Conv_output_0;--output-name /up_blocks.2/attentions.1/proj_in/Conv_output_0;/up_blocks.2/resnets.1/Add_1_output_0;
+CPUsubgraph145: order151--input-name /up_blocks.2/attentions.1/transformer_blocks.0/Add_2_output_0;/up_blocks.2/resnets.1/Add_1_output_0;--output-name /conv_norm_out/Add_output_0;
+CPUsubgraph146: order14--input-name /down_blocks.0/attentions.0/transformer_blocks.0/Add_output_0;/down_blocks.0/attentions.0/transformer_blocks.0/attn2/Transpose_3_output_0;--output-name /down_blocks.0/attentions.0/transformer_blocks.0/norm3/Sub_output_0;/down_blocks.0/attentions.0/transformer_blocks.0/Add_1_output_0;
+CPUsubgraph147: order17--input-name /down_blocks.0/attentions.0/transformer_blocks.0/Add_1_output_0;/down_blocks.0/attentions.0/transformer_blocks.0/ff/net.2/Add_output_0;--output-name /down_blocks.0/attentions.0/transformer_blocks.0/Add_2_output_0;
+CPUsubgraph148: order28--input-name /down_blocks.1/attentions.0/Reshape_output_0;/down_blocks.1/attentions.0/transformer_blocks.0/attn1/to_out.0/Add_output_0;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/norm2/Sub_output_0;/down_blocks.1/attentions.0/transformer_blocks.0/Add_output_0;
+CPUsubgraph149: order32--input-name /down_blocks.1/attentions.0/transformer_blocks.0/Add_output_0;/down_blocks.1/attentions.0/transformer_blocks.0/attn2/to_out.0/Add_output_0;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/norm3/Sub_output_0;/down_blocks.1/attentions.0/transformer_blocks.0/Add_1_output_0;
+CPUsubgraph150: order35--input-name /down_blocks.1/attentions.0/transformer_blocks.0/Add_1_output_0;/down_blocks.1/attentions.0/transformer_blocks.0/ff/net.2/Add_output_0;--output-name /down_blocks.1/attentions.0/transformer_blocks.0/Add_2_output_0;
+CPUsubgraph151: order51--input-name /down_blocks.2/attentions.0/Reshape_1_output_0;/down_blocks.2/resnets.0/Add_1_output_0;--output-name /up_blocks.0/resnets.0/conv_shortcut/Conv_output_0;/up_blocks.0/resnets.0/norm1/Add_output_0;
+CPUsubgraph152: order53--input-name /up_blocks.0/resnets.0/conv_shortcut/Conv_output_0;/up_blocks.0/resnets.0/norm2/Add_output_0;--output-name /up_blocks.0/attentions.0/norm/Reshape_output_0;/up_blocks.0/resnets.0/Add_1_output_0;
+CPUsubgraph153: order70--input-name /up_blocks.0/resnets.0/Add_1_output_0;/up_blocks.0/attentions.0/proj_out/Conv_output_0;/down_blocks.1/downsamplers.0/conv/Conv_output_0;--output-name /up_blocks.0/resnets.1/conv_shortcut/Conv_output_0;/up_blocks.0/resnets.1/norm1/Reshape_1_output_0;
+CPUsubgraph154: order72--input-name /up_blocks.0/resnets.1/norm2/Add_output_0;/up_blocks.0/resnets.1/conv_shortcut/Conv_output_0;--output-name /up_blocks.0/attentions.1/proj_in/Conv_output_0;/up_blocks.0/resnets.1/Add_1_output_0;
+CPUsubgraph155: order84--input-name /down_blocks.1/attentions.0/Add_output_0;/up_blocks.0/attentions.1/transformer_blocks.0/Add_2_output_0;/up_blocks.0/resnets.1/Add_1_output_0;--output-name /up_blocks.1/resnets.0/conv_shortcut/Conv_output_0;/up_blocks.1/resnets.0/norm1/InstanceNormalization_output_0;
+CPUsubgraph156: order88--input-name /up_blocks.1/resnets.0/conv2/Conv_output_0;/up_blocks.1/resnets.0/conv_shortcut/Conv_output_0;--output-name /up_blocks.1/resnets.0/Add_1_output_0;
+CPUsubgraph157: order48--input-name /down_blocks.2/attentions.0/transformer_blocks.0/attn2/Transpose_3_output_0;/down_blocks.2/attentions.0/transformer_blocks.0/Add_output_0;--output-name /down_blocks.2/attentions.0/transformer_blocks.0/norm3/Div_output_0;/down_blocks.2/attentions.0/transformer_blocks.0/Add_1_output_0;
+CPUsubgraph158: order50--input-name /down_blocks.2/attentions.0/transformer_blocks.0/ff/net.0/Mul_3_output_0;/down_blocks.2/attentions.0/transformer_blocks.0/ff/net.0/Slice_output_0;/down_blocks.2/attentions.0/transformer_blocks.0/Add_1_output_0;--output-name /down_blocks.2/attentions.0/Reshape_1_output_0;
+CPUsubgraph159: order61--input-name /up_blocks.0/attentions.0/Reshape_output_0;/up_blocks.0/attentions.0/transformer_blocks.0/attn1/to_out.0/Add_output_0;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/norm2/Sub_output_0;/up_blocks.0/attentions.0/transformer_blocks.0/Add_output_0;
+CPUsubgraph160: order65--input-name /up_blocks.0/attentions.0/transformer_blocks.0/Add_output_0;/up_blocks.0/attentions.0/transformer_blocks.0/attn2/to_out.0/Add_output_0;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/norm3/Sub_output_0;/up_blocks.0/attentions.0/transformer_blocks.0/Add_1_output_0;
+CPUsubgraph161: order68--input-name /up_blocks.0/attentions.0/transformer_blocks.0/Add_1_output_0;/up_blocks.0/attentions.0/transformer_blocks.0/ff/net.2/Add_output_0;--output-name /up_blocks.0/attentions.0/transformer_blocks.0/Add_2_output_0;
+CPUsubgraph162: order81--input-name /up_blocks.0/attentions.1/transformer_blocks.0/attn2/Transpose_3_output_0;/up_blocks.0/attentions.1/transformer_blocks.0/Add_output_0;--output-name /up_blocks.0/attentions.1/transformer_blocks.0/norm3/Div_output_0;/up_blocks.0/attentions.1/transformer_blocks.0/Add_1_output_0;
+CPUsubgraph163: order83--input-name /up_blocks.0/attentions.1/transformer_blocks.0/ff/net.0/Mul_3_output_0;/up_blocks.0/attentions.1/transformer_blocks.0/ff/net.0/Slice_output_0;/up_blocks.0/attentions.1/transformer_blocks.0/Add_1_output_0;--output-name /up_blocks.0/attentions.1/transformer_blocks.0/Add_2_output_0;
+CPUsubgraph164: order98--input-name /up_blocks.1/attentions.0/transformer_blocks.0/Add_output_0;/up_blocks.1/attentions.0/transformer_blocks.0/attn2/to_out.0/Add_output_0;--output-name /up_blocks.1/attentions.0/transformer_blocks.0/Add_1_output_0;
+CPUsubgraph165: order114--input-name /up_blocks.1/attentions.1/transformer_blocks.0/attn2/Transpose_3_output_0;/up_blocks.1/attentions.1/transformer_blocks.0/Add_output_0;--output-name /up_blocks.1/attentions.1/transformer_blocks.0/norm3/Div_output_0;/up_blocks.1/attentions.1/transformer_blocks.0/Add_1_output_0;
+CPUsubgraph166: order116--input-name /up_blocks.1/attentions.1/transformer_blocks.0/ff/net.0/Mul_3_output_0;/up_blocks.1/attentions.1/transformer_blocks.0/ff/net.0/Slice_output_0;/up_blocks.1/attentions.1/transformer_blocks.0/Add_1_output_0;--output-name /up_blocks.1/attentions.1/transformer_blocks.0/Add_2_output_0;
+CPUsubgraph167: order128--input-name /up_blocks.2/attentions.0/Reshape_output_0;/up_blocks.2/attentions.0/transformer_blocks.0/attn1/to_out.0/Add_output_0;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/norm2/Sub_output_0;/up_blocks.2/attentions.0/transformer_blocks.0/Add_output_0;
+CPUsubgraph168: order132--input-name /up_blocks.2/attentions.0/transformer_blocks.0/Add_output_0;/up_blocks.2/attentions.0/transformer_blocks.0/attn2/to_out.0/Add_output_0;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/norm3/Sub_output_0;/up_blocks.2/attentions.0/transformer_blocks.0/Add_1_output_0;
+CPUsubgraph169: order135--input-name /up_blocks.2/attentions.0/transformer_blocks.0/Add_1_output_0;/up_blocks.2/attentions.0/transformer_blocks.0/ff/net.2/Add_output_0;--output-name /up_blocks.2/attentions.0/transformer_blocks.0/Add_2_output_0;
+CPUsubgraph170: order148--input-name /up_blocks.2/attentions.1/transformer_blocks.0/attn2/Transpose_3_output_0;/up_blocks.2/attentions.1/transformer_blocks.0/Add_output_0;--output-name /up_blocks.2/attentions.1/transformer_blocks.0/norm3/Div_output_0;/up_blocks.2/attentions.1/transformer_blocks.0/Add_1_output_0;
+CPUsubgraph171: order150--input-name /up_blocks.2/attentions.1/transformer_blocks.0/ff/net.0/Mul_3_output_0;/up_blocks.2/attentions.1/transformer_blocks.0/ff/net.0/Slice_output_0;/up_blocks.2/attentions.1/transformer_blocks.0/Add_1_output_0;--output-name /up_blocks.2/attentions.1/transformer_blocks.0/Add_2_output_0;

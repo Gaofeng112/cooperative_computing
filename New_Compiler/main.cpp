@@ -31,7 +31,6 @@ int main(int argc, char* argv[]) {
     Licheepi lpi4a;
     lpi4a.updateOnnxFile(onnxFile);
     lpi4a.GetDeviceJson("config.json");
-    //DetermineStructure(g, lpi4a,PartitionStrategy::SPILTE_NPU_STRUCTURE_FIRST);
     p.PartitionGraph(g, lpi4a, PartitionStrategy::SPILTE_NPU_STRUCTURE_FIRST, node_io_size);
 
     Py_Initialize();

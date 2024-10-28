@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/build -I/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/include -I/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/include/Device -I/mnt/c/WORK/NPU_CPU_COCOMPUTE_GR/Compiler/CoComputingCompiler -I/usr/include/python3.10
+CXX_INCLUDES = -I/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build -I/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/include -I/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/include/Device -I/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/include/json -I/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/CoComputingCompiler -I/usr/include/python3.10
 
 CXX_FLAGS =  -O0 -Wall -g2 -ggdb
 
