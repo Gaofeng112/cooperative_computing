@@ -20,6 +20,6 @@ inference_mulit_tflite.py和inference_single_tflite.py中的tflite的文件地�
 新增New_Compiler，里面是新的切图算法
 =======
 8.26 update
-在case/inference/里新增inference_fp32_onnx.py
+在inference/里新增inference_fp32_onnx.py
 该文件是运行多个onnx文件
 >>>>>>> Stashed changes
