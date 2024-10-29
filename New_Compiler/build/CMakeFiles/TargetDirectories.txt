@@ -1,3 +1,0 @@
-/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles/CoComputingCompiler.dir
-/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles/edit_cache.dir
-/mnt/c/WORK/GitHub/cooperative_computing/New_Compiler/build/CMakeFiles/rebuild_cache.dir
