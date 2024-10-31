@@ -6,6 +6,6 @@ cmake --build . -- -j8
 cd ..
 # ./CoComputingCompiler --onnx=./net/vit_1.onnx
 # ./CoComputingCompiler --onnx=./net/model.onnx
-./CoComputingCompiler --onnx=./net/unet_32_sim_v2.onnx
+./CoComputingCompiler --onnx=./net/generation_model_simplify.onnx
 # ./CoComputingCompiler --onnx=./net/unet_32_sim_v2.onnx
-python3 extract_onnx.py
+#python3 extract_onnx.py

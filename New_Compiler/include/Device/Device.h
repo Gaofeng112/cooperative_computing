@@ -12,7 +12,7 @@ enum class DeviceType { Licheepi };
 
 class Device {
 private:
-    /* data */
+    std::string onnxFile;
 public:
     Device(/* args */) {
         NPUPreferOp = {"Conv", "Gemm"};
@@ -26,13 +26,27 @@ public:
     std::vector<std::string> CPUSupportOp;
     std::vector<std::string> NPUSupportOp;
     int max_subgraph_size;
-    virtual DeviceType getType() const = 0; // 返回子类的类型
-
-    // 虚函数，用于获取 cpu_structure 成员变量
-    virtual std::vector<std::vector<std::string>> getCPUStructure() const = 0;
-    // 虚函数，用于获取 npu_structure 成员变量
-    virtual std::vector<std::vector<std::string>> getNPUStructure() const = 0;
-    // 虚函数，用于获取 NPU_SupportOp 成员变量
+    //virtual DeviceType getType() const = 0; // 返回子类的类型
+    DeviceType getType() {
+        return DeviceType::Licheepi;
+    }
+    std::vector<std::vector<std::string>> getCPUStructure() {
+        return {
+            {"Concat"},
+            {"Sub", "Pow", "ReduceMean", "Add", "Sqrt", "Div"},
+            {"Transpose", "Gather", "Gather", "Gather", "Transpose", "MatMul", "Mul", "Softmax", "MatMul"}
+        };
+    }
+    std::vector<std::vector<std::string>> getNPUStructure() {
+        return {
+            {"Reshape","Transpose","Reshape"},
+            {"Reshape","Sigmoid","Mul","Transpose","Conv","Add","Transpose"},
+            {"Reshape","Transpose","Conv","Transpose","Reshape"},
+            {"Reshape","Conv","Transpose"},
+            {"Reshape","Add","Add","Reshape","Transpose","Conv","Add"},
+            {"Conv"}
+        };
+    }
     std::vector<std::string> getNPUSupportOp() { 
         return NPUSupportOp;
     }
@@ -46,8 +60,8 @@ public:
     }
 
     // 父类的虚函数，子类根据情况自行修改
-    virtual void GenerateCutInstruction(std::vector<onnx::GraphProto>& Subgraphs, std::string device,
-                                        std::vector<std::unordered_set<NodeTensor>> &subgraphs_inputs, std::vector<std::unordered_set<NodeTensor>> &subgraphs_outputs) {};
+    void GenerateCutInstruction(std::vector<onnx::GraphProto>& Subgraphs, std::string device,
+                                        std::vector<std::unordered_set<NodeTensor>> &subgraphs_inputs, std::vector<std::unordered_set<NodeTensor>> &subgraphs_outputs);
     void GetDeviceJson(std::string json_path)
     {
         Json::Reader reader;
@@ -88,7 +102,13 @@ public:
         }
         in.close();
     }
+    void updateOnnxFile(std::string &path) {
+        onnxFile = path;
+    }
 
+    std::string getOnnxFile() {
+        return onnxFile;
+    }
 
 };
 

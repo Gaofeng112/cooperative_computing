@@ -14,7 +14,7 @@ def split_successors(file_path, successors):
                 text = "error:"+str(i)+','+successor
                 print(text)
 successors = []
-split_successors('successor_final_3.txt',successors)
+split_successors('successor_final_4.txt',successors)
 print('end')    
 
 import networkx as nx
@@ -26,7 +26,11 @@ for i in range(len(successors)):
         G.add_edge(i,int(successor))
 pos = nx.spring_layout(G)
 con = nx.strongly_connected_components(G)
-print(con,type(con),list(con))
+#print(con,type(con),list(con))
+lst = list(con)
+for elem in lst:
+    if(len(elem) >1):
+        print(elem)
 order = list(nx.topological_sort(G))
 print(order)
 nx.draw(G, pos, with_labels=True, node_color='lightblue', edge_color='gray', node_size=50, font_size= 6)

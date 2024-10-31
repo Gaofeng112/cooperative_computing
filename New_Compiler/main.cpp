@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
     auto g = graph.GetGraphFromOnnx(onnxFile);
     std::unordered_map<std::string, NodeIOSize> node_io_size;
     Partition p;
-    Licheepi lpi4a;
+    Device lpi4a;
     lpi4a.updateOnnxFile(onnxFile);
     lpi4a.GetDeviceJson("config.json");
     p.PartitionGraph(g, lpi4a, PartitionStrategy::SPILTE_NPU_STRUCTURE_FIRST, node_io_size);
