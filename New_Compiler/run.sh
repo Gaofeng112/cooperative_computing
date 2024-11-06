@@ -8,4 +8,4 @@ cd ..
 #./CoComputingCompiler --onnx=./net/vision_model_simplify.onnx
 ./CoComputingCompiler --onnx=./net/generation_model_simplify.onnx
 # ./CoComputingCompiler --onnx=./net/unet_32_sim_v2.onnx
-#python3 extract_onnx.py
+python3 extract_onnx.py
