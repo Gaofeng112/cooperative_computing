@@ -80,10 +80,12 @@ public:
             max_subgraph_size = max_subgraph_size_json;
             for (unsigned int i = 0; i < root["performance_data"].size(); i++)
             {
-                if(root["performance_data"][i]["CPU_time"].asInt() > root["performance_data"][i]["NPU_time"].asInt())
+                if(root["performance_data"][i]["CPU_time"].asFloat() > root["performance_data"][i]["NPU_time"].asFloat())
                 {
                     NPUPreferOp.push_back(root["performance_data"][i]["name"].asString());
+                    //std::cout << root["performance_data"][i]["name"].asString() << " ";
                 }
+
             }
             for(int i = 0; i < root["NPU_supported_ops"].size(); i++)
             {

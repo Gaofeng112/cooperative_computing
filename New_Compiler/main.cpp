@@ -2,7 +2,6 @@
 #include <string>
 #include "graph.h"
 #include "partition.h"
-#include "Licheepi.h"
 #include "/usr/include/python3.10/Python.h"
 int main(int argc, char* argv[]) {
     std::string onnxFile;

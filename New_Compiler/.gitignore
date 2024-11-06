@@ -1,5 +1,7 @@
 net/
 build/
+__pycache__/
+1016_subgraphs/
 CoComputingCompiler
 cpuCutInstruction.txt
 npuCutInstruction.txt

@@ -34,26 +34,32 @@ def split_onnx(instrfile,type):
             onnx.utils.extract_model(input_path, output_path, input_names, output_names)
     f1.close()
 
-def split_onnx_ios(instrfile):
+def split_onnx_ios(instrfile, input_path ='net/generation_model_simplify.onnx', out_folder = '1016_subgraphs/1016_subgraphs_'):
+    model = onnx.load(input_path)
+    onnx.checker.check_model(input_path)
+    for output in model.graph.output:
+        model.graph.value_info.append(output)
+    onnx.save(model, input_path)
     f1=open(instrfile,"r")
     lines=f1.readlines()
     cpu_count = 0
     npu_count = 0
+    count=0
     for line in lines:
         input_names, output_names,type = splitsubgraph_ios(line)
-        #input_path ='net/diffusion_model_fp32_with_shape.onnx'
-        input_path ='net/unet_32_sim_v2.onnx'
+        #input_path ='net/generation_model_simplify.onnx'
         if(type=='CPU'):
             count=cpu_count
             cpu_count=cpu_count+1
         else:
             count=npu_count
             npu_count=npu_count+1
-        output_path ='1016_subgraphs/1016_subgraphs_'+type+'/'+type+'subgraph'+str(count)+'.onnx'
+        output_path =out_folder+type+'/'+type+'subgraph'+str(count)+'.onnx'
         #output_path ='subgraphs_npu/subgraphs_npu_0905'+'/'+type+'subgraph'+str(count)+'.onnx'
         if((input_names!=['']) and (output_names!=[''])):
             onnx.utils.extract_model(input_path, output_path, input_names, output_names)
-            print("succeed")
+            print("succeed",count)
+            count = count+1
     f1.close()
 
 def rename_node_io(file_path):
