@@ -25,7 +25,7 @@ public:
     std::vector<std::string> NPUPreferOp;
     std::vector<std::string> CPUSupportOp;
     std::vector<std::string> NPUSupportOp;
-    int max_subgraph_size;
+    float max_subgraph_size;
     //virtual DeviceType getType() const = 0; // 返回子类的类型
     DeviceType getType() {
         return DeviceType::Licheepi;
@@ -76,7 +76,7 @@ public:
         }
         if(reader.parse(in, root))
         {
-            int max_subgraph_size_json = root["max_subgraph_size"].asInt();
+            float max_subgraph_size_json = root["hardware_limits"]["max_subgraph_size"].asFloat();
             max_subgraph_size = max_subgraph_size_json;
             for (unsigned int i = 0; i < root["performance_data"].size(); i++)
             {

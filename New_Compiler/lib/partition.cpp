@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_DEPTH 5
+#define MAX_DEPTH 10
 std::vector<std::vector<std::string>> getEnabledStructures(const std::vector<std::string>& support_op, const std::vector<std::vector<std::string>>& structure) {
     std::vector<std::vector<std::string>> enable_structure;
     
@@ -174,41 +174,84 @@ std::vector<graph_adjacency_node> get_adjancency_list(const onnx::GraphProto &g,
 	}
 	return adjacency_list;
 }
+float calculate_node_size(const onnx::GraphProto &g, int node_index)//unit : KB
+{
+    int64_t node_size = 0;
+    for(int i = 0; i < g.node(node_index).input_size(); i++)
+    {
+        std::string input_name = g.node(node_index).input(i);
+        for(int j = 0; j < g.initializer_size(); j++)
+        {
+            if(g.initializer(j).name() == input_name)
+            {
+               int64_t node_init_size = 1;
+               for(int k = 0; k < g.initializer(j).dims().size(); k ++)
+               {
+                   node_init_size = g.initializer(j).dims(k) * node_init_size;
+               }
+               node_size += node_init_size;
+               break;
+            }
+        }
+    }
+    return float(node_size*1.0/1024.0);
+}
 void DFS(const onnx::GraphProto &g,onnx::GraphProto &subgraph, std::vector<int> &sugraph_node_index,
 		int* visited, const onnx::NodeProto& start_node,
 		int node_index,std::vector<graph_adjacency_node>& adjacency_list,
 		const std::vector<std::string>& support_op,
         const std::vector<std::string>& prefer_op,
-        int depth_in)
+        int depth_in,
+        float& graph_size,
+        float max_graph_size)
 {
     int depth_out = depth_in + 1;
 	*subgraph.add_node()=start_node;
     //std::cout<<"node pushed back!"<<start_node.name()<<std::endl;
 	visited[node_index]=1;
     sugraph_node_index.push_back(node_index);
+    //1109
+    float node_size = calculate_node_size(g, node_index);
+    graph_size += node_size;
+    if(graph_size>max_graph_size)
+    {
+        std::cout<<"graph size exceed max size!"<<graph_size<<" "<<max_graph_size<<std::endl;
+    }
+    //1109
+
 	for(int i=0;i<adjacency_list[node_index].output_node_index.size();i++)
 	{
 		int next_node_index=adjacency_list[node_index].output_node_index[i];
 		const auto & next_node=g.node(next_node_index);
-        if(!visited[next_node_index]&&(std::find(support_op.begin(), support_op.end(), next_node.op_type()) != support_op.end())&&(depth_out < MAX_DEPTH))        //尚未访问且op_type符合的邻接顶点
-            DFS(g,subgraph,sugraph_node_index,visited,next_node,next_node_index,adjacency_list,support_op, prefer_op, depth_out);
+        if(!visited[next_node_index]&&(std::find(support_op.begin(), support_op.end(), next_node.op_type()) != support_op.end())&&(depth_out < MAX_DEPTH)&&(graph_size < max_graph_size))        //尚未访问且op_type符合的邻接顶点
+            DFS(g,subgraph,sugraph_node_index,visited,next_node,next_node_index,adjacency_list,support_op, prefer_op, depth_out, graph_size, max_graph_size);
 	}
 }//问题所在：有太多无效npu子图（可加可不加的算子组成的小子图），应当剔除；同时cpu子图也要用同样的方法生成
 void DFS_other(const onnx::GraphProto &g,onnx::GraphProto &subgraph, std::vector<int> &sugraph_node_index,
 		int* visited, const onnx::NodeProto& start_node,
-		int node_index,std::vector<graph_adjacency_node>& adjacency_list, int depth_in)
+		int node_index,std::vector<graph_adjacency_node>& adjacency_list, int depth_in
+        ,float& graph_size,
+        float max_graph_size)
 {
     int depth_out = depth_in + 1;
 	*subgraph.add_node()=start_node;
     //std::cout<<"node pushed back!"<<start_node.name()<<std::endl;
 	visited[node_index]=1;
     sugraph_node_index.push_back(node_index);
+    //1109
+    float node_size = calculate_node_size(g, node_index);
+    graph_size += node_size;
+    if(graph_size>max_graph_size)
+    {
+        std::cout<<"graph size exceed max size!"<<graph_size<<" "<<max_graph_size<<std::endl;
+    }    
+    //1109
 	for(int i=0;i<adjacency_list[node_index].output_node_index.size();i++)
 	{
 		int next_node_index=adjacency_list[node_index].output_node_index[i];
 		const auto & next_node=g.node(next_node_index);
-        if(!visited[next_node_index]&&(depth_out < MAX_DEPTH))        //尚未访问的邻接顶点
-            DFS_other(g,subgraph,sugraph_node_index,visited,next_node,next_node_index,adjacency_list,depth_out);
+        if(!visited[next_node_index]&&(depth_out < MAX_DEPTH)&&(graph_size < max_graph_size))        //尚未访问的邻接顶点
+            DFS_other(g,subgraph,sugraph_node_index,visited,next_node,next_node_index,adjacency_list,depth_out, graph_size, max_graph_size);
 	}
 }//问题所在：有太多无效npu子图（可加可不加的算子组成的小子图），应当剔除；同时cpu子图也要用同样的方法生成
 void determine_subgraphs(const onnx::GraphProto& g,std::vector<onnx::GraphProto>& otherSubgraphs, Device& d, int* visited, 
@@ -239,7 +282,9 @@ void determine_subgraphs(const onnx::GraphProto& g,std::vector<onnx::GraphProto>
             std::vector<int> sugraph_node_index;
 			const auto& node=g.node(i);
             int depth = 0;
-			DFS(g,subgraph,sugraph_node_index,visited,node,i,adjacency_list,support_op, prefer_op,depth);
+            float graph_size = 0;
+			DFS(g,subgraph,sugraph_node_index,visited,node,i,adjacency_list,support_op, prefer_op,depth, graph_size, max_subgraph_size);
+            std::cout<<"graph_size: "<<graph_size<<std::endl;
             int find_prefer_op = 0;
             for(const auto& node :subgraph.node())
             {
@@ -296,10 +341,12 @@ void determine_subgraphs(const onnx::GraphProto& g,std::vector<onnx::GraphProto>
             //     continue;
             // }
             int depth = 0;
+            float graph_size = 0;
             onnx::GraphProto subgraph;
             std::vector<int> sugraph_node_index;
             const auto& node=g.node(i);
-            DFS_other(g,subgraph,sugraph_node_index,visited,node,i,adjacency_list, depth); 
+            DFS_other(g,subgraph,sugraph_node_index,visited,node,i,adjacency_list, depth, graph_size, max_subgraph_size); 
+            std::cout<<"graph_size:"<<graph_size<<std::endl;
             otherSubgraphs.push_back(subgraph);
         }
     }
@@ -2370,7 +2417,7 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
     } 
     free(DFN_);
     free(LOW_);
-    eliminate_scc(strongly_connected_subgraphs,  Subgraphs, otherSubgraphs);
+    //eliminate_scc(strongly_connected_subgraphs,  Subgraphs, otherSubgraphs);
     /////////////////////    
     strongly_connected_subgraphs.clear();
     predecessors_Subgraphs.clear();
@@ -2684,7 +2731,6 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
     {
        eliminate_pair_v2(Subgraphs, otherSubgraphs, graphs_inputs, graphs_outputs, strongly_connected_subgraphs, subgraph_size); 
     }
-    handle_onnx_error(Subgraphs, otherSubgraphs, g);
     strongly_connected_subgraphs.clear();
     predecessors_Subgraphs.clear();
     successors_Subgraphs.clear();

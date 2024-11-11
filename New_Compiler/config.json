@@ -5,13 +5,10 @@
     "performance_data": [
         {"name":"Conv","CPU_time": 0.1, "NPU_time": 0.05},
         {"name":"Sigmoid","CPU_time": 0.2, "NPU_time": 0.1},
-        {"name":"Mul", "CPU_time": 0.15, "NPU_time": 0.07},
-        {"name":"Add","CPU_time": 0.25, "NPU_time": 0.1},
-        {"name":"Reshape","CPU_time": 0.15, "NPU_time": 0.07},
-        {"name":"InstanceNormalization","CPU_time": 0.25, "NPU_time": -1}
+        {"name":"Mul", "CPU_time": 0.15, "NPU_time": 0.07}
     ],
     "hardware_limits": {
-        "max_subgraph_size": 1024,
+        "max_subgraph_size": 6024.0,
         "max_subgraphs": 5
     }
 }

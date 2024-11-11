@@ -28,3 +28,5 @@ successor_final_4.txt
 terminal_result.txt
 test.py
 test.txt
+*.zip
+*_subgraphs/

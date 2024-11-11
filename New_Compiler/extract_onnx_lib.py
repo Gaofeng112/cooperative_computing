@@ -34,7 +34,7 @@ def split_onnx(instrfile,type):
             onnx.utils.extract_model(input_path, output_path, input_names, output_names)
     f1.close()
 
-def split_onnx_ios(instrfile, input_path ='net/generation_model_simplify.onnx', out_folder = '1016_subgraphs/1016_subgraphs_'):
+def split_onnx_ios(instrfile, input_path ='net/generation_model_simplify.onnx', out_folder = '1109_subgraphs/'):
     model = onnx.load(input_path)
     onnx.checker.check_model(input_path)
     for output in model.graph.output:
@@ -45,6 +45,8 @@ def split_onnx_ios(instrfile, input_path ='net/generation_model_simplify.onnx', 
     cpu_count = 0
     npu_count = 0
     count=0
+    if not os.path.exists(out_folder):
+        os.makedirs(out_folder)
     for line in lines:
         input_names, output_names,type = splitsubgraph_ios(line)
         #input_path ='net/generation_model_simplify.onnx'
@@ -54,7 +56,10 @@ def split_onnx_ios(instrfile, input_path ='net/generation_model_simplify.onnx', 
         else:
             count=npu_count
             npu_count=npu_count+1
-        output_path =out_folder+type+'/'+type+'subgraph'+str(count)+'.onnx'
+        output_path_folder =out_folder+type+'/'
+        if not os.path.exists(output_path_folder):
+            os.makedirs(output_path_folder)
+        output_path = output_path_folder+type+'subgraph'+str(count)+'.onnx'
         #output_path ='subgraphs_npu/subgraphs_npu_0905'+'/'+type+'subgraph'+str(count)+'.onnx'
         if((input_names!=['']) and (output_names!=[''])):
             onnx.utils.extract_model(input_path, output_path, input_names, output_names)
