@@ -295,33 +295,7 @@ void determine_subgraphs(const onnx::GraphProto& g,std::vector<onnx::GraphProto>
             }
             if(find_prefer_op)
             {
-                // if(subgraph.node_size()<=max_subgraph_size)
-                // {
-                //     Subgraphs.push_back(subgraph);
-                // }
-                // else
-                // {
-                //     onnx::GraphProto subgraph_new;
-                //     for(int j=0;j<subgraph.node_size();j++)
-                //     {
-                //         if(j <= max_subgraph_size - 1)
-                //         {
-                //             *subgraph_new.add_node()=subgraph.node(j);
-                //         }
-                //         if(j > max_subgraph_size-1)
-                //         {
-                //             visited[sugraph_node_index[j]] = 0;
-                //         }
-                //     }
-                //     Subgraphs.push_back(subgraph_new);
-                // }
-                Subgraphs.push_back(subgraph);
-                //std::cout<<"subgraph "<<Subgraphs.size()<<"generated! ";
-                // for(const auto& node :subgraph.node())
-                // {
-                //     std::cout<<node.name()<<"--";
-                // }
-                        
+                Subgraphs.push_back(subgraph);                  
             }
             else{
                 for(const auto& index :sugraph_node_index)
@@ -336,10 +310,6 @@ void determine_subgraphs(const onnx::GraphProto& g,std::vector<onnx::GraphProto>
     {
         if(!visited[i])
         {
-            // if(g.node(i).op_type()=="Constant")
-            // {
-            //     continue;
-            // }
             int depth = 0;
             float graph_size = 0;
             onnx::GraphProto subgraph;
@@ -796,7 +766,6 @@ void eliminate_scc(
             {
                 scc_graph = otherSubgraphs[scc_index - subgraph_size];
             }
-            //onnx::GraphProto scc_graph = determinegraphtype(scc_index, Subgraphs, otherSubgraphs);
             std::vector<graph_adjacency_node> scc_node_rank;
             for(int i=0; i< scc_graph.node_size(); i++)
             {
@@ -869,10 +838,6 @@ void eliminate_scc_v2(
             int index_316_flag = 0;
             for(int i=0; i< scc_graph.node_size(); i++)
             {
-                // if(scc_graph.node(i).name() == "/blocks.2/blocks.2.8/spatial_block/conv1/fn/Shape_2")
-                // {
-                //     index_316_flag = 1;
-                // }
                 for(int j = 0; j < node_rank_list.size(); j++)
                 {
                     if(scc_graph.node(i).name() == node_rank_list[j].name)
@@ -883,30 +848,12 @@ void eliminate_scc_v2(
                 }
             }
             std::vector<int> cut_rank = get_cut_rank_v2(scc_node_rank);
-            // if(index_316_flag == 1)/* */
-            // {
-            //     std::cout<<"node rank: ";
-            //     for(int i=0; i<scc_node_rank.size(); i++)
-            //     {
-            //         std::cout<<scc_node_rank[i].name<<":"<<scc_node_rank[i].rank<<"-";
-            //     }
-            //     std::cout<<std::endl;
-            //     std::cout<<"cut rank: ";
-            //     for(int i=0; i<cut_rank.size(); i++)
-            //     {
-            //         std::cout<<cut_rank[i]<<"-";
-            //     }
-            //     std::cout<<std::endl;
-            //     std::exit(0);
-            // }
-            ////////////
             onnx::GraphProto temp_graph_upper;
             int node_in_upper = 0;
             for(int i=0; i<scc_graph.node_size(); i++)
             {
                 if(scc_node_rank[i].rank < cut_rank[0])
                 {
-                   // *temp_graph_upper.add_node() = scc_graph.node(i);
                     node_in_upper++;
                 }
             }
@@ -1043,6 +990,59 @@ void eliminate_scc_v2(
                 }
             }
         }
+}
+void eliminate_scc_v3(
+    std::vector<std::vector<int>>& strongly_connected_subgraphs, 
+    std::vector<onnx::GraphProto>& Subgraphs,
+    std::vector<onnx::GraphProto>& otherSubgraphs,
+    const onnx::GraphProto& g
+)
+{
+    int subgraph_size = Subgraphs.size();
+    int other_subgraph_size = otherSubgraphs.size();
+    for(int i = 0; i < strongly_connected_subgraphs.size(); i++)
+    {
+        for(const auto scc_index : strongly_connected_subgraphs[i])
+        {
+            std::cout<<"scc index: "<<scc_index<<std::endl;
+            onnx::GraphProto scc_graph;
+            if(scc_index < subgraph_size)
+            {
+                scc_graph = Subgraphs[scc_index];
+            }
+            else
+            {
+                scc_graph = otherSubgraphs[scc_index - subgraph_size];
+            }
+            for(int j=0; j< scc_graph.node_size(); j++)
+            {
+                onnx::GraphProto graph_temp;
+                *graph_temp.add_node() = scc_graph.node(j);
+                if(j == 0)
+                {
+                    if(scc_index < subgraph_size)
+                    {
+                        Subgraphs[scc_index] = graph_temp;
+                    }
+                    else
+                    {
+                        otherSubgraphs[scc_index - subgraph_size] = graph_temp;
+                    }
+                }
+                else
+                {
+                    if(scc_index < subgraph_size)
+                    {
+                        Subgraphs.push_back(graph_temp);
+                    }
+                    else
+                    {
+                        otherSubgraphs.push_back(graph_temp);
+                    }
+                }
+            }            
+        }
+    }
 }
 onnx::GraphProto determinegraphtype(
     int index,
@@ -2710,26 +2710,35 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
     while(1)
     {
         count_cut_pair ++;
-        if(count_cut_pair > 5)
+        if(count_cut_pair > 15)
         {
             std::cout << "cut pair error! So many times!" << std::endl;
             exit(0);
+            break;
         }
     int subgraph_size = Subgraphs.size();
-    if(count_cut_pair == 1)
+    std::vector<std::vector<int>> strongly_connected_subgraphs_all;
+    std::vector<int> scc_all;
+    for(int i = 0; i < Subgraphs.size() + otherSubgraphs.size(); i++)
     {
-        std::vector<std::vector<int>> strongly_connected_subgraphs_all;
-        std::vector<int> scc_all;
-        for(int i = 0; i < Subgraphs.size() + otherSubgraphs.size(); i++)
-        {
-            scc_all.push_back(i);
-        }
-        strongly_connected_subgraphs_all.push_back(scc_all);
-        eliminate_pair_v2(Subgraphs, otherSubgraphs, graphs_inputs, graphs_outputs, strongly_connected_subgraphs_all, subgraph_size);
+        scc_all.push_back(i);
+    }
+    strongly_connected_subgraphs_all.push_back(scc_all);
+    if(((count_cut_pair >1 &&count_cut_pair < 5)||(count_cut_pair >10 &&count_cut_pair < 13))  && strongly_connected_subgraphs.size() != 0)
+    {
+        std::cout <<count_cut_pair<< " eliminate scc v2 executed"<< std::endl;
+        eliminate_scc_v2(strongly_connected_subgraphs,  Subgraphs, otherSubgraphs, g);
+        //eliminate_pair_v2(Subgraphs, otherSubgraphs, graphs_inputs, graphs_outputs, strongly_connected_subgraphs_all, subgraph_size);
+    }
+    else if(((count_cut_pair ==15))  && strongly_connected_subgraphs.size() != 0)
+    {
+        std::cout <<count_cut_pair<< " eliminate scc v3 executed"<< std::endl;
+        eliminate_scc_v3(strongly_connected_subgraphs,  Subgraphs, otherSubgraphs, g);
     }
     else
     {
-       eliminate_pair_v2(Subgraphs, otherSubgraphs, graphs_inputs, graphs_outputs, strongly_connected_subgraphs, subgraph_size); 
+        std::cout <<count_cut_pair<< " eliminate pair v2 executed"<< std::endl;
+       eliminate_pair_v2(Subgraphs, otherSubgraphs, graphs_inputs, graphs_outputs, strongly_connected_subgraphs_all, subgraph_size); 
     }
     strongly_connected_subgraphs.clear();
     predecessors_Subgraphs.clear();
@@ -2855,9 +2864,17 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
         std::cout << "num error!, time" <<count_cut_pair<< std::endl;
         exit(0);
     }
-    if(strongly_connected_subgraphs.size() == 0)
+    if(count_cut_pair == 15)
     {
-        break;
+        if(strongly_connected_subgraphs.size() == 0)
+        {
+            break;
+        }
+        else
+        {
+            std::cout<<"error!"<<std::endl;
+            exit(0);
+        }
     }
     }//end of while
     std::string file_name_predecessor_4 = "predecessor_final_4.txt";
@@ -3002,6 +3019,7 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
             {
                 std::cout << "error: endless loop!" << std::endl;
                 std::cout << "sort count:" <<sort_count << std::endl;
+                std::cout << "count_cut_pair: "<<count_cut_pair<<std::endl;
                 for(int i =0;i<graphs_inputs.size();i++)
                 {
                     std::cout << "order_Subgraphs["<<i<<"]:"<<order_Subgraphs[i]<<" ";

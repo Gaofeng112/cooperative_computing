@@ -14,7 +14,7 @@ def split_successors(file_path, successors):
                 text = "error:"+str(i)+','+successor
                 print(text)
 successors = []
-split_successors('successor_final_3.txt',successors)
+split_successors('successor_final_4.txt',successors)
 print('end')    
 
 import networkx as nx
