@@ -7,6 +7,7 @@ Tools folder has shape_inference.py
 
 
 ##8.19 update
+
 在case/inference/里新增inference_mulit_tflite.py和inference_single_tflite.py
 inference_single_tflite.py是运行新的单个unet tflite文件的
 新增inference_mulit_tflite.py是运行新的多个unet tflite文件的
@@ -19,6 +20,7 @@ inference_mulit_tflite.py和inference_single_tflite.py中的tflite的文件地�
 新增New_Compiler，里面是新的切图算法
 
 ##11.18 update
+
 已加入在config.json中大致调整子图文件大小上限的接口，可以通过改变hardware_limits中的max_subgraph_size实现，其单位为kb。
 
 若要进行全CPU子图边界条件测试，请将config.json文件中的NPU_supported_ops和performance_data清空。
