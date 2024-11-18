@@ -932,14 +932,6 @@ void eliminate_scc_v2(
                 std::cout<<scc_node_rank[i].name<<" "<<scc_node_rank[i].rank<<" ";
             }
             std::cout<<std::endl;
-            // if(scc_index < subgraph_size)
-            // {
-            //     Subgraphs[scc_index] = temp_graph_upper;
-            // }
-            // else
-            // {
-            //     otherSubgraphs[scc_index - subgraph_size] = temp_graph_upper;
-            // }
             for(int i = 0; i< cut_rank.size() -1;  i++)
             {
                 onnx::GraphProto temp_graph_lower;
@@ -2101,7 +2093,6 @@ void handle_onnx_error(std::vector<onnx::GraphProto> &Subgraphs, std::vector<onn
 
 }
 void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionStrategy strategy, const std::unordered_map<std::string, NodeIOSize> &node_io_size) {
-    //std::unordered_set<NodeTensor> initializerNames = getInitializer(g);
     std::unordered_set<NodeTensor> IOvalueNames = getIOvalue(g);
     int* visited = (int*)malloc(g.node_size()*sizeof(int));
     std::vector<graph_adjacency_node> adjacency_list=get_adjancency_list(g, visited);
