@@ -473,6 +473,11 @@ std::unordered_map<std::string, NodeIOSize> Graph::getNodeIOSizes(const onnx::Gr
 
 onnx::GraphProto Graph::GetGraphFromOnnx(std::string &path) {
 	std::ifstream input(path, std::ios::ate | std::ios::binary);
+	if(!input.is_open())
+	{
+		std::cout << "Error: Failed to open file: " << path << std::endl;
+		exit(0);
+	}
 	onnx::ModelProto model;
 	// get current position in file
 	std::streamsize size = input.tellg();
