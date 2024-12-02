@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_DEPTH 10
+#define MAX_DEPTH 1000
 std::vector<std::vector<std::string>> getEnabledStructures(const std::vector<std::string>& support_op, const std::vector<std::vector<std::string>>& structure) {
     std::vector<std::vector<std::string>> enable_structure;
     
@@ -184,7 +184,7 @@ float calculate_node_size(const onnx::GraphProto &g, int node_index)//unit : KB
         {
             if(g.initializer(j).name() == input_name)
             {
-               int64_t node_init_size = 1;
+               int64_t node_init_size = 4;
                for(int k = 0; k < g.initializer(j).dims().size(); k ++)
                {
                    node_init_size = g.initializer(j).dims(k) * node_init_size;
@@ -218,14 +218,20 @@ void DFS(const onnx::GraphProto &g,onnx::GraphProto &subgraph, std::vector<int> 
         std::cout<<"graph size exceed max size!"<<graph_size<<" "<<max_graph_size<<std::endl;
     }
     //1109
-
+    //std::cout<<"node "<<node_index<<":"<<start_node.name()<<" successor num: "<<adjacency_list[node_index].output_node_index.size()<<" successor:";
 	for(int i=0;i<adjacency_list[node_index].output_node_index.size();i++)
 	{
+        if(i>1)
+        {
+            std::cout<<adjacency_list[node_index].output_node_index[i]<<"->";
+        }
+        //
 		int next_node_index=adjacency_list[node_index].output_node_index[i];
 		const auto & next_node=g.node(next_node_index);
         if(!visited[next_node_index]&&(std::find(support_op.begin(), support_op.end(), next_node.op_type()) != support_op.end())&&(depth_out < MAX_DEPTH)&&(graph_size < max_graph_size))        //尚未访问且op_type符合的邻接顶点
             DFS(g,subgraph,sugraph_node_index,visited,next_node,next_node_index,adjacency_list,support_op, prefer_op, depth_out, graph_size, max_graph_size);
 	}
+    //std::cout<<std::endl;
 }//问题所在：有太多无效npu子图（可加可不加的算子组成的小子图），应当剔除；同时cpu子图也要用同样的方法生成
 void DFS_other(const onnx::GraphProto &g,onnx::GraphProto &subgraph, std::vector<int> &sugraph_node_index,
 		int* visited, const onnx::NodeProto& start_node,
@@ -322,6 +328,139 @@ void determine_subgraphs(const onnx::GraphProto& g,std::vector<onnx::GraphProto>
     }
 }
 ////8.9 continue
+void determine_subgraphs_v2(const onnx::GraphProto& g,std::vector<onnx::GraphProto>& otherSubgraphs, Device& d, int* visited, 
+												std::vector<graph_adjacency_node>& adjacency_list,PartitionStrategy strategy)
+{
+    float max_subgraph_size = d.max_subgraph_size;
+	std::vector<std::string> support_op;
+    std::vector<std::string> prefer_op;
+    support_op=d.getNPUSupportOp();
+    prefer_op=d.getNPUPreferOp();
+    onnx::GraphProto temp_graph;
+    int temp_graph_type = 0;
+    int end_flag = 0;
+    int node_count = 0;
+    int node_count_former = 0;
+    float temp_graph_size = 0;
+    // if(prefer_op.size() == 0)
+    // {
+    //     std::cout<<"No NPU support op"<<std::endl;
+    //     std::exit(1);  
+    // }
+    while(!end_flag)
+    {
+        float node_size = calculate_node_size(g, node_count);
+        if(temp_graph.node_size()!= 0)
+        {
+            //std::cout<<" op type: "<<g.node(node_count).op_type()<<std::endl;
+            if((std::find(support_op.begin(), support_op.end(), g.node(node_count).op_type()) != support_op.end())&&temp_graph.node_size()<=max_subgraph_size)
+            {
+                //std::cout<<"Node "<<node_count<<" is support by NPU"<<std::endl;
+                *temp_graph.add_node() = g.node(node_count);
+                temp_graph_size += node_size;
+                if(temp_graph_size>max_subgraph_size)
+                {
+                    std::cout<<"graph size exceed max size!"<<temp_graph_size<<" "<<max_subgraph_size<<std::endl;
+                }
+                visited[node_count] = 1;
+            }
+            else
+            {
+                int find_preferop = 0;
+                for(int j =0; j < temp_graph.node_size();j++)
+                {
+                    if(std::find(prefer_op.begin(), prefer_op.end(), temp_graph.node(j).op_type()) != prefer_op.end())
+                    {
+                        find_preferop = 1;
+                        //std::cout<<"find prefer op"<<std::endl;
+                        break;
+                    }
+                }
+                if(find_preferop == 1)
+                {
+                    Subgraphs.push_back(temp_graph);
+                }
+                else
+                {
+                    for(int k = 1; k <= temp_graph.node_size(); k++)
+                    {
+                        visited[node_count - k] = 0;
+                    }
+                }
+                temp_graph.Clear();
+                temp_graph_size = 0;
+                if(std::find(support_op.begin(), support_op.end(), g.node(node_count).op_type()) != support_op.end())
+                {
+                    //std::cout<<"Node "<<node_count<<" is support by NPU"<<std::endl;
+                    *temp_graph.add_node() = g.node(node_count);
+                    temp_graph_size += node_size;
+                    visited[node_count] = 1;
+                    continue;
+                }
+            }
+        }
+        else
+        {
+            //std::cout<<" op type: "<<g.node(node_count).op_type()<<std::endl;
+            if(std::find(support_op.begin(), support_op.end(), g.node(node_count).op_type()) != support_op.end())
+            {
+                //std::cout<<"Node "<<node_count<<" is support by NPU"<<std::endl;
+                *temp_graph.add_node() = g.node(node_count);
+                temp_graph_size += node_size;
+                if(temp_graph_size>max_subgraph_size)
+                {
+                    std::cout<<"graph size exceed max size!"<<temp_graph_size<<" "<<max_subgraph_size<<std::endl;
+                }
+                visited[node_count] = 1;
+            }
+        }
+        node_count++;
+        if(node_count == g.node_size())
+        {
+            end_flag = 1;
+            if(temp_graph.node_size()!= 0)
+            {
+                Subgraphs.push_back(temp_graph);
+            }
+        }
+    }
+    onnx::GraphProto temp_graph2;
+    float temp_graph_size2 = 0;
+    for(int i = 0; i < g.node_size(); i++)
+    {
+        float node_size = calculate_node_size(g, i);
+        if(visited[i] == 0&& temp_graph_size2 < max_subgraph_size)
+        {
+            *temp_graph2.add_node() = g.node(i);
+            temp_graph_size2 += node_size;
+           //std::cout<< "i = "<<i<< " temp_graph_size2: " << temp_graph_size2 << std::endl;
+        }
+        else
+        {
+            std::cout<< "i = "<<i<< " temp_graph_size2: " << temp_graph_size2 << std::endl;
+            if(temp_graph2.node_size() != 0)
+            {
+                otherSubgraphs.push_back(temp_graph2);
+                temp_graph_size2 = 0;
+                temp_graph2.Clear();
+            }
+            if(visited[i] == 0)
+            {
+                *temp_graph2.add_node() = g.node(i);
+                temp_graph_size2 += node_size;
+                continue;
+            }
+        }
+        if(i == g.node_size() - 1)
+        {
+            if(temp_graph2.node_size() != 0)
+            {
+                otherSubgraphs.push_back(temp_graph2);
+                temp_graph2.Clear();
+            }
+        }
+    }
+}
 void Tarjan(int index, int depth, std::vector<std::vector<int>>& strongly_connected_subgraphs,int* DFN, 
     int* LOW, std::vector<int>& stack_subgraphs, std::vector<std::vector<int>>& successors_Subgraphs)
 {
@@ -823,7 +962,10 @@ void eliminate_scc_v2(
         std::vector<graph_adjacency_node> node_rank_list;
         calculate_node_rank_v3(g, node_rank_list);
         int index_all = 0;
-        for(int scc_index = 0; scc_index < subgraph_size + other_subgraph_size; scc_index++)
+        for(auto& strongly_connected : strongly_connected_subgraphs)
+        for(const auto scc_index : strongly_connected)
+        //for(int scc_index = 0; scc_index < subgraph_size + other_subgraph_size; scc_index++)
+        //attention!!!I don't know whether this is rubust
         {
             onnx::GraphProto scc_graph;
             if(scc_index < subgraph_size)
@@ -867,7 +1009,7 @@ void eliminate_scc_v2(
                 onnx::GraphProto temp_graph_upper_adder;
                 for(int i=record_i; i<scc_graph.node_size(); i++)
                 {
-                    std::cout<<"for loop start: i= "<<i<<std::endl;
+                    //std::cout<<"for loop start: i= "<<i<<std::endl;
                     int i_minus_1 = 0;
                     if(i == 0)
                     {
@@ -932,6 +1074,21 @@ void eliminate_scc_v2(
                 std::cout<<scc_node_rank[i].name<<" "<<scc_node_rank[i].rank<<" ";
             }
             std::cout<<std::endl;
+            // for(int i= cut_rank.size() -1; i>=3;  i--)
+            // {
+            //     int size = 0;
+            //     for(int j=0; j<scc_graph.node_size(); j++)
+            //     {
+            //         if(scc_node_rank[j].rank >= cut_rank[i]&& scc_node_rank[j].rank < cut_rank[i+1])
+            //         {
+            //             size ++;
+            //         }
+            //         if(size <2)
+            //         {
+            //             cut_rank.erase(cut_rank.begin()+i-1);
+            //         }
+            //     }                
+            // }
             for(int i = 0; i< cut_rank.size() -1;  i++)
             {
                 onnx::GraphProto temp_graph_lower;
@@ -2090,14 +2247,80 @@ void handle_onnx_error(std::vector<onnx::GraphProto> &Subgraphs, std::vector<onn
             otherSubgraphs.erase(otherSubgraphs.begin()+error2_index);
         }
     }
-
+}
+int find_min_size(int index, std::vector<int>& successor, std::vector<int>& predecessor,std::vector<onnx::GraphProto> &Subgraphs, std::vector<onnx::GraphProto> &otherSubgraphs)//find the successor or predecessor with the least nodes
+{
+    std::vector<int> size_list;
+    int min_index = -1;
+    int min_size = 10000;
+    for(int i = 0; i < successor.size(); i++)
+    {
+        std::cout<< "successor: "<<successor[i] ;
+        onnx::GraphProto tempgraph;
+        if( (successor[i] < Subgraphs.size()&& index <Subgraphs.size())||(successor[i] >= Subgraphs.size()&& index >= Subgraphs.size()) )
+        {
+            if(successor[i] < Subgraphs.size())
+            {
+                tempgraph = Subgraphs[successor[i]];
+            }
+            else
+            {
+                tempgraph = otherSubgraphs[successor[i]-Subgraphs.size()];
+            }
+        }
+        else
+        {
+            continue;
+        }
+        int size = tempgraph.node_size();
+        std::cout<< " size:"<<size<<" min:"<<min_size;
+        if(size < min_size&& size != 1)
+        {
+            min_size = size;
+            min_index = successor[i];
+            std::cout<< " update min index:"<<min_index;
+        }
+        std::cout<<std::endl;
+    }
+    for(int i = 0; i < predecessor.size(); i++)
+    {
+        std::cout<< "predecessor: "<<predecessor[i] ;
+        onnx::GraphProto tempgraph;
+        if((predecessor[i] < Subgraphs.size()&& index <Subgraphs.size())||(predecessor[i] >= Subgraphs.size()&& index >= Subgraphs.size()))
+        {
+            if(predecessor[i] < Subgraphs.size())
+            {
+                tempgraph = Subgraphs[predecessor[i]];
+            }
+            else
+            {
+                tempgraph = otherSubgraphs[predecessor[i] - Subgraphs.size()];
+            }
+        }
+        else
+        {
+            continue;
+        }
+        int size = tempgraph.node_size();
+        std::cout<< " size:"<<size<<" min:"<<min_size;
+        if(size < min_size&& size != 1)
+        {
+            min_size = size;
+            min_index = predecessor[i];
+            std::cout<< " update min index:"<<min_index;
+        }
+        std::cout<<std::endl;
+    }
+    return min_index;
 }
 void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionStrategy strategy, const std::unordered_map<std::string, NodeIOSize> &node_io_size) {
     std::unordered_set<NodeTensor> IOvalueNames = getIOvalue(g);
     int* visited = (int*)malloc(g.node_size()*sizeof(int));
     std::vector<graph_adjacency_node> adjacency_list=get_adjancency_list(g, visited);
     std::vector<onnx::GraphProto> otherSubgraphs;
-    determine_subgraphs(g,otherSubgraphs, d, visited, adjacency_list,strategy);
+    determine_subgraphs_v2(g,otherSubgraphs, d, visited, adjacency_list,strategy);
+    std::cout<<"Partition Done"<<std::endl;
+    //std::exit(0);
     free(visited);
     std::vector<graph_adjacency_node>().swap(adjacency_list);
     int node_sum = 0;
@@ -2159,47 +2382,47 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
     {
         is_merged[i] = 0;
     }
-    for (size_t i = 0; i < otherSubgraphs.size(); ++i) 
-    {
-        if(is_merged[i] == 0)
-        {
-            for (size_t j = i + 1; j < otherSubgraphs.size(); j++) {
-                if(is_merged[j] == 0)
-                {
-                    for (const auto& InputnodeName : subgraphs_2_input_nodes_[j]) 
-                    {
-                        if (subgraphs_2_nodes_[i].find(InputnodeName) != subgraphs_2_nodes_[i].end()) 
-                        {   
-                            std::cout << "Merge possible for graphs " << i << " and " << j << std::endl;
-                            mergeGraphs(otherSubgraphs[i], otherSubgraphs[j]);
-                            is_merged[j] = 1;
-                            break;
-                        }
-                    }
-                    if(is_merged[j] == 0)
-                    {
-                        for (const auto& InputnodeName : subgraphs_2_input_nodes_[i]) 
-                        {
-                            if (subgraphs_2_nodes_[j].find(InputnodeName) != subgraphs_2_nodes_[j].end()) 
-                            {   
-                                std::cout << "Merge possible for graphs " << i << " and " << j << std::endl;
-                                mergeGraphs(otherSubgraphs[i], otherSubgraphs[j]);
-                                is_merged[j] = 1;
-                                break;
-                            }
-                        }                    
-                    }
-                }
-            }
-        }
-    }
-    for(int i = otherSubgraphs.size()-1; i>=0; i--)
-    {
-        if(is_merged[i] == 1)
-        {
-            otherSubgraphs.erase(otherSubgraphs.begin() + i);
-        }
-    }
+    // for (size_t i = 0; i < otherSubgraphs.size(); ++i) 
+    // {
+    //     if(is_merged[i] == 0)
+    //     {
+    //         for (size_t j = i + 1; j < otherSubgraphs.size(); j++) {
+    //             if(is_merged[j] == 0)
+    //             {
+    //                 for (const auto& InputnodeName : subgraphs_2_input_nodes_[j]) 
+    //                 {
+    //                     if (subgraphs_2_nodes_[i].find(InputnodeName) != subgraphs_2_nodes_[i].end()) 
+    //                     {   
+    //                         std::cout << "Merge possible for graphs " << i << " and " << j << std::endl;
+    //                         mergeGraphs(otherSubgraphs[i], otherSubgraphs[j]);
+    //                         is_merged[j] = 1;
+    //                         break;
+    //                     }
+    //                 }
+    //                 if(is_merged[j] == 0)
+    //                 {
+    //                     for (const auto& InputnodeName : subgraphs_2_input_nodes_[i]) 
+    //                     {
+    //                         if (subgraphs_2_nodes_[j].find(InputnodeName) != subgraphs_2_nodes_[j].end()) 
+    //                         {   
+    //                             std::cout << "Merge possible for graphs " << i << " and " << j << std::endl;
+    //                             mergeGraphs(otherSubgraphs[i], otherSubgraphs[j]);
+    //                             is_merged[j] = 1;
+    //                             break;
+    //                         }
+    //                     }                    
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    // for(int i = otherSubgraphs.size()-1; i>=0; i--)
+    // {
+    //     if(is_merged[i] == 1)
+    //     {
+    //         otherSubgraphs.erase(otherSubgraphs.begin() + i);
+    //     }
+    // }
     std::cout << "graph size after merging:"<< otherSubgraphs.size() << std::endl;
     free(is_merged);
     std::ofstream outFile_3("./subgraphs_3.txt");
@@ -2351,9 +2574,16 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
     
     std::string file_name_scc = "scc.txt";
     std::ofstream outfile_scc(file_name_scc);    
+    outfile_scc << strongly_connected_subgraphs.size()<<std::endl;
     for(const auto& scc : strongly_connected_subgraphs)
     {
         std::cout << "scc:";
+        outfile_scc << "scc: ";
+        for(const auto& scc_id : scc)
+        {
+            outfile_scc << scc_id << " ";
+        }
+        outfile_scc << std::endl;
         for(const auto& scc_id : scc)
         {
             std::cout << scc_id << " ";
@@ -2408,7 +2638,8 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
     } 
     free(DFN_);
     free(LOW_);
-    //eliminate_scc(strongly_connected_subgraphs,  Subgraphs, otherSubgraphs);
+    //11.26
+    eliminate_scc_v2(strongly_connected_subgraphs,  Subgraphs, otherSubgraphs, g);
     /////////////////////    
     strongly_connected_subgraphs.clear();
     predecessors_Subgraphs.clear();
@@ -2520,10 +2751,17 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
         }
         temp_count ++ ;
     } 
-    std::ofstream outfile_scc2(file_name_scc);    
+    std::string file_name_scc2 = "scc2.txt";
+    std::ofstream outfile_scc2(file_name_scc2);    
     for(const auto& scc : strongly_connected_subgraphs)
     {
-        std::cout << "scc2:";
+        std::cout << "scc:";
+        outfile_scc2 << "scc: ";
+        for(const auto& scc_id : scc)
+        {
+            outfile_scc2 << scc_id << " ";
+        }
+        outfile_scc2 << std::endl;
         for(const auto& scc_id : scc)
         {
             std::cout << scc_id << " ";
@@ -2545,7 +2783,119 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
     outfile_scc.close();
     free(DFN_2);
     free(LOW_2);
-    eliminate_scc_v2(strongly_connected_subgraphs,  Subgraphs, otherSubgraphs, g);
+    //eliminate_scc_v2(strongly_connected_subgraphs,  Subgraphs, otherSubgraphs, g);
+    //11.26
+    int subgraph_size_2 = Subgraphs.size();
+    int other_subgraph_size_2 = otherSubgraphs.size();
+    std::vector<int> eliminated_small_graph_id;
+    std::vector<int> eliminated_small_graph_size;
+    std::vector<int> eliminated_small_graph_size_2;
+    std::vector<int> unmerged_graph_id;
+    for(int i =0; i< subgraph_size_2 + other_subgraph_size_2; i++)
+    {
+        std::cout << "i:" << i << std::endl;
+        if(i < subgraph_size_2)
+        {
+            if(Subgraphs[i].node_size() < 2)
+            {
+                int merge_id = find_min_size(i,successors_Subgraphs[i], predecessors_Subgraphs[i], Subgraphs, otherSubgraphs);
+                if(merge_id < subgraph_size_2&&merge_id >= 0)
+                {
+                    mergeGraphs(Subgraphs[merge_id], Subgraphs[i]);
+                    eliminated_small_graph_id.push_back(i);
+                    eliminated_small_graph_size.push_back(Subgraphs[i].node_size());
+                    std::cout << "eliminating small graph "<<i << "and merged to "<< merge_id<< std::endl;
+                }
+                else if(merge_id >= 0)
+                {
+                    mergeGraphs(otherSubgraphs[merge_id - subgraph_size_2], Subgraphs[i]);
+                    eliminated_small_graph_id.push_back(i);
+                    eliminated_small_graph_size.push_back(Subgraphs[i].node_size());
+                    std::cout << "eliminating small graph "<<i << "and merged to "<< merge_id<< std::endl;
+                }
+                else 
+                {
+                    unmerged_graph_id.push_back(i);
+                }
+            }
+        }
+        else
+        {
+            if(otherSubgraphs[i - subgraph_size_2].node_size() < 2)
+            {
+                int merge_id = find_min_size(i,successors_Subgraphs[i], predecessors_Subgraphs[i], Subgraphs, otherSubgraphs);
+                if(merge_id < subgraph_size_2 &&merge_id >= 0)
+                {
+                    mergeGraphs(Subgraphs[merge_id], otherSubgraphs[i - subgraph_size_2]);
+                    eliminated_small_graph_id.push_back(i);
+                    eliminated_small_graph_size.push_back(otherSubgraphs[i - subgraph_size_2].node_size());
+                    std::cout << "eliminating small graph "<<i << "and merged to "<< merge_id<< std::endl;
+                }
+                else if(merge_id >= 0)
+                {
+                    mergeGraphs(otherSubgraphs[merge_id - subgraph_size_2], otherSubgraphs[i - subgraph_size_2]);
+                    eliminated_small_graph_id.push_back(i);
+                    eliminated_small_graph_size.push_back(otherSubgraphs[i - subgraph_size_2].node_size());
+                    std::cout << "eliminating small graph "<<i << "and merged to "<< merge_id<< std::endl;
+                }
+                else 
+                {
+                    unmerged_graph_id.push_back(i);
+                }
+            }
+        }
+    }
+    std::cout<<"succeed in reaching here"<<std::endl;
+    for(int i = eliminated_small_graph_id.size() - 1; i>=0; i--)
+    {
+        if(std::find(unmerged_graph_id.begin(), unmerged_graph_id.end(), eliminated_small_graph_id[i]) != unmerged_graph_id.end())
+        {
+            continue;
+        }
+        std::cout<<eliminated_small_graph_id[i] << " ";
+        int index = eliminated_small_graph_id[i];
+        if(index < subgraph_size_2)
+        {
+            if(Subgraphs[index].node_size() >1)
+            {
+                std::cout<<"eliminate Subgraphs"<<index<< " ";
+                for(auto node : Subgraphs[index].node())
+                {
+                    std::cout<<node.name()<<" ";
+                }
+            }
+            eliminated_small_graph_size_2.push_back(Subgraphs[index].node_size());
+            Subgraphs.erase(Subgraphs.begin()+ index);
+        }
+        else
+        {
+            if(otherSubgraphs[index - subgraph_size_2].node_size() >1)
+            {
+                std::cout<<"eliminate otherSubgraphs"<<index - subgraph_size_2<< " ";
+                for(auto node : otherSubgraphs[index - subgraph_size_2].node())
+                {
+                    std::cout<<node.name()<<" ";
+                }
+            }
+            eliminated_small_graph_size_2.push_back(otherSubgraphs[index - subgraph_size_2].node_size());
+            otherSubgraphs.erase(otherSubgraphs.begin()+ index - subgraph_size_2);  
+        }
+    }
+    std::cout<<std::endl;
+    std::cout<<"eliminated_small_graph_size_1: ";
+    for(const auto &size: eliminated_small_graph_size)
+    {
+        std::cout<<size<<" ";
+    }
+    std::cout<<std::endl;
+    std::cout<<"eliminated_small_graph_size_2: ";
+    for(const auto &size: eliminated_small_graph_size_2)
+    {
+        std::cout<<size<<" ";
+    }
+    std::cout<<std::endl;
+    //11.26
+    //std::exit(0);
     /////////clear   
     strongly_connected_subgraphs.clear();
     predecessors_Subgraphs.clear();
@@ -2668,7 +3018,13 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
     std::ofstream outfile_scc3(file_name_scc3);    
     for(const auto& scc : strongly_connected_subgraphs)
     {
-        std::cout << "scc3:";
+        std::cout << "scc:";
+        outfile_scc3 << "scc: ";
+        for(const auto& scc_id : scc)
+        {
+            outfile_scc3 << scc_id << " ";
+        }
+        outfile_scc3 << std::endl;
         for(const auto& scc_id : scc)
         {
             std::cout << scc_id << " ";
@@ -2867,6 +3223,7 @@ void Partition::PartitionGraph(const onnx::GraphProto &g, Device& d, PartitionSt
             exit(0);
         }
     }
+    std::cout<<"graph number after "<<count_cut_pair<<"loops: "<<Subgraphs.size()+ otherSubgraphs.size()<<std::endl;
     }//end of while
     std::string file_name_predecessor_4 = "predecessor_final_4.txt";
     std::string file_name_successor_4 = "successor_final_4.txt";

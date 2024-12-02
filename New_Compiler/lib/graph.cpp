@@ -21,10 +21,10 @@ std::unordered_set<NodeTensor> getIOvalue(const onnx::GraphProto& graph) {
 	for (const auto& value_info : graph.value_info()) {
 		NodeTensor nt;
 		nt.name = value_info.name();
-		std::cout << nt.name << std::endl;
+		//std::cout << nt.name << std::endl;
 		std::vector<int64_t> shape;
 		for (const auto& dim : value_info.type().tensor_type().shape().dim()) {
-			std::cout << "dim.dim_value():" << dim.dim_value() << std::endl;
+			//std::cout << "dim.dim_value():" << dim.dim_value() << std::endl;
 			shape.push_back(dim.dim_value());
 		}
 		nt.shape = shape;
@@ -33,7 +33,7 @@ std::unordered_set<NodeTensor> getIOvalue(const onnx::GraphProto& graph) {
 	for (auto value_info : graph.input()) {
 		NodeTensor nt;
 		nt.name = value_info.name();
-		std::cout << nt.name << std::endl;
+		//std::cout << nt.name << std::endl;
 		std::vector<int64_t> shape;
 		for (const auto& dim : value_info.type().tensor_type().shape().dim()) {
 			shape.push_back(dim.dim_value());
@@ -44,7 +44,7 @@ std::unordered_set<NodeTensor> getIOvalue(const onnx::GraphProto& graph) {
 	for (auto value_info : graph.output()) {
 		NodeTensor nt;
 		nt.name = value_info.name();
-		std::cout << nt.name << std::endl;
+		//std::cout << nt.name << std::endl;
 		std::vector<int64_t> shape;
 		for (const auto& dim : value_info.type().tensor_type().shape().dim()) {
 			shape.push_back(dim.dim_value());
@@ -59,7 +59,7 @@ std::unordered_set<NodeTensor> getOutvalue(const onnx::GraphProto& graph) {
 	for (auto value_info : graph.output()) {
 		NodeTensor nt;
 		nt.name = value_info.name();
-		std::cout << nt.name << std::endl;
+		//std::cout << nt.name << std::endl;
 		std::vector<int64_t> shape;
 		for (const auto& dim : value_info.type().tensor_type().shape().dim()) {
 			shape.push_back(dim.dim_value());
@@ -297,9 +297,17 @@ int canMerge(int subgraph_id, const std::vector<std::unordered_set<std::string>>
 }
 
 void mergeGraphs(onnx::GraphProto& targetGraph, onnx::GraphProto& sourceGraph) {
+	std::cout<<"size before merged: "<<targetGraph.node_size()<<"+"<<sourceGraph.node_size()<<std::endl;
+	int size_before = targetGraph.node_size() + sourceGraph.node_size();
     for (const auto& node : sourceGraph.node()) {
         *targetGraph.add_node() = node;
     }
+	std::cout<<"size after merged: "<<targetGraph.node_size()<<std::endl;
+	if(size_before != targetGraph.node_size())
+	{
+		std::cout<<"error in mergeGraphs"<<std::endl;
+		std::exit(0);
+	}
 }
 
 NodeIOSize FindNodeIOSize(std::string nodeName, const std::unordered_map<std::string, NodeIOSize> &nodeSizes) {
