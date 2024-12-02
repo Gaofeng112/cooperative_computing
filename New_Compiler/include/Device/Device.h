@@ -18,11 +18,12 @@ public:
         NPUPreferOp = {};
         CPUSupportOp = {};
         NPUSupportOp = {};
-         //NPUPreferOp = {"Sub", "Pow", "ReduceMean", "Add", "Sqrt", "Div","Transpose", "Gather", "MatMul", "Mul", "Softmax", "Erf", "Gemm", "Conv", "Reshape",
-    //"Sin", "Where", "ConstantOfShape", "Cast", "Sigmoid", "Cos", "Expand", "Slice", "Unsqueeze","LayerNormalization","Concat","Shape","Squeeze","Mod","Pad","Range","Tile","Equal","Less","InstanceNormalization","Resize","Split","Clip","BatchNormalization"};
-        // NPUSupportOp = {"Sub", "Pow", "ReduceMean", "Add", "Sqrt", "Div","Transpose", "Gather", "MatMul", "Mul", "Softmax", "Erf", "Gemm", "Conv", "Reshape",
-    //"Sin", "Where", "ConstantOfShape", "Cast", "Sigmoid", "Cos", "Expand", "Slice", "Unsqueeze","LayerNormalization","Concat","Shape","Squeeze","Mod","Pad","Range","Tile","Equal","Less","InstanceNormalization","Resize","Split","Clip","BatchNormalization"};
-        max_subgraph_size = 6024.0;
+        //NPUPreferOp = {"Sub", "Pow", "ReduceMean", "Add", "Sqrt", "Div","Transpose","Gemm"};
+    //      NPUPreferOp = {"Sub", "Pow", "ReduceMean", "Add", "Sqrt", "Div","Transpose", "Gather", "MatMul", "Mul", "Softmax", "Erf", "Gemm", "Conv", "Reshape",
+    // "Sin", "Where", "ConstantOfShape", "Cast", "Sigmoid", "Cos", "Expand", "Slice", "Unsqueeze","LayerNormalization","Concat","Shape","Squeeze","Mod","Pad","Range","Tile","Equal","Less","InstanceNormalization","Resize","Split","Clip","BatchNormalization","Identity"};
+    //     NPUSupportOp = {"Sub", "Pow", "ReduceMean", "Add", "Sqrt", "Div","Transpose", "Gather", "MatMul", "Mul", "Softmax", "Erf", "Gemm", "Conv", "Reshape",
+    // "Sin", "Where", "ConstantOfShape", "Cast", "Sigmoid", "Cos", "Expand", "Slice", "Unsqueeze","LayerNormalization","Concat","Shape","Squeeze","Mod","Pad","Range","Tile","Equal","Less","InstanceNormalization","Resize","Split","Clip","BatchNormalization","Identity"};
+        max_subgraph_size = 0;
     }
     ~Device() {}
     std::vector<std::string> NPUPreferOp;

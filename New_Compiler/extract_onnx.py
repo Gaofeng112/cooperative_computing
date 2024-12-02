@@ -8,7 +8,7 @@ print("python executed")
 #extract_onnx_lib.split_onnx('cpuCutInstructionlast.txt','cpu2')
 
 #extract_onnx_lib.split_onnx_ios('subgraphs_ios.txt','net/unet_32_sim_v2.onnx')
-extract_onnx_lib.split_onnx_ios('subgraphs_ios.txt','net/generation_model_simplify.onnx')
+extract_onnx_lib.split_onnx_ios('subgraphs_ios.txt','net/vision_model_simplify.onnx')
 #extract_onnx_lib.sort('instr_original.txt','instr_modified.txt')
 # model = onnx.load('net/generation_model_simplify1.onnx')
 # onnx.checker.check_model('net/generation_model_simplify1.onnx')
