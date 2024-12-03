@@ -26,11 +26,11 @@ for i in {1..1000}; do
 
     #压缩
     # OUTPUT_FILE="$OUTPUT_DIR/pca_$i.png"
-    # python3 inference_onnx_pca_auto_final.py --prompt "$prompt" --output "$OUTPUT_FILE"
+    # python3 inference_onnx_pca_auto.py --prompt "$prompt" --output "$OUTPUT_FILE"
     
     #非压缩
     OUTPUT_FILE="$OUTPUT_DIR/origin_$i.png"
-    python3 inference_fp32_onnx_final.py --prompt "$prompt" --output "$OUTPUT_FILE"
+    python3 inference_fp32_onnx_auto.py --prompt "$prompt" --output "$OUTPUT_FILE"
     
     # 可选：在每次迭代后添加短暂的延迟
     sleep 0.1  # 等待0.1秒
