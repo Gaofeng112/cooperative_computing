@@ -1,6 +1,7 @@
-''''
-推理多个onnx模型，自动化
-'''
+"""
+加载多个onnx模型,使用压缩解压,解决numpy格式问题
+自动化,压缩率,带有封装类,设置了根目录
+"""
 import onnxruntime as ort
 from onnxruntime.quantization import quantize_dynamic, QuantType
 import numpy as np
@@ -18,32 +19,25 @@ import re
 import time
 import pdb
 import argparse
+import onnx
+import torch
+import torch.nn as nn
+from model_inference import PcaInference
 
 parser = argparse.ArgumentParser(description="Generate images using ONNX models.")
 parser.add_argument("--prompt", type=str, required=True, help="Prompt for generating the image")
-parser.add_argument("--output", type=str, required=True, help="Output filename for the generated image")
+parser.add_argument("--output", type=str, required=True, help="image name")
+parser.add_argument("--num", type=int, required=True, help="the number of images to generate")
 args = parser.parse_args()
 
-# 读取文件
-with open('./1108_subgraphs/subgraphs_ios.txt', 'r') as file:
-    content = file.read()
-subgraph_order_map = {}
-matches = re.findall(r'(\w+)subgraph(\d+): order(\d+)', content)
+model_path='./1108_subgraphs'
+subgraphsiostxt_path='./1108_subgraphs/subgraphs_ios.txt'
+endwithconv_path='./1108_subgraphs/end_with_conv.txt'
 
-for match in matches:
-    subgraph_type, subgraph_number, order = match
-    lower_subgraph_type = subgraph_type.lower()
-    file_path = f"./1108_subgraphs/{lower_subgraph_type}subgraph{subgraph_number}.onnx"
-    if int(order) in subgraph_order_map:
-        subgraph_order_map[int(order)].append(file_path)
-    else:
-        subgraph_order_map[int(order)] = [file_path]
-sorted_file_paths = []
-for order in sorted(subgraph_order_map.keys()):
-    sorted_file_paths.extend(subgraph_order_map[order])
-model_files = sorted_file_paths
+output_dir = "./output"
+os.makedirs(output_dir, exist_ok=True)
 
-sessions = [ort.InferenceSession(model) for model in model_files]
+model_inference = PcaInference(model_path, subgraphsiostxt_path, endwithconv_path, output_dir)
 
 device_name = 'cpu'
 providers = ['CPUExecutionProvider']
@@ -72,14 +66,15 @@ def set_seed(seed=42):
 set_seed(42)
 
 path_to_saved_models="./fp32"
-
 scheduler = LCMScheduler(beta_start=0.00085, beta_end=0.0120, beta_schedule="scaled_linear", prediction_type="epsilon")
 scheduler.set_timesteps(num_steps, 50)
 text_encoder = tf.lite.Interpreter(model_path= os.path.join(path_to_saved_models,"converted_text_encoder.tflite"),num_threads=multiprocessing.cpu_count())
 text_encoder.allocate_tensors()
+
 # Get input and output tensors.
 input_details_text_encoder = text_encoder.get_input_details()
 output_details_text_encoder = text_encoder.get_output_details()
+
 
 # diffusion_model = onnxruntime.InferenceSession(input_onnx_path, providers=providers)
 decoder = tf.lite.Interpreter(model_path=os.path.join(path_to_saved_models,"converted_decoder.tflite"),num_threads=multiprocessing.cpu_count())
@@ -138,32 +133,11 @@ for index, timestep in progbar:
         "timestep": np.array([float(timestep)], dtype=np.float32),
         "encoder_hidden_states": np.array(context, dtype=np.float32),
     }
-    # pdb.set_trace()
-    # 打印每个数组的形状
-    # for key, value in initial_input_data.items():
-    #     print(f"{key} shape: {value.shape}")
-    input_data = initial_input_data
 
-    for i, (session,model_file) in enumerate(zip(sessions,model_files)):
-        # print(model_file)
-        input_names = [inp.name for inp in session.get_inputs()]
-        
-        model_input_data = {name: input_data[name] for name in input_names}
-        
-        outputs = session.run(None, model_input_data)
 
-        output_names = [out.name for out in session.get_outputs()]
-
-        if i < len(sessions) - 1:
-            for output, output_name in zip(outputs, output_names):
-                input_data[output_name] = output
-
-    # final_output = {name: output for name, output in zip(output_names, outputs)}
-    e_t_hf = outputs[0]
+    e_t_hf = model_inference.inference(initial_input_data, args.num)
     latent_hf = np.transpose(latent, (0, 3, 1, 2))
-    # pdb.set_trace()
     output_latent = scheduler.step(e_t_hf, index, timestep, latent_hf)
-
     latent = np.transpose(output_latent[0], (0, 2, 3, 1))
 
 denoised = output_latent[1]
@@ -175,4 +149,15 @@ decoded = decoder.get_tensor(output_details_decoder[0]['index'])
 decoded = ((decoded + 1) / 2) * 255
 img=np.clip(decoded, 0, 255).astype("uint8")
 image = Image.fromarray(img[0])
-image.save(args.output)
+
+iamges_path = output_dir + "/pca"
+os.makedirs(iamges_path, exist_ok=True)
+image.save(os.path.join(iamges_path, args.output))
+
+# evaluator = ImageMetricsEvaluator(
+#         original_dir=output_dir + "origin",
+#         generated_dir=iamges_path,
+#         compression_dir=output_dir + "results",  # 假设压缩信息文本文件存储在此目录下
+#         output_file=output_dir + "comp.xlsx"
+#     )
+# evaluator.compare_images_in_directories()

@@ -93,7 +93,7 @@ def get_projection_matrix(im, eigenVar,num_bits=8):
 #         x_return = x_return.reshape(C, B, H, W).permute(1, 0, 2, 3)
 #     # x_return = x_return.reshape(C, B, H, W).permute(1, 0, 2, 3)
 #     return x_return, ru, rbits
-def comp(x, rate,fname, count,transu,inb, num_bits,layer):
+def comp(x, rate, output_dir, count ,transu, inb, num_bits, layer):
     if(len(x.shape) == 2):
         B,C = x.shape
         x_reshape = x
@@ -168,7 +168,9 @@ def comp(x, rate,fname, count,transu,inb, num_bits,layer):
 
 
     # 保存投影矩阵 ru
-    torch.save(ru, f'result_ru/{layer}.pt')
+    result_pt = os.path.join(output_dir, "result_pt")
+    os.makedirs(result_pt, exist_ok=True)
+    torch.save(ru, os.path.join(result_pt, f"{layer}.pt"))
     # torch.save(rbits, f'result_rbits/{layer}.pt')
     # 重塑 x_return 回原始形状 [B, C, H, W]
     if len(x.shape) == 2:
@@ -179,76 +181,6 @@ def comp(x, rate,fname, count,transu,inb, num_bits,layer):
         x_return = x_return.reshape(C, B, H, W).permute(1, 0, 2, 3)
 
     return x_return, ru, rbits
-# def comp(x, rate,fname, count,transu,inb, num_bits,layer):
-#     B,C,H,W = x.shape
-#     x_reshape = x.permute(1,0,2,3).reshape(C,-1)
-#     if(count==1):
-        
-#         u,s = get_projection_matrix(x_reshape, rate, num_bits)
-#         print(f'Rate Init: {len(u.t())/len(u)} {len(u.t())} {len(u)} | Size: {x.numel()}')
-        
-#         x_trans = torch.matmul(u.t(), x_reshape)
-#         x_trans, x_trans_int = quant_transmartix(x_trans,num_bits)    
-    
-#         # channel_max = x_trans_int.max(-1)[0].reshape(1,-1)
-#         # channel_min = x_trans_int.min(-1)[0].reshape(1,-1)
-
-#         # channel_dif = channel_max-channel_min
-#         # channel_dif[torch.where(channel_dif==0)]=1
-#         # bits = torch.ceil(torch.log2(channel_dif))
-
-#         # max_min = torch.cat([channel_max,channel_min],dim=0)
-        
-#         x_return = torch.matmul(u, x_trans)
-#         # print(x_return)
-#         x_return, x_return_int = quant_transmartix(x_return,num_bits)
-#         ru = u
-#         # rbits=max_min
-#         rbits=None
-#     elif(count<=100):
-#         x_trans = torch.matmul(transu.t(), x_reshape)
-#         x_trans,x_trans_int = quant_transmartix(x_trans,num_bits)
-
-#         # channel_max = x_trans_int.max(-1)[0].reshape(1,-1)
-#         # channel_min = x_trans_int.min(-1)[0].reshape(1,-1)
-#         # max_min = torch.cat([channel_max,channel_min],dim=0)
-
-#         x_return = torch.matmul(transu, x_trans)
-#         # print(x_return.size())
-#         x_return,x_return_int = quant_transmartix(x_return,num_bits)
-#         ru = None
-#         rbits = None
-#         # rbits=max_min
-#     else:
-#         x_trans = torch.matmul(transu.t(), x_reshape)
-#         x_trans_int,act_scale,zero_point = quant_transmartix1(x_trans,num_bits)
-        
-
-#         # # print(C, inb.shape,inb.mean())
-#         # inb_expend = inb[:,:,None].repeat(1,1,H*W)
-#         # mask_clip_max = torch.where(x_trans_int>inb_expend[0])
-#         # mask_clip_min = torch.where(x_trans_int<inb_expend[1])
-#         # x_trans_int[mask_clip_max]=inb_expend[0][mask_clip_max]
-#         # x_trans_int[mask_clip_min]=inb_expend[1][mask_clip_min]
-
-#         # x_trans = x_trans_int * act_scale + zero_point
-#         # channel_max = x_trans_int.max(-1)[0].reshape(1,-1)
-#         # channel_min = x_trans_int.min(-1)[0].reshape(1,-1)        
-#         # max_min = torch.cat([channel_max,channel_min],dim=0)
-
-
-#         x_return = torch.matmul(transu, x_trans)
-#         print(x_return.size())
-#         x_return,x_return_int = quant_transmartix(x_return,num_bits)
-#         ru = None
-#         rbits = None
-#         # rbits=max_min
-
-
-#     x_return = x_return.reshape(C,B,H,W).permute(1,0,2,3)
-#     # print(x_reshape.size())
-#     # return x_reshape
-#     return x_return,ru,rbits
 
 
 def quant_activation(x, bit, act_scale, zero_point=0):
@@ -286,14 +218,15 @@ def quant_conv_weight(w, bit, mode="channel_wise", symmetric=True):
         raise NotImplementedError
     return wq
 
-def quant_conv_forward_save_output( x, layer, count, bit, i ):
+def quant_conv_forward_save_output( x, layer, count, bit, i, output_dir):
 
     x, xq_int=quant_transmartix(x,bit)
-    os.makedirs('middle_data', exist_ok=True)
+    result_path = output_dir + "/result"
+    os.makedirs(result_path, exist_ok=True)
     output_tensor, ru, rb = comp(
                         x=x,
                         rate=0.999999,
-                        fname=f"call_{layer}",
+                        output_dir = output_dir,
                         count=1,
                         transu=None,
                         inb=None,
@@ -339,7 +272,7 @@ def quant_conv_forward_save_output( x, layer, count, bit, i ):
 
     channel_min_return[mask_neg_min] = -1 * channel_min_return[mask_neg_min]
     rb = torch.cat([channel_max_return,channel_min_return],dim=0)
-    filename = f'./result/result_{i}.txt'
+    filename = result_path + f'/result_{i}.txt'
     with open(filename, 'a') as f:
         f.write(f'{(channel_max_return-channel_min_return).mean()/2**bit},{x.numel()}\n')
     # zq = _conv_forward(xq, weight,  bias)
