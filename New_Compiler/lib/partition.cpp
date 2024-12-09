@@ -1139,6 +1139,20 @@ void eliminate_scc_v2(
                 }
             }
         }
+    for(int i=Subgraphs.size() - 1; i>=0; i--)
+    {
+        if(Subgraphs[i].node_size() == 0)
+        {
+            Subgraphs.erase(Subgraphs.begin()+i);
+        }
+    }
+    for(int i=otherSubgraphs.size() - 1; i>=0; i--)
+    {
+        if(otherSubgraphs[i].node_size() == 0)
+        {
+            otherSubgraphs.erase(otherSubgraphs.begin()+i);
+        }
+    }
 }
 void eliminate_scc_v3(
     std::vector<std::vector<int>>& strongly_connected_subgraphs, 
@@ -1190,6 +1204,20 @@ void eliminate_scc_v3(
                     }
                 }
             }            
+        }
+    }
+    for(int i=Subgraphs.size() - 1; i>=0; i--)
+    {
+        if(Subgraphs[i].node_size() == 0)
+        {
+            Subgraphs.erase(Subgraphs.begin()+i);
+        }
+    }
+    for(int i=otherSubgraphs.size() - 1; i>=0; i--)
+    {
+        if(otherSubgraphs[i].node_size() == 0)
+        {
+            otherSubgraphs.erase(otherSubgraphs.begin()+i);
         }
     }
 }
@@ -1556,6 +1584,20 @@ void eliminate_pair_v2(
             {
                 otherSubgraphs[scc_pair[1]-subgraph_size] = scc_pair_cut[2];
             }            
+        }
+    }
+    for(int i=Subgraphs.size() - 1; i>=0; i--)
+    {
+        if(Subgraphs[i].node_size() == 0)
+        {
+            Subgraphs.erase(Subgraphs.begin()+i);
+        }
+    }
+    for(int i=otherSubgraphs.size() - 1; i>=0; i--)
+    {
+        if(otherSubgraphs[i].node_size() == 0)
+        {
+            otherSubgraphs.erase(otherSubgraphs.begin()+i);
         }
     }
 }
