@@ -25,9 +25,9 @@ import torch.nn as nn
 from model_inference import PcaInference
 
 parser = argparse.ArgumentParser(description="Generate images using ONNX models.")
-parser.add_argument("--prompt", type=str, required=True, help="Prompt for generating the image")
-parser.add_argument("--output", type=str, required=True, help="image name")
-parser.add_argument("--num", type=int, required=True, help="the number of images to generate")
+parser.add_argument("-p","--prompt", type=str, default="An island on the sea", help="Prompt for generating the image")
+parser.add_argument("-o","--output", type=str, default="output.png", help="image name")
+parser.add_argument("--num", type=int, default=5, help="the number of images to generate")
 args = parser.parse_args()
 
 model_path='./1108_subgraphs'
@@ -153,11 +153,3 @@ image = Image.fromarray(img[0])
 iamges_path = output_dir + "/pca"
 os.makedirs(iamges_path, exist_ok=True)
 image.save(os.path.join(iamges_path, args.output))
-
-# evaluator = ImageMetricsEvaluator(
-#         original_dir=output_dir + "origin",
-#         generated_dir=iamges_path,
-#         compression_dir=output_dir + "results",  # 假设压缩信息文本文件存储在此目录下
-#         output_file=output_dir + "comp.xlsx"
-#     )
-# evaluator.compare_images_in_directories()

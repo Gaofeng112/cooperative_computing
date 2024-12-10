@@ -9,7 +9,6 @@ import pdb
 import re
 import os
 
-
 from quant import quant_conv_forward_save_output
 
 class ModelInference:
@@ -44,8 +43,8 @@ class ModelInference:
 
         for match in matches:
             subgraph_type, subgraph_number, order = match
-            lower_subgraph_type = subgraph_type.lower()
-            file_path = os.path.join(self.model_path, f"{lower_subgraph_type}subgraph{subgraph_number}.onnx")
+            # lower_subgraph_type = subgraph_type.lower()
+            file_path = os.path.join(self.model_path, f"{subgraph_type}subgraph{subgraph_number}.onnx")
             if int(order) in subgraph_order_map:
                 subgraph_order_map[int(order)].append(file_path)
             else:
@@ -87,13 +86,15 @@ class PcaInference:
         subgraphsiostxt_path: 模型图结构txt文件路径
         endwithconv_path: 记录了以卷积结尾的onnx的txt文件路径
         initial_input_data: 初始输入数据
-        num: 推理次数
+        num: 推理次数,根据次数给出的模型名称
+        output_dir: 推理结果保存根目录
 
     输出：
         outputs: 推理结果
 
     说明：
-        中间会生成一个result_pt,用来保存中间结果
+        中间会生成一个result_pt,用来保存中间结果,该目录不生成不影响实验结果。
+        result文件夹会保存卷积层输出的结果,用来计算压缩率。所有结果会保存在output_dir文件夹中。
     """
     def __init__(self, model_path, subgraphsiostxt_path, endwithconv_path, output_dir):
         self.model_path = model_path
@@ -114,8 +115,9 @@ class PcaInference:
 
         for match in matches:
             subgraph_type, subgraph_number, order = match
-            lower_subgraph_type = subgraph_type.lower()
-            file_path = os.path.join(self.model_path, f"{lower_subgraph_type}subgraph{subgraph_number}.onnx")
+            # pdb.set_trace()
+            # lower_subgraph_type = subgraph_type.lower()
+            file_path = os.path.join(self.model_path, f"{subgraph_type}subgraph{subgraph_number}.onnx")
             if int(order) in subgraph_order_map:
                 subgraph_order_map[int(order)].append(file_path)
             else:
@@ -149,7 +151,7 @@ class PcaInference:
             content = file.read()
             numbers = re.findall(r'\b\d+\b', content)
             for number in numbers:
-                onnx_path = os.path.join(self.model_path, f"npusubgraph{number}.onnx")
+                onnx_path = os.path.join(self.model_path, f"NPUsubgraph{number}.onnx")
                 onnx_dict.append(onnx_path)
         return onnx_dict
     def onnx_end_conv(self, model_file):
@@ -209,17 +211,20 @@ class PcaInference:
         return outputs[0]
 
 
-#目录有待优化
+
 class ImageMetricsEvaluator:
+    """
+    用于评估图像质量，包括 MSE, PSNR 和 SSIM。
+    
+    输入：
+        original_dir (str): 原始图像所在目录
+        generated_dir (str): 生成图像所在目录
+        compression_dir (str): 压缩信息文本文件所在目录
+    输出：
+        output_file (str): 输出文件路径(Excel)
+    """
     def __init__(self, original_dir, generated_dir, compression_dir, output_file):
-        """
-        初始化 ImageMetricsEvaluator 类。
-        
-        :param original_dir: 原始图像所在目录
-        :param generated_dir: 生成图像所在目录
-        :param compression_dir: 压缩信息文本文件所在目录
-        :param output_file: 输出文件路径（Excel）
-        """
+
         self.original_dir = original_dir
         self.generated_dir = generated_dir
         self.compression_dir = compression_dir
